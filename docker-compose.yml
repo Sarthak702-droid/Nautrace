@@ -1,0 +1,28 @@
+services:
+  intelligence:
+    build: ./intelligence
+    environment:
+      NAUTRACE_ALGORITHM_CONFIG: /app/config/algorithm.yaml
+    ports:
+      - "8000:8000"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/healthz', timeout=2)"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  gateway:
+    build: ./gateway
+    environment:
+      PORT: "8080"
+      INTELLIGENCE_URL: http://intelligence:8000
+      REQUEST_TIMEOUT_SECONDS: "120"
+      MAX_REQUEST_BODY_BYTES: "67108864"
+      MAX_CONCURRENT_ANALYSES: "4"
+      INTELLIGENCE_RETRY_COUNT: "1"
+      INTELLIGENCE_RETRY_BACKOFF_MS: "250"
+    ports:
+      - "8080:8080"
+    depends_on:
+      intelligence:
+        condition: service_healthy
