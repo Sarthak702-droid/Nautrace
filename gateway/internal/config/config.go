@@ -18,6 +18,8 @@ type Config struct {
 	MaxConcurrentAnalyze int
 	RetryCount           int
 	RetryBackoff         time.Duration
+	ConvexURL            string
+	ConvexAuthToken      string
 }
 
 func Load() (Config, error) {
@@ -32,6 +34,8 @@ func Load() (Config, error) {
 		MaxConcurrentAnalyze: intEnv("MAX_CONCURRENT_ANALYSES", 4),
 		RetryCount:           intEnv("INTELLIGENCE_RETRY_COUNT", 1),
 		RetryBackoff:         durationMillis("INTELLIGENCE_RETRY_BACKOFF_MS", 250),
+		ConvexURL:            getenv("CONVEX_URL", "http://127.0.0.1:3210"),
+		ConvexAuthToken:      getenv("CONVEX_AUTH_TOKEN", ""),
 	}
 	if cfg.MaxConcurrentAnalyze <= 0 {
 		return Config{}, fmt.Errorf("MAX_CONCURRENT_ANALYSES must be positive")

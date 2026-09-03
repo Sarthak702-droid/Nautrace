@@ -12,20 +12,23 @@ import (
 	"time"
 
 	"nautrace/gateway/internal/intelligence"
+	"nautrace/gateway/internal/service"
 	"nautrace/gateway/internal/middleware"
 )
 
 type Server struct {
 	logger    *slog.Logger
 	intel     *intelligence.Client
+	srv       *service.Service
 	semaphore chan struct{}
 	maxBody   int64
 }
 
-func New(logger *slog.Logger, intel *intelligence.Client, maxConcurrent int, maxBody int64) *Server {
+func New(logger *slog.Logger, intel *intelligence.Client, srv *service.Service, maxConcurrent int, maxBody int64) *Server {
 	return &Server{
 		logger:    logger,
 		intel:     intel,
+		srv:       srv,
 		semaphore: make(chan struct{}, maxConcurrent),
 		maxBody:   maxBody,
 	}
@@ -36,6 +39,22 @@ func (s *Server) Handler() http.Handler {
 	mux.HandleFunc("GET /healthz", s.healthz)
 	mux.HandleFunc("GET /readyz", s.readyz)
 	mux.HandleFunc("POST /api/v1/analyze", s.analyze)
+	mux.HandleFunc("POST /api/v1/incidents", s.createIncident)
+	mux.HandleFunc("GET /api/v1/incidents", s.listIncidents)
+	mux.HandleFunc("GET /api/v1/incidents/{id}", s.getIncident)
+	mux.HandleFunc("POST /api/v1/incidents/{id}/assets", s.registerAsset)
+	mux.HandleFunc("GET /api/v1/incidents/{id}/assets", s.listIncidentAssets)
+	mux.HandleFunc("GET /api/v1/incidents/{id}/readiness", s.getReadiness)
+	mux.HandleFunc("POST /api/v1/incidents/{id}/detect", s.createJobHandler("DETECTION"))
+	mux.HandleFunc("POST /api/v1/incidents/{id}/hindcast", s.createJobHandler("HINDCAST"))
+	mux.HandleFunc("POST /api/v1/incidents/{id}/ais/reconstruct", s.createJobHandler("AIS_RECONSTRUCTION"))
+	mux.HandleFunc("POST /api/v1/incidents/{id}/attribute", s.createJobHandler("ATTRIBUTION"))
+	mux.HandleFunc("POST /api/v1/incidents/{id}/forecast", s.createJobHandler("FORECAST"))
+	mux.HandleFunc("POST /api/v1/incidents/{id}/report", s.createJobHandler("REPORT"))
+	mux.HandleFunc("GET /api/v1/jobs/{jobId}", s.getJob)
+	mux.HandleFunc("GET /api/v1/incidents/{id}/jobs", s.listJobs)
+	mux.HandleFunc("GET /api/v1/incidents/{id}/investigation", s.getInvestigation)
+
 
 	var h http.Handler = mux
 	h = middleware.JSONOnly(h)
