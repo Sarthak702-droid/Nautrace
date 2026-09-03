@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from datetime import datetime
-from typing import Literal
+from typing import Literal, Any
 
 from pydantic import BaseModel, Field, model_validator
 
@@ -223,3 +223,28 @@ class AnalysisResponse(BaseModel):
     candidates: list[VesselCandidate]
     decision: Decision
     provenance: Provenance
+
+
+# --- Detection Models for Milestone 2 ---
+class DetectionRequest(BaseModel):
+    center_lat: float = Field(ge=-90.0, le=90.0)
+    center_lon: float = Field(ge=-180.0, le=180.0)
+    pixel_size_m: float = Field(default=10.0, gt=0.0)
+    detection_time: datetime
+    source_product_id: str = Field(min_length=1)
+    image_base64: str | None = None
+    threshold: float = Field(default=0.5, ge=0.0, le=1.0)
+
+    @model_validator(mode="after")
+    def validate_det_time(self) -> "DetectionRequest":
+        if self.detection_time.tzinfo is None:
+            raise ValueError("detection_time must be timezone-aware")
+        return self
+
+
+class DetectionResponse(BaseModel):
+    spill_observation: SpillObservation
+    centroid: GeoPoint
+    slick_area_km2: float
+    look_alike_risk: str
+    model_info: dict[str, Any]
