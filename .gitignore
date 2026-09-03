@@ -33,3 +33,6 @@ secrets/
 node_modules/
 scratch/
 update_server.py
+
+ml/data/
+ml/weights/
