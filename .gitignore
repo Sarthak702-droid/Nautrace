@@ -1,3 +1,6 @@
+<<<<<<< HEAD
+node_modules/
+=======
 # Python
 __pycache__/
 *.py[cod]
@@ -33,3 +36,4 @@ secrets/
 node_modules/
 scratch/
 update_server.py
+>>>>>>> 4cefdf7b8d0f3500a62218b1636c1669414ecdf6
