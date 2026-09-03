@@ -22,7 +22,7 @@ func TestHealthz(t *testing.T) {
 
 	client := intelligence.New(backend.URL, 2*time.Second, 0, 0)
 	logger := slog.New(slog.NewTextHandler(io.Discard, nil))
-	server := New(logger, client, 1, 1<<20)
+	server := New(logger, client, nil, 1, 1<<20)
 	req := httptest.NewRequest(http.MethodGet, "/healthz", nil)
 	resp := httptest.NewRecorder()
 	server.Handler().ServeHTTP(resp, req)
@@ -40,7 +40,7 @@ func TestAnalyzeRejectsInvalidJSON(t *testing.T) {
 
 	client := intelligence.New(backend.URL, 2*time.Second, 0, 0)
 	logger := slog.New(slog.NewTextHandler(io.Discard, nil))
-	server := New(logger, client, 1, 1<<20)
+	server := New(logger, client, nil, 1, 1<<20)
 	req := httptest.NewRequest(http.MethodPost, "/api/v1/analyze", strings.NewReader("{"))
 	req.Header.Set("Content-Type", "application/json")
 	resp := httptest.NewRecorder()

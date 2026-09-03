@@ -30,3 +30,6 @@ secrets/
 .DS_Store
 .vscode/
 .idea/
+node_modules/
+scratch/
+update_server.py
