@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
   "name": "nautrace-web",
   "version": "1.0.0",
   "private": true,
@@ -27,5 +28,37 @@
   },
   "optionalDependencies": {
     "@next/swc-win32-x64-msvc": "^16.3.4"
+=======
+  "name": "nautrace",
+  "version": "1.0.0",
+  "description": "This repository is the backend-first implementation of the NAUTRACE maritime oil-spill investigation concept for SIH 2026 PS 26143.",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs",
+    "example": "examples"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sarthak702-droid/Nautrace.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Sarthak702-droid/Nautrace/issues"
+  },
+  "homepage": "https://github.com/Sarthak702-droid/Nautrace#readme",
+  "dependencies": {
+    "@google/genai": "^2.21.0",
+    "convex": "^1.45.0"
+  },
+  "devDependencies": {
+    "@types/node": "^26.4.1",
+    "typescript": "^7.0.2"
+>>>>>>> 4cefdf7b8d0f3500a62218b1636c1669414ecdf6
   }
 }

@@ -1,1 +1,39 @@
+<<<<<<< HEAD
 node_modules/
+=======
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Data, model artefacts, and generated reports
+data/raw/
+data/interim/
+data/processed/
+models/
+outputs/
+reports/generated/
+*.geojson
+*.tif
+*.tiff
+*.nc
+*.parquet
+
+# Secrets and local configuration
+.env
+.env.*
+!.env.example
+secrets/
+
+# Editors and OS
+.DS_Store
+.vscode/
+.idea/
+node_modules/
+scratch/
+update_server.py
+>>>>>>> 4cefdf7b8d0f3500a62218b1636c1669414ecdf6
