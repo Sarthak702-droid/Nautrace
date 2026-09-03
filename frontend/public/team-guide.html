@@ -1,0 +1,821 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NAUTRACE — Team Handbook & Complete Project Guide (Hinglish)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #070d18;
+      --card-bg: #0e172a;
+      --card-hover: #14223d;
+      --elevated: #1a2a4a;
+      --border: rgba(255, 255, 255, 0.1);
+      --cyan: #06b6d4;
+      --amber: #f59e0b;
+      --purple: #a855f7;
+      --red: #ef4444;
+      --emerald: #10b981;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-subtle: #64748b;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', -apple-system, sans-serif;
+      line-height: 1.7;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .mono { font-family: 'JetBrains Mono', monospace; }
+
+    /* Sticky Action Bar */
+    .action-bar {
+      position: sticky;
+      top: 0;
+      background: rgba(7, 13, 24, 0.95);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 28px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 1000;
+    }
+    .brand-title {
+      font-size: 15px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .badge-sih {
+      background: rgba(6, 182, 212, 0.15);
+      border: 1px solid var(--cyan);
+      color: var(--cyan);
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+    .action-buttons {
+      display: flex;
+      gap: 10px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .btn-print {
+      background: linear-gradient(135deg, #06b6d4 0%, #0284c7 100%);
+      color: #fff;
+      border: none;
+      box-shadow: 0 2px 10px rgba(6, 182, 212, 0.35);
+    }
+    .btn-print:hover { transform: translateY(-1px); box-shadow: 0 4px 14px rgba(6, 182, 212, 0.5); }
+    .btn-back {
+      background: var(--elevated);
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-back:hover { background: var(--card-hover); border-color: var(--cyan); }
+
+    /* Container */
+    .document-body {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 40px 24px 100px;
+    }
+
+    /* Document Cover */
+    .cover-card {
+      background: linear-gradient(135deg, #0f172a 0%, #091322 100%);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 48px 36px;
+      text-align: center;
+      margin-bottom: 40px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+      position: relative;
+      overflow: hidden;
+    }
+    .cover-card::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at 50% 20%, rgba(6, 182, 212, 0.12), transparent 60%);
+      pointer-events: none;
+    }
+    .cover-tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      color: var(--cyan);
+      background: rgba(6, 182, 212, 0.1);
+      border: 1px solid rgba(6, 182, 212, 0.3);
+      padding: 4px 14px;
+      border-radius: 20px;
+      margin-bottom: 16px;
+      text-transform: uppercase;
+    }
+    .cover-title {
+      font-size: 34px;
+      font-weight: 900;
+      line-height: 1.25;
+      margin-bottom: 12px;
+      color: #ffffff;
+    }
+    .cover-subtitle {
+      font-size: 17px;
+      color: var(--amber);
+      font-weight: 600;
+      margin-bottom: 20px;
+    }
+    .cover-meta {
+      font-size: 13px;
+      color: var(--text-muted);
+      max-width: 650px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    /* Chapter Headings */
+    .chapter-heading {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 48px 0 20px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid rgba(6, 182, 212, 0.3);
+    }
+    .ch-num {
+      background: var(--cyan);
+      color: #000;
+      font-weight: 900;
+      font-size: 13px;
+      padding: 4px 10px;
+      border-radius: 6px;
+    }
+    .ch-title {
+      font-size: 22px;
+      font-weight: 800;
+      color: #fff;
+    }
+
+    /* Cards */
+    .section-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 26px;
+      margin-bottom: 24px;
+    }
+    .section-title {
+      font-size: 18px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    /* Story Box */
+    .story-box {
+      background: rgba(245, 158, 11, 0.08);
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      border-radius: 10px;
+      padding: 20px;
+      margin: 20px 0;
+      font-size: 14px;
+      color: #fef08a;
+      line-height: 1.7;
+    }
+    .story-box strong { color: #fff; }
+
+    /* Concept Callouts */
+    .callout {
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin: 16px 0;
+      font-size: 13.5px;
+      border-left: 4px solid;
+    }
+    .callout.info {
+      background: rgba(6, 182, 212, 0.08);
+      border-color: var(--cyan);
+      color: #cffafe;
+    }
+    .callout.warning {
+      background: rgba(239, 68, 68, 0.08);
+      border-color: var(--red);
+      color: #fecaca;
+    }
+    .callout.success {
+      background: rgba(16, 185, 129, 0.08);
+      border-color: var(--emerald);
+      color: #d1fae5;
+    }
+
+    /* Grid boxes */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+      margin: 20px 0;
+    }
+    .grid-item {
+      background: var(--elevated);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 18px;
+    }
+    .grid-item-title {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #fff;
+    }
+    .grid-item-desc {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* Pipeline Steps */
+    .step-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin: 20px 0;
+    }
+    .step-card {
+      display: flex;
+      gap: 16px;
+      background: var(--elevated);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px;
+    }
+    .step-badge {
+      width: 28px;
+      height: 28px;
+      background: var(--cyan);
+      color: #000;
+      font-weight: 800;
+      font-size: 13px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .step-name {
+      font-size: 14px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+    .step-text {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* Tables */
+    .summary-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      font-size: 13px;
+    }
+    .summary-table th {
+      background: var(--elevated);
+      color: var(--cyan);
+      text-align: left;
+      padding: 12px 14px;
+      border-bottom: 2px solid rgba(6, 182, 212, 0.4);
+      font-weight: 700;
+    }
+    .summary-table td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border);
+      color: var(--text-muted);
+    }
+    .summary-table tr:hover td {
+      background: rgba(255, 255, 255, 0.02);
+      color: #fff;
+    }
+
+    /* Jury Script Boxes */
+    .jury-box {
+      background: #050b14;
+      border: 1px solid rgba(245, 158, 11, 0.3);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin-bottom: 14px;
+      border-left: 4px solid var(--amber);
+    }
+    .jury-time {
+      font-size: 11px;
+      font-weight: 800;
+      color: var(--amber);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 4px;
+    }
+    .jury-text {
+      font-size: 13.5px;
+      color: #bae6fd;
+      font-style: italic;
+      line-height: 1.6;
+    }
+
+    /* Print Specific Styling (Clean Paper PDF) */
+    @media print {
+      body {
+        background: #ffffff !important;
+        color: #111827 !important;
+        font-size: 11pt;
+      }
+      .action-bar { display: none !important; }
+      .document-body {
+        max-width: 100% !important;
+        padding: 0 !important;
+      }
+      .cover-card {
+        background: #f8fafc !important;
+        border: 2px solid #0284c7 !important;
+        box-shadow: none !important;
+        page-break-after: always;
+        padding: 60px 40px !important;
+      }
+      .cover-title { color: #0f172a !important; }
+      .cover-subtitle { color: #0369a1 !important; }
+      .section-card {
+        background: #ffffff !important;
+        border: 1px solid #e2e8f0 !important;
+        box-shadow: none !important;
+        page-break-inside: avoid;
+        margin-bottom: 20px !important;
+      }
+      .section-title { color: #0f172a !important; }
+      .story-box {
+        background: #fefce8 !important;
+        border: 1px solid #facc15 !important;
+        color: #713f12 !important;
+      }
+      .callout.info {
+        background: #f0fdf4 !important;
+        border-color: #16a34a !important;
+        color: #14532d !important;
+      }
+      .callout.warning {
+        background: #fef2f2 !important;
+        border-color: #dc2626 !important;
+        color: #7f1d1d !important;
+      }
+      .grid-item {
+        background: #f8fafc !important;
+        border: 1px solid #e2e8f0 !important;
+      }
+      .grid-item-title { color: #0f172a !important; }
+      .grid-item-desc { color: #475569 !important; }
+      .step-card {
+        background: #f8fafc !important;
+        border: 1px solid #e2e8f0 !important;
+      }
+      .step-name { color: #0f172a !important; }
+      .step-text { color: #475569 !important; }
+      .summary-table th {
+        background: #f1f5f9 !important;
+        color: #0f172a !important;
+        border-bottom: 2px solid #cbd5e1 !important;
+      }
+      .summary-table td {
+        border-bottom: 1px solid #e2e8f0 !important;
+        color: #334155 !important;
+      }
+      .jury-box {
+        background: #f8fafc !important;
+        border: 1px solid #cbd5e1 !important;
+        border-left: 4px solid #0284c7 !important;
+      }
+      .jury-time { color: #0369a1 !important; }
+      .jury-text { color: #1e293b !important; }
+      .chapter-heading {
+        page-break-before: always;
+        border-bottom: 2px solid #0284c7 !important;
+      }
+      .ch-num { background: #0284c7 !important; color: #fff !important; }
+      .ch-title { color: #0f172a !important; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sticky Top Bar -->
+  <div class="action-bar">
+    <div class="brand-title">
+      <span class="badge-sih">SIH 2026</span>
+      <span>NAUTRACE Team Handbook</span>
+      <span style="font-size: 11px; color: var(--text-muted); font-weight: 500;">(Non-Technical Hindi Guide)</span>
+    </div>
+    <div class="action-buttons">
+      <a href="/guide.html" class="btn btn-back">Technical Guide</a>
+      <a href="/" class="btn btn-back">Open Live UI</a>
+      <a href="/NAUTRACE_Team_Handbook.pdf" download="NAUTRACE_Team_Handbook.pdf" class="btn btn-print" style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">
+        <span>📥 Download PDF</span>
+      </a>
+      <button onclick="window.print()" class="btn btn-print">
+        <span>📄 Print / Save PDF</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="document-body">
+
+    <!-- Cover Page -->
+    <div class="cover-card">
+      <div class="cover-tag">NTRO Problem Statement 26143</div>
+      <h1 class="cover-title">NAUTRACE Project Handbook</h1>
+      <div class="cover-subtitle">Samundar Ka CID & Forensic Detective — Poore Project Ko Aasan Bhasha Me Samjho</div>
+      <p class="cover-meta">
+        Yeh document khas taur par hamari poori team ke liye banaya gaya hai taaki har ek member (bina kisi marine ya complex physics background ke bhi) project ke har pehlu ko dil se samajh sake aur judges ke saamne confident hokar bol sake.
+      </p>
+    </div>
+
+    <!-- Chapter 1 -->
+    <div class="chapter-heading">
+      <span class="ch-num">1</span>
+      <h2 class="ch-title">Pehle Ek Real-Life Kahani Samjho (Samundar Ka Hit-and-Run)</h2>
+    </div>
+
+    <div class="section-card">
+      <div class="story-box">
+        <strong>🌊 Nadi Aur Pul Ki Kahani:</strong><br><br>
+        Maan lijiye ek behne wali tez nadi (river) hai.<br>
+        Ek aadmi pul (bridge) par khada hota hai aur nadi me <strong>ek tel ka dabba fenk kar wahan se bhaag jata hai</strong>.<br><br>
+        3 ghante baad police wahan aati hai aur dekhti hai ki pul ke <strong>10 kilometer aage</strong> nadi me tel beh raha hai.<br>
+        Aur theek us tel ke bagal me ek <strong>innocent naav wala</strong> machhli pakad raha hai.<br><br>
+        Agar police us machhli pakadne wale ko pakad kar jail me daal de ki <em>"Tel ke paas to tum hi khade the, tumne hi fenka hai!"</em> — to yeh <strong>sarasar galat aur be-insaafi</strong> hogi! Kyunki tel to 3 ghante pehle 10 kilometer peeche pul se fenka gaya tha!
+      </div>
+
+      <div class="section-title">🛑 Yahi Sabse Badi Problem Hoti Hai Samundar Me:</div>
+      <p style="color: var(--text-muted); font-size: 14px; margin-bottom: 16px;">
+        Bade-bade cargo ships aur crude oil tankers apna engine ka ganda oily kachra (bilge waste) samundar me chupke se dump kar dete hain port cleaning ke laakhon rupaye bachane ke liye.
+        Jab satellite space se photo leta hai, tab tak <strong>hawa aur leharon ke bahav se wo tel 30 se 50 kilometer aage beh chuka hota hai</strong>.
+      </p>
+
+      <div class="callout info">
+        <strong>🔍 Nautrace Ka Asli Kaam:</strong><br>
+        Nautrace samundar ka ek <strong>Digital Forensic Detective (CID / CBI)</strong> hai. Yeh satellite ki photo dekh kar time ko <strong>rewind (ulta)</strong> chalata hai, pata lagata hai ki tel kahan se behna shuru hua tha, aur us time par wahan se kaunsa jahaaz guzar raha tha.
+      </div>
+    </div>
+
+    <!-- Chapter 2 -->
+    <div class="chapter-heading">
+      <span class="ch-num">2</span>
+      <h2 class="ch-title">Guide Page Ke 6 Tabs Ka Poora Khulasa</h2>
+    </div>
+
+    <!-- Tab 1 Explanation -->
+    <div class="section-card">
+      <div class="section-title">
+        <span style="color: var(--cyan);">Tab 1:</span> The Problem We Solve (Asli Dikkat Kya Hai?)
+      </div>
+      <div class="grid-2">
+        <div class="grid-item" style="border-color: rgba(239, 68, 68, 0.3);">
+          <div class="grid-item-title" style="color: var(--red);">❌ Baaki Log Kya Galti Karte Hain:</div>
+          <div class="grid-item-desc">
+            College aur hackathons me aam taur par teams bas ek AI banati hain jo photo me tel pehchanta hai, aur uske theek bagal wale jahaaz ko mujrim bol deta hai. Isse be-kasoor ships par jhootha case ban jata hai.
+          </div>
+        </div>
+        <div class="grid-item" style="border-color: rgba(6, 182, 212, 0.4);">
+          <div class="grid-item-title" style="color: var(--cyan);">✅ Nautrace Kya Alag Karta Hai:</div>
+          <div class="grid-item-desc">
+            Hum physics aur leharon ke bahav ke hisaab se tel ko <strong>ulta chala kar dekhte hain (Hindcasting)</strong> ki 2 se 6 ghante pehle wo tel kahan tha. Isse true polluter pakda jata hai.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab 2 Explanation -->
+    <div class="section-card">
+      <div class="section-title">
+        <span style="color: var(--cyan);">Tab 2:</span> End-to-End Pipeline (Aasman Se Courtroom Tak Ka Safar)
+      </div>
+      <p style="color: var(--text-muted); font-size: 13.5px; margin-bottom: 16px;">
+        Hamara pura system 8 aasan steps me kaam karta hai:
+      </p>
+
+      <div class="step-list">
+        <div class="step-card">
+          <div class="step-badge">1</div>
+          <div>
+            <div class="step-name">Sentinel-1 Satellite Photo (Radar Camera)</div>
+            <div class="step-text">Yeh aisi radar satellite hai jo badal (clouds) aur raat ke ghan-ghor andhere me bhi samundar ki saaf photo le sakti hai.</div>
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="step-badge">2</div>
+          <div>
+            <div class="step-name">Asli Tel Hai Ya Dhokha? (Look-Alike Filter)</div>
+            <div class="step-text">Har kaala dhabba tel nahi hota! Hawa band hone par samundar ka paani mirror ki tarah shant ho jata hai aur kaala dikhta hai. System pehle hawa check karta hai ki kya sach me tel hai ya sirf shant paani.</div>
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="step-badge">3</div>
+          <div>
+            <div class="step-name">Hawa Aur Leharon Ki Raftaar (Metocean Data)</div>
+            <div class="step-text">Europe ke mausam aur ocean models se data milta hai ki paani aur hawa kis disha me beh rahe the.</div>
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="step-badge">4</div>
+          <div>
+            <div class="step-name">Tel Ko Ulta Chalana (Hindcast Simulation)</div>
+            <div class="step-text">Hum 500 chote-chote tel ke kankaron ko computer me ulta daudate hain ki wo kahan se nikal kar aaye the.</div>
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="step-badge">5</div>
+          <div>
+            <div class="step-name">Crime Zone Ka Anda-aakar Ghera (Origin Ellipse)</div>
+            <div class="step-text">Jahan se tel nikla, wahan hum 50% core zone (Yellow) aur 90% outer search zone (Cyan) ka ghera banate hain.</div>
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="step-badge">6</div>
+          <div>
+            <div class="step-name">Jahaazon Ki GPS List (AIS Trajectory)</div>
+            <div class="step-text">Samundar ke sabhi jahaazon ke GPS data ko clean karte hain aur dekhte hain ki us time ghere ke andar kaun tha.</div>
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="step-badge">7</div>
+          <div>
+            <div class="step-name">Kaunsa Jahaaz Mujrim Hai? (Scoring Engine)</div>
+            <div class="step-text">Maths calculate karta hai ki kis jahaaz ka track aur time match hua. Agar sab door the, to Unknown source jeet jata hai.</div>
+          </div>
+        </div>
+
+        <div class="step-card">
+          <div class="step-badge">8</div>
+          <div>
+            <div class="step-name">Court-Ready Forensic Report (Convex AI)</div>
+            <div class="step-text">Judge ke saamne pesh karne ke liye SHA-256 digital signature aur proof ke saath formal report tayyar hoti hai.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tab 3 Explanation -->
+    <div class="section-card">
+      <div class="section-title">
+        <span style="color: var(--cyan);">Tab 3:</span> Mathematics & Physics (Bina Darr Ke Samjho)
+      </div>
+      <p style="color: var(--text-muted); font-size: 13.5px; margin-bottom: 16px;">
+        UI me jo mathematical equations dikhte hain, unka aasan matlab yeh hai:
+      </p>
+
+      <div class="grid-2">
+        <div class="grid-item">
+          <div class="grid-item-title" style="color: var(--amber);">1. Particle Motion Equation (dx/dt)</div>
+          <div class="grid-item-desc">
+            Tel ki kul raftaar = (Samundar ka paani) + (Leharon ka dhakka) + (Hawa ka 3% dhakka). Tel surface par sail (pal) ki tarah hawa se dhakelta hai.
+          </div>
+        </div>
+
+        <div class="grid-item">
+          <div class="grid-item-title" style="color: var(--purple);">2. Mahalanobis Ellipse (Ghera Anda-aakar Kyun?)</div>
+          <div class="grid-item-desc">
+            Circle kyun nahi? Kyunki hawa aur lehar ek specific disha me beh rahi hoti hain. Isliye shaq ka daayra gol nahi, balki leharon ki disha me lamba (oval) banta hai.
+          </div>
+        </div>
+      </div>
+
+      <div class="callout success">
+        <strong>🎛️ Interactive Simulator Ka Khel:</strong><br>
+        Aap guide page par slider hila kar khud dekh sakte hain:<br>
+        • Agar jahaaz <strong>1.3 km paas</strong> tha: Score <strong>0.79</strong> (Top Suspect!).<br>
+        • Agar jahaaz <strong>10 km door</strong> tha: Score gir kar <strong>0.15</strong> ho jayega aur system bolega: <em>"Yeh jahaaz innocent hai, shaq Unknown Vessel par hai!"</em>
+      </div>
+    </div>
+
+    <!-- Tab 4 Explanation -->
+    <div class="section-card">
+      <div class="section-title">
+        <span style="color: var(--cyan);">Tab 4:</span> 7 Explainability Scores (CBI Ki 7 Kasam)
+      </div>
+      <p style="color: var(--text-muted); font-size: 13.5px; margin-bottom: 16px;">
+        Jab judge poochta hai ki <em>"Aapne is Tanker ko hi suspect kyun mana?"</em>, to Nautrace yeh 7 sub-scores dikhata hai:
+      </p>
+
+      <table class="summary-table">
+        <thead>
+          <tr>
+            <th>Score Name</th>
+            <th>Asli Matlab</th>
+            <th>Tanker Ka Score</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>1. Distance (Spatial)</strong></td>
+            <td>Kya jahaaz us point ke kitna paas se guzra?</td>
+            <td><strong style="color: var(--cyan);">92/100</strong> (Sirf 1.3 km door)</td>
+          </tr>
+          <tr>
+            <td><strong>2. Time (Temporal)</strong></td>
+            <td>Kya usi ghante me guzra jab tel dump hua tha?</td>
+            <td><strong style="color: var(--cyan);">86/100</strong> (Sirf 11 min ka farq)</td>
+          </tr>
+          <tr>
+            <td><strong>3. Heading (Disha)</strong></td>
+            <td>Kya jahaaz usi disha me ja raha tha jis line me tel baha?</td>
+            <td><strong style="color: var(--cyan);">73/100</strong> (Almost parallel)</td>
+          </tr>
+          <tr>
+            <td><strong>4. Envelope Overlap</strong></td>
+            <td>Kya jahaaz ne 50% ya 90% shaq wale ghere ko cross kiya?</td>
+            <td><strong style="color: var(--cyan);">90/100</strong> (Ghere ke beech se nikla)</td>
+          </tr>
+          <tr>
+            <td><strong>5. GPS Quality</strong></td>
+            <td>Kya jahaaz ka GPS continuous tha ya beech me band hua?</td>
+            <td><strong style="color: var(--cyan);">98/100</strong> (Bilkul continuous)</td>
+          </tr>
+          <tr>
+            <td><strong>6. Speed Change</strong></td>
+            <td>Kya achanak jahaaz slow hua tha? (Dump karte waqt speed ghatate hain)</td>
+            <td><strong style="color: var(--amber);">40/100</strong> (Thoda speed drop tha)</td>
+          </tr>
+          <tr>
+            <td><strong>7. Stability</strong></td>
+            <td>Hawa-paani 15% hilane par bhi kya yahi jahaaz #1 rehta hai?</td>
+            <td><strong style="color: var(--cyan);">88/100</strong> (Very stable)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Tab 5 Explanation -->
+    <div class="chapter-heading">
+      <span class="ch-num">3</span>
+      <h2 class="ch-title">Real-World Issues & Hard Truths (Asliyat Me Kahan Faste Hain?)</h2>
+    </div>
+
+    <div class="section-card">
+      <p style="color: var(--text-muted); font-size: 13.5px; margin-bottom: 20px;">
+        Yeh hamare project ka sabse honest hissa hai. Judges ko honesty bahut pasand aati hai:
+      </p>
+
+      <div class="grid-2">
+        <div class="grid-item">
+          <div class="grid-item-title" style="color: var(--amber);">1. Hawa Kam Hona (< 3 m/s)</div>
+          <div class="grid-item-desc">
+            Jab hawa band hoti hai, to paani shant hokar kaala dikhta hai. System weather data se check karta hai, agar hawa 3 m/s se kam ho to pehle hi warn kar deta hai ki <em>"Dhokha ho sakta hai!"</em>.
+          </div>
+        </div>
+
+        <div class="grid-item">
+          <div class="grid-item-title" style="color: var(--purple);">2. Exact Time Kisi Ko Nahi Pata</div>
+          <div class="grid-item-desc">
+            Satellite to bas photo leti hai. Tel 2 ghante pehle gira ya 6 ghante pehle, koi nahi jaanta. Isliye hum ek single line nahi banate, balki 2 se 6 ghante ka pura time-window check karte hain.
+          </div>
+        </div>
+      </div>
+
+      <div class="callout warning">
+        <strong>🚨 Masterstroke: Chalu Captains Aur GPS Band Karna (Dark Vessels):</strong><br>
+        Kayi baar tel dump karne wale jahaaz apna GPS (AIS) 15–20 minute ke liye switch off kar dete hain.<br>
+        Agar koi registered ship match nahi hota, to Nautrace be-kasoor par ilzaam nahi lagata! Wo bolta hai: <strong>"UNKNOWN / Non-AIS Source (0.86)"</strong>.<br>
+        Yeh international maritime law (<strong>IMO Resolution A.1106</strong>) ka niyam hai.
+      </div>
+    </div>
+
+    <!-- Chapter 4 -->
+    <div class="chapter-heading">
+      <span class="ch-num">4</span>
+      <h2 class="ch-title">5-Minute SIH Jury Playbook (Judges Ke Saamne Kya Bolna Hai?)</h2>
+    </div>
+
+    <div class="section-card">
+      <p style="color: var(--text-muted); font-size: 13.5px; margin-bottom: 20px;">
+        Jab SIH ke judges screen par Nautrace dekhenge, to hamari team ko yeh 5 steps bolne hain:
+      </p>
+
+      <div class="jury-box">
+        <div class="jury-time">Minute 1: Trap Samjhao (Problem Statement)</div>
+        <div class="jury-text">
+          "Respected Jury: Baaki log satellite photo me tel dekh kar uske sabse kareeb wale jahaaz ko mujrim bol dete hain. Par samundar me tel hawa aur leharon se ghanton me 40 km beh jata hai. Isliye paas wala jahaaz innocent hota hai. Humne ek real forensic pipeline banayi hai."
+        </div>
+      </div>
+
+      <div class="jury-box">
+        <div class="jury-time">Minute 2: Physics Hindcasting Dikhao</div>
+        <div class="jury-text">
+          "Screen par dekhiye: Humne 500 tel ke kankaron ko RK4 physics aur Copernicus ocean currents ke zariye ulta rewind kiya hai, jisse 50% aur 90% shaq ka ghera nikalta hai."
+        </div>
+      </div>
+
+      <div class="jury-box">
+        <div class="jury-time">Minute 3: Timeline Scrubber Chalao</div>
+        <div class="jury-text">
+          "Jaise hi hum scrubber ko 02:50 UTC par le jaate hain, aap dekhenge ki Container Ship to abhi paas aaya hai, par Tanker 2 ghante pehle theek usi ghere se guzra tha jahan se tel nikla tha."
+        </div>
+      </div>
+
+      <div class="jury-box">
+        <div class="jury-time">Minute 4: Unknown Hypothesis Ka Jadoo</div>
+        <div class="jury-text">
+          "Humne IMO Resolution A.1106 follow kiya hai. Agar jahaaz ne GPS band kiya tha, to humara model kisi innocent par ilzaam nahi lagata, Unknown source ko rank #1 deta hai."
+        </div>
+      </div>
+
+      <div class="jury-box">
+        <div class="jury-time">Minute 5: Court Dossier Export Karo</div>
+        <div class="jury-text">
+          "Hum [Generate AI Brief] dabate hain. Convex AI court me pesh karne layak formal English report banata hai, jisme SHA-256 digital signatures lagte hain jo courtroom me legally valid hain."
+        </div>
+      </div>
+    </div>
+
+    <!-- Chapter 5 -->
+    <div class="chapter-heading">
+      <span class="ch-num">5</span>
+      <h2 class="ch-title">Quick Summary Table (Aapke Yaad Rakhne Ke Liye)</h2>
+    </div>
+
+    <div class="section-card">
+      <table class="summary-table">
+        <thead>
+          <tr>
+            <th>Technical Naam</th>
+            <th>Bilkul Aasan Matlab</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong style="color: var(--cyan);">Sentinel-1 SAR</strong></td>
+            <td>Aasman ka radar camera jo badal aur raat ke andhere me bhi tel pakadta hai.</td>
+          </tr>
+          <tr>
+            <td><strong style="color: var(--cyan);">CMEMS SMOC</strong></td>
+            <td>Samundar ke paani ke bahaav aur leharon ka government data.</td>
+          </tr>
+          <tr>
+            <td><strong style="color: var(--cyan);">RK4 Hindcast</strong></td>
+            <td>Tel ke bahav ko rewind (ulta) karne wali physics calculation.</td>
+          </tr>
+          <tr>
+            <td><strong style="color: var(--cyan);">Mahalanobis Ellipse</strong></td>
+            <td>Wo anda-aakar ghera jahan tel dump hone ka sabse zyada shaq hai.</td>
+          </tr>
+          <tr>
+            <td><strong style="color: var(--cyan);">AIS Data</strong></td>
+            <td>Samundari jahaazon ki GPS location aur raftaar ki history.</td>
+          </tr>
+          <tr>
+            <td><strong style="color: var(--cyan);">Unknown Hypothesis</strong></td>
+            <td>GPS band karke tel dump karne wale chalu jahaazon ka safety check.</td>
+          </tr>
+          <tr>
+            <td><strong style="color: var(--cyan);">Convex AI</strong></td>
+            <td>Court me pesh karne layak formal English forensic report banane wala engine.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+</body>
+</html>

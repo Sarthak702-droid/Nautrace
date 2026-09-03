@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NAUTRACE — Complete Forensic Architecture & Scientific Truth Dossier</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #050b14;
+      --bg-card: #0c1527;
+      --bg-card-hover: #12203a;
+      --bg-elevated: #162644;
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-accent: rgba(6, 182, 212, 0.4);
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-subtle: #64748b;
+      --cyan: #06b6d4;
+      --cyan-glow: rgba(6, 182, 212, 0.25);
+      --amber: #f59e0b;
+      --purple: #a855f7;
+      --red: #ef4444;
+      --emerald: #10b981;
+      --blue: #3b82f6;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      font-family: 'Inter', -apple-system, sans-serif;
+      line-height: 1.6;
+      padding: 0;
+    }
+
+    .mono { font-family: 'JetBrains Mono', monospace; }
+
+    /* Top Banner */
+    .top-nav {
+      position: sticky;
+      top: 0;
+      background: rgba(5, 11, 20, 0.9);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 14px 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 100;
+    }
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .brand-badge {
+      background: rgba(6, 182, 212, 0.15);
+      border: 1px solid var(--cyan);
+      color: var(--cyan);
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+    }
+    .brand-title {
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+    }
+    .nav-links {
+      display: flex;
+      gap: 20px;
+    }
+    .nav-link {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+    .nav-link:hover, .nav-link.active { color: var(--cyan); }
+    .btn-app {
+      background: linear-gradient(135deg, #06b6d4 0%, #0284c7 100%);
+      color: #fff;
+      text-decoration: none;
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      box-shadow: 0 2px 10px rgba(6, 182, 212, 0.3);
+    }
+
+    /* Container */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+
+    /* Hero Section */
+    .hero {
+      text-align: center;
+      padding: 50px 0 40px;
+      position: relative;
+    }
+    .hero-pre {
+      display: inline-block;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--cyan);
+      background: rgba(6, 182, 212, 0.1);
+      border: 1px solid rgba(6, 182, 212, 0.25);
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-bottom: 16px;
+      font-weight: 600;
+    }
+    .hero-title {
+      font-size: 40px;
+      font-weight: 800;
+      line-height: 1.2;
+      margin-bottom: 16px;
+      background: linear-gradient(135deg, #ffffff 40%, #94a3b8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero-subtitle {
+      font-size: 17px;
+      color: var(--text-muted);
+      max-width: 820px;
+      margin: 0 auto 30px;
+      line-height: 1.6;
+    }
+    .hero-stats {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      flex-wrap: wrap;
+    }
+    .stat-pill {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 12px 20px;
+      text-align: left;
+    }
+    .stat-pill-val {
+      font-size: 18px;
+      font-weight: 700;
+      color: #fff;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .stat-pill-lbl {
+      font-size: 11px;
+      color: var(--text-subtle);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* Interactive Tab Bar */
+    .tab-bar {
+      display: flex;
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 10px;
+      padding: 6px;
+      gap: 6px;
+      margin: 40px 0;
+      overflow-x: auto;
+    }
+    .tab-btn {
+      flex: 1;
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      padding: 12px 16px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+      text-align: center;
+    }
+    .tab-btn:hover {
+      color: var(--text-main);
+      background: rgba(255, 255, 255, 0.04);
+    }
+    .tab-btn.active {
+      background: var(--bg-elevated);
+      color: var(--cyan);
+      border: 1px solid rgba(6, 182, 212, 0.3);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    /* Sections */
+    .tab-content { display: none; }
+    .tab-content.active { display: block; animation: fadeIn 0.3s ease; }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: 12px;
+      padding: 28px;
+      margin-bottom: 24px;
+    }
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+    .card-badge {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 4px;
+      text-transform: uppercase;
+    }
+    .card-badge.cyan { background: rgba(6, 182, 212, 0.15); color: var(--cyan); }
+    .card-badge.amber { background: rgba(245, 158, 11, 0.15); color: var(--amber); }
+    .card-badge.purple { background: rgba(168, 85, 247, 0.15); color: var(--purple); }
+    .card-badge.red { background: rgba(239, 68, 68, 0.15); color: var(--red); }
+    .card-badge.emerald { background: rgba(16, 185, 129, 0.15); color: var(--emerald); }
+
+    .card-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: #fff;
+    }
+    .card-desc {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
+
+    /* Comparison Box */
+    .comparison-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin: 24px 0;
+    }
+    .compare-box {
+      border-radius: 10px;
+      padding: 20px;
+      border: 1px solid;
+    }
+    .compare-box.bad {
+      background: rgba(239, 68, 68, 0.05);
+      border-color: rgba(239, 68, 68, 0.25);
+    }
+    .compare-box.good {
+      background: rgba(6, 182, 212, 0.05);
+      border-color: rgba(6, 182, 212, 0.3);
+    }
+    .compare-title {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .compare-box.bad .compare-title { color: var(--red); }
+    .compare-box.good .compare-title { color: var(--cyan); }
+
+    .compare-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+    .compare-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+    }
+
+    /* Pipeline Diagram */
+    .pipeline-flow {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      margin: 24px 0;
+    }
+    .pipe-step {
+      display: flex;
+      align-items: center;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 16px 20px;
+      gap: 20px;
+      transition: transform 0.2s, border-color 0.2s;
+    }
+    .pipe-step:hover {
+      transform: translateX(4px);
+      border-color: var(--cyan);
+    }
+    .pipe-num {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: rgba(6, 182, 212, 0.15);
+      color: var(--cyan);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+    .pipe-content { flex: 1; }
+    .pipe-name {
+      font-size: 14px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 2px;
+    }
+    .pipe-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+    .pipe-source {
+      font-size: 11px;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--amber);
+      background: rgba(245, 158, 11, 0.1);
+      padding: 4px 8px;
+      border-radius: 4px;
+      white-space: nowrap;
+    }
+
+    /* Math Formula Block */
+    .math-card {
+      background: #040812;
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      padding: 20px;
+      margin: 16px 0;
+    }
+    .formula {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      color: #38bdf8;
+      background: rgba(6, 182, 212, 0.08);
+      padding: 12px 16px;
+      border-radius: 6px;
+      margin: 10px 0;
+      border-left: 3px solid var(--cyan);
+      overflow-x: auto;
+    }
+    .var-expl {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 10px;
+      margin-top: 12px;
+      font-size: 12px;
+    }
+    .var-item {
+      display: flex;
+      gap: 8px;
+      color: var(--text-muted);
+    }
+    .var-sym {
+      color: var(--cyan);
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 600;
+    }
+
+    /* Table Styles */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      font-size: 13px;
+    }
+    .data-table th {
+      text-align: left;
+      padding: 12px 14px;
+      background: var(--bg-elevated);
+      color: var(--cyan);
+      font-weight: 600;
+      border-bottom: 2px solid rgba(6, 182, 212, 0.3);
+    }
+    .data-table td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+    }
+    .data-table tr:hover td {
+      background: rgba(255, 255, 255, 0.02);
+      color: var(--text-main);
+    }
+
+    /* Interactive Calculator */
+    .sim-card {
+      background: linear-gradient(135deg, rgba(14, 23, 42, 0.9) 0%, rgba(10, 18, 33, 0.9) 100%);
+      border: 1px solid var(--border-accent);
+      border-radius: 12px;
+      padding: 24px;
+      margin: 24px 0;
+    }
+    .sim-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      align-items: center;
+    }
+    .sim-control {
+      margin-bottom: 14px;
+    }
+    .sim-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      margin-bottom: 6px;
+      color: var(--text-muted);
+    }
+    .sim-slider {
+      width: 100%;
+      height: 6px;
+      background: var(--bg-elevated);
+      border-radius: 3px;
+      outline: none;
+      -webkit-appearance: none;
+    }
+    .sim-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: var(--cyan);
+      cursor: pointer;
+    }
+    .sim-result-box {
+      background: #040814;
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 20px;
+      text-align: center;
+    }
+    .sim-score-big {
+      font-size: 42px;
+      font-weight: 800;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--cyan);
+    }
+    .sim-verdict {
+      font-size: 13px;
+      font-weight: 600;
+      margin-top: 6px;
+    }
+
+    /* Pitch Steps */
+    .pitch-timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    .pitch-step {
+      display: flex;
+      gap: 16px;
+      background: var(--bg-elevated);
+      border: 1px solid var(--border-subtle);
+      border-radius: 8px;
+      padding: 16px 20px;
+    }
+    .pitch-time {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--amber);
+      background: rgba(245, 158, 11, 0.1);
+      padding: 4px 8px;
+      border-radius: 4px;
+      height: fit-content;
+      white-space: nowrap;
+    }
+    .pitch-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+    .pitch-script {
+      font-size: 13px;
+      color: #bae6fd;
+      font-style: italic;
+      line-height: 1.5;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 768px) {
+      .comparison-grid, .sim-grid { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+      .hero-title { font-size: 28px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Header Navigation -->
+  <header class="top-nav">
+    <div class="brand-group">
+      <span class="brand-badge">SIH 26143</span>
+      <span class="brand-title">NAUTRACE</span>
+      <span style="font-size: 11px; color: var(--text-subtle);">Forensic Intelligence Guide</span>
+    </div>
+    <nav class="nav-links">
+      <a href="#core-problem" class="nav-link">The Problem</a>
+      <a href="#pipeline" class="nav-link">Architecture</a>
+      <a href="#mathematics" class="nav-link">Math & Physics</a>
+      <a href="#reality-check" class="nav-link">Failure Modes</a>
+      <a href="#pitch-playbook" class="nav-link">Jury Playbook</a>
+    </nav>
+    <a href="/" class="btn-app">Open Live Application</a>
+  </header>
+
+  <div class="container">
+
+    <!-- Hero -->
+    <section class="hero">
+      <div class="hero-pre">NTRO Problem Statement 26143 Solution Blueprint</div>
+      <h1 class="hero-title">Understanding the Science & Mathematics of NAUTRACE</h1>
+      <p class="hero-subtitle">
+        A completely transparent, scientifically honest architectural guide explaining how satellite SAR imagery, physical ocean hindcasting, and AIS trajectory reconstruction fuse into an auditable forensic decision-support platform.
+      </p>
+
+      <div class="hero-stats">
+        <div class="stat-pill">
+          <div class="stat-pill-val">Sentinel-1</div>
+          <div class="stat-pill-lbl">C-Band SAR Radar (5.405 GHz)</div>
+        </div>
+        <div class="stat-pill">
+          <div class="stat-pill-val">RK4 Ensemble</div>
+          <div class="stat-pill-lbl">Lagrangian Backward Hindcast</div>
+        </div>
+        <div class="stat-pill">
+          <div class="stat-pill-val">Mahalanobis</div>
+          <div class="stat-pill-lbl">50% & 90% Origin Envelopes</div>
+        </div>
+        <div class="stat-pill">
+          <div class="stat-pill-val">IMO A.1106(29)</div>
+          <div class="stat-pill-lbl">First-Class Unknown Hypothesis</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Navigation Tabs -->
+    <div class="tab-bar">
+      <button class="tab-btn active" onclick="openTab('tab-problem')">1. The Problem We Solve</button>
+      <button class="tab-btn" onclick="openTab('tab-pipeline')">2. End-to-End Pipeline</button>
+      <button class="tab-btn" onclick="openTab('tab-math')">3. Mathematics & Physics</button>
+      <button class="tab-btn" onclick="openTab('tab-explain')">4. Explainable Scoring</button>
+      <button class="tab-btn" onclick="openTab('tab-reality')">5. Real-World Issues & Hard Truths</button>
+      <button class="tab-btn" onclick="openTab('tab-pitch')">6. 5-Minute SIH Jury Playbook</button>
+    </div>
+
+    <!-- TAB 1: The Problem -->
+    <div id="tab-problem" class="tab-content active">
+      <div class="card">
+        <div class="card-header">
+          <span class="card-badge red">The Fundamental Flaw</span>
+          <h2 class="card-title">Why Naive "AI + AIS" Hackathon Solutions Fail Operationally</h2>
+        </div>
+        <p class="card-desc">
+          Most software projects treat oil spill detection as a simple computer vision task: detect an oil polygon on satellite imagery, find the nearest vessel on an AIS map, and accuse that ship of being the polluter. <strong>In the real world, this is scientifically invalid and legally indefensible.</strong>
+        </p>
+
+        <div class="comparison-grid">
+          <div class="compare-box bad">
+            <div class="compare-title">❌ What Naive Projects Do</div>
+            <ul class="compare-list">
+              <li><strong>The Nearest-Ship Fallacy:</strong> They pick whatever ship is currently closest to the slick when the satellite flies overhead.</li>
+              <li><strong>Ignores Ocean Physics:</strong> Wind and surface currents move slicks at 2%–4% of wind speed plus ocean currents. By the time a satellite observes the slick (2–8 hours later), it has drifted 10–50 kilometers away.</li>
+              <li><strong>Forced Accusation:</strong> If 3 ships are in the area, their model forcibly picks the highest score as the culprit.</li>
+              <li><strong>Legally Dangerous:</strong> Accuses innocent merchant ships that were merely sailing past an old slick.</li>
+            </ul>
+          </div>
+
+          <div class="compare-box good">
+            <div class="compare-title">✅ What NAUTRACE Does</div>
+            <ul class="compare-list">
+              <li><strong>Physical Backward Hindcasting:</strong> We reverse-track 500 virtual oil particles backward in time using Runge-Kutta 4th Order numerical integration with real ocean currents and Stokes wave drift.</li>
+              <li><strong>Probabilistic Origin Envelopes:</strong> Instead of a single fake point, we calculate 50% and 90% Mahalanobis origin ellipses.</li>
+              <li><strong>Unknown / Non-AIS Hypothesis:</strong> If no ship matches the physical release window, the system explicitly attributes to <code>UNKNOWN_NON_AIS</code>, recognizing that polluters often turn off their AIS transponders (IMO Resolution A.1106).</li>
+              <li><strong>Evidence-Grade Provenance:</strong> Computes cryptographic SHA-256 hashes of the satellite scene, algorithm config, and met-ocean forcing for court admissibility.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 2: Pipeline -->
+    <div id="tab-pipeline" class="tab-content">
+      <div class="card">
+        <div class="card-header">
+          <span class="card-badge cyan">Architecture</span>
+          <h2 class="card-title">The 8-Stage Forensic Pipeline Architecture</h2>
+        </div>
+        <p class="card-desc">
+          Here is the step-by-step path of data through the system, from orbital satellite sensors to court-ready intelligence dossiers.
+        </p>
+
+        <div class="pipeline-flow">
+          <div class="pipe-step">
+            <div class="pipe-num">1</div>
+            <div class="pipe-content">
+              <div class="pipe-name">Sentinel-1 C-Band SAR Ingest & Segmentation</div>
+              <div class="pipe-desc">Synthetic Aperture Radar (5.405 GHz) operates through clouds and darkness. Surface oil dampens ocean capillary waves, appearing dark. SegFormer/U-Net extracts the binary slick boundary.</div>
+            </div>
+            <span class="pipe-source">Copernicus CDSE</span>
+          </div>
+
+          <div class="pipe-step">
+            <div class="pipe-num">2</div>
+            <div class="pipe-content">
+              <div class="pipe-name">Look-Alike Environmental Filtering</div>
+              <div class="pipe-desc">Wind speeds below 3 m/s create natural calm zones that mimic oil. S1 backscatter texture + ECMWF wind speed gate verifies the slick is genuine hydrocarbon pollution.</div>
+            </div>
+            <span class="pipe-source">ECMWF IFS (10m)</span>
+          </div>
+
+          <div class="pipe-step">
+            <div class="pipe-num">3</div>
+            <div class="pipe-content">
+              <div class="pipe-name">Met-Ocean Velocity Field Interpolation</div>
+              <div class="pipe-desc">Extracts hourly ocean general circulation + tidal currents + wave-induced Stokes drift on a 1/12° spatial grid.</div>
+            </div>
+            <span class="pipe-source">Copernicus SMOC</span>
+          </div>
+
+          <div class="pipe-step">
+            <div class="pipe-num">4</div>
+            <div class="pipe-content">
+              <div class="pipe-name">Ensemble Backward Lagrangian Hindcast (RK4)</div>
+              <div class="pipe-desc">Disperses 500 particles across the slick polygon and integrates backward in time. Samples windage leeway (2.5%–3.5%) and horizontal oceanic turbulence (Kh = 10 m²/s).</div>
+            </div>
+            <span class="pipe-source">Custom RK4 Engine</span>
+          </div>
+
+          <div class="pipe-step">
+            <div class="pipe-num">5</div>
+            <div class="pipe-content">
+              <div class="pipe-name">Probabilistic Origin Envelopes</div>
+              <div class="pipe-desc">Projects particles into local azimuthal equidistant coordinates, computes empirical covariance, and derives 50% and 90% Mahalanobis origin ellipses.</div>
+            </div>
+            <span class="pipe-source">Mahalanobis Distance</span>
+          </div>
+
+          <div class="pipe-step">
+            <div class="pipe-num">6</div>
+            <div class="pipe-content">
+              <div class="pipe-name">AIS Trajectory Cleaning & Spatio-Temporal Indexing</div>
+              <div class="pipe-desc">Filters out impossible GPS jumps (>35 kn), deduplicates timestamps, slices time via binary search, and indexes coordinates into a KD-Tree for O(log N) retrieval.</div>
+            </div>
+            <span class="pipe-source">SciPy KDTree</span>
+          </div>
+
+          <div class="pipe-step">
+            <div class="pipe-num">7</div>
+            <div class="pipe-content">
+              <div class="pipe-name">Uncertainty-Aware Softmax Attribution Engine</div>
+              <div class="pipe-desc">Evaluates spatial proximity, temporal offset, heading alignment, and origin overlap across every hindcast run. Competes against the first-class UNKNOWN_NON_AIS hypothesis.</div>
+            </div>
+            <span class="pipe-source">algorithm.yaml</span>
+          </div>
+
+          <div class="pipe-step">
+            <div class="pipe-num">8</div>
+            <div class="pipe-content">
+              <div class="pipe-name">Convex AI Evidence Brief & SHA-256 Provenance</div>
+              <div class="pipe-desc">Convex action (api.ai.generate) formats a legally qualified briefing and binds SHA-256 hashes of inputs, model weights, and forcing grids for courtroom admissibility.</div>
+            </div>
+            <span class="pipe-source">Convex Cloud</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 3: Mathematics -->
+    <div id="tab-math" class="tab-content">
+      <div class="card">
+        <div class="card-header">
+          <span class="card-badge amber">Equations</span>
+          <h2 class="card-title">Mathematical & Physical Formulations</h2>
+        </div>
+        <p class="card-desc">
+          Every number and polygon in Nautrace is mathematically derived from physical principles.
+        </p>
+
+        <!-- Math Block 1 -->
+        <div class="math-card">
+          <h3 style="color: #fff; font-size: 15px; margin-bottom: 6px;">1. Lagrangian Particle Advection (Backward in Time)</h3>
+          <div class="formula">
+            dx/dt = - [ u_ocean(x,t) + u_tide(x,t) + u_stokes(x,t) + β · u_wind(x,t) + u_turbulent ]
+          </div>
+          <div class="var-expl">
+            <div class="var-item"><span class="var-sym">u_ocean, u_tide</span> Copernicus SMOC surface currents (m/s)</div>
+            <div class="var-item"><span class="var-sym">u_stokes</span> Wave-induced Stokes drift (m/s)</div>
+            <div class="var-item"><span class="var-sym">β</span> Empirical windage leeway factor ~ 0.03 (3% of wind speed)</div>
+            <div class="var-item"><span class="var-sym">u_turbulent</span> Brownian stochastic dispersion: σ = √(2 · Kh · |Δt|)</div>
+          </div>
+        </div>
+
+        <!-- Math Block 2 -->
+        <div class="math-card">
+          <h3 style="color: #fff; font-size: 15px; margin-bottom: 6px;">2. Mahalanobis Origin Confidence Ellipses</h3>
+          <div class="formula">
+            D_M(x) = √[ (x - μ)^T · Σ^(-1) · (x - μ) ] ≤ χ²_2(p)
+          </div>
+          <div class="var-expl">
+            <div class="var-item"><span class="var-sym">μ</span> Empirical spatial centroid of backward particles at discharge time</div>
+            <div class="var-item"><span class="var-sym">Σ</span> 2×2 Covariance matrix of particle endpoints</div>
+            <div class="var-item"><span class="var-sym">χ²_2(0.50)</span> Inner 50% core probable origin envelope (Amber)</div>
+            <div class="var-item"><span class="var-sym">χ²_2(0.90)</span> Outer 90% evidentiary horizon (Cyan)</div>
+          </div>
+        </div>
+
+        <!-- Math Block 3 -->
+        <div class="math-card">
+          <h3 style="color: #fff; font-size: 15px; margin-bottom: 6px;">3. Explainable Vessel Logit Score & Softmax Competition</h3>
+          <div class="formula">
+            z_v = w_s ln(L_s) + w_t ln(L_t) + w_h L_h + w_50 O_50 + w_90 O_90 + w_c Q_c - w_g G_pen
+          </div>
+          <div class="formula">
+            P(v | Evidence) = exp(z_v) / [ exp(z_unknown) + Σ_j exp(z_j) ]
+          </div>
+          <div class="var-expl">
+            <div class="var-item"><span class="var-sym">L_s</span> Spatial likelihood = exp(-d_v² / 2σ_x²)</div>
+            <div class="var-item"><span class="var-sym">L_t</span> Temporal likelihood = exp(-Δt_v² / 2σ_t²)</div>
+            <div class="var-item"><span class="var-sym">L_h</span> Heading alignment = (1 + cos(Δθ)) / 2</div>
+            <div class="var-item"><span class="var-sym">z_unknown</span> Base evidence threshold for unidentified / non-AIS sources</div>
+          </div>
+        </div>
+
+        <!-- Interactive Score Simulator -->
+        <div class="sim-card">
+          <h3 style="color: #fff; font-size: 16px; margin-bottom: 8px;">Interactive Score Simulator</h3>
+          <p style="font-size: 12px; color: var(--text-muted); margin-bottom: 16px;">
+            Adjust the candidate vessel's parameters to see how the mathematical attribution model balances proximity against the Unknown hypothesis in real-time.
+          </p>
+
+          <div class="sim-grid">
+            <div>
+              <div class="sim-control">
+                <div class="sim-label">
+                  <span>Geodesic Distance to Origin (d_v):</span>
+                  <span id="dist-val" class="mono text-cyan">1.3 km</span>
+                </div>
+                <input type="range" min="0.5" max="25" step="0.5" value="1.3" class="sim-slider" id="dist-slider" oninput="updateSim()">
+              </div>
+
+              <div class="sim-control">
+                <div class="sim-label">
+                  <span>Temporal Offset to Discharge (Δt_v):</span>
+                  <span id="time-val" class="mono text-amber">11 min</span>
+                </div>
+                <input type="range" min="0" max="120" step="5" value="11" class="sim-slider" id="time-slider" oninput="updateSim()">
+              </div>
+
+              <div class="sim-control">
+                <div class="sim-label">
+                  <span>Course / Heading Alignment (Δθ):</span>
+                  <span id="heading-val" class="mono text-purple">15° (Aligned)</span>
+                </div>
+                <input type="range" min="0" max="180" step="5" value="15" class="sim-slider" id="heading-slider" oninput="updateSim()">
+              </div>
+            </div>
+
+            <div class="sim-result-box">
+              <div style="font-size: 11px; color: var(--text-subtle); text-transform: uppercase;">Investigative Compatibility</div>
+              <div class="sim-score-big" id="calc-score">0.79</div>
+              <div style="font-size: 11px; color: var(--text-muted);">Unknown Hypothesis: <span id="calc-unk" class="mono">0.18</span></div>
+              <div class="sim-verdict" id="calc-verdict" style="color: var(--emerald);">High Investigative Fit</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- TAB 4: Explainable Scoring -->
+    <div id="tab-explain" class="tab-content">
+      <div class="card">
+        <div class="card-header">
+          <span class="card-badge purple">Explainability</span>
+          <h2 class="card-title">The 7-Factor Score Decomposition (Page 19 Blueprint)</h2>
+        </div>
+        <p class="card-desc">
+          When an investigator clicks <strong>[Explain Score]</strong> in the UI, the platform unpacks the candidate's score into seven distinct sub-metrics so the reasoning is 100% transparent.
+        </p>
+
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Metric</th>
+              <th>Weight Group</th>
+              <th>Mathematical Definition</th>
+              <th>Operational Meaning</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Spatial Compatibility</strong></td>
+              <td>Distance (w_s)</td>
+              <td><code>exp(-d_v² / 2σ_x²)</code></td>
+              <td>Measures how close the reconstructed AIS path came to the backward origin centroid.</td>
+            </tr>
+            <tr>
+              <td><strong>Temporal Compatibility</strong></td>
+              <td>Time (w_t)</td>
+              <td><code>exp(-Δt_v² / 2σ_t²)</code></td>
+              <td>Checks if the vessel was at that location during the estimated discharge window.</td>
+            </tr>
+            <tr>
+              <td><strong>Heading Alignment</strong></td>
+              <td>Kinematics (w_h)</td>
+              <td><code>(1 + cos(Δθ)) / 2</code></td>
+              <td>Compares ship's heading with the inferred origin-to-slick bearing vector.</td>
+            </tr>
+            <tr>
+              <td><strong>Origin Envelope Overlap</strong></td>
+              <td>Geometric (w_50, w_90)</td>
+              <td>Fraction of track in 50% & 90% envelopes</td>
+              <td>Did the ship's GPS trail physically intersect the Mahalanobis confidence zones?</td>
+            </tr>
+            <tr>
+              <td><strong>AIS Continuity</strong></td>
+              <td>Data Quality (w_c)</td>
+              <td><code>1 - (max_gap / max_allowed)</code></td>
+              <td>Ensures transponder did not have suspicious broadcast blackouts near the slick.</td>
+            </tr>
+            <tr>
+              <td><strong>Behaviour Anomaly</strong></td>
+              <td>Maneuvering (w_b)</td>
+              <td>Speed reduction / Course deviation</td>
+              <td>Detects sudden slowdowns (bilge discharge speed) or sharp route deviations.</td>
+            </tr>
+            <tr>
+              <td><strong>Ensemble Rank Stability</strong></td>
+              <td>Uncertainty (Robustness)</td>
+              <td>% hindcasts where vessel was #1</td>
+              <td>Tests if rankings flip when ocean currents and windage are perturbed ±15%.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- TAB 5: Reality Check -->
+    <div id="tab-reality" class="tab-content">
+      <div class="card">
+        <div class="card-header">
+          <span class="card-badge red">Scientific Truth</span>
+          <h2 class="card-title">Real-World Operational Failure Modes & Mitigations</h2>
+        </div>
+        <p class="card-desc">
+          To maintain absolute scientific integrity, we document the physical failure modes of maritime satellite systems and how Nautrace addresses each one.
+        </p>
+
+        <div style="display: flex; flex-direction: column; gap: 16px;">
+          <div style="background: var(--bg-elevated); border-radius: 8px; padding: 18px; border-left: 4px solid var(--amber);">
+            <h3 style="font-size: 15px; color: #fff; margin-bottom: 6px;">1. SAR Low-Wind Look-Alikes (< 3 m/s)</h3>
+            <p style="font-size: 13px; color: var(--text-muted); line-height: 1.6;">
+              <strong>The Problem:</strong> When surface winds are below ~3 m/s, the sea surface becomes mirror-smooth. No capillary waves form, so radar reflects away from the satellite, creating large dark patches that look identical to oil slicks.<br>
+              <strong>Nautrace Mitigation:</strong> The pipeline pulls ECMWF wind forcing. If wind is below 3 m/s, the system flags the detection as "High Look-Alike Risk / Unreliable".
+            </p>
+          </div>
+
+          <div style="background: var(--bg-elevated); border-radius: 8px; padding: 18px; border-left: 4px solid var(--cyan);">
+            <h3 style="font-size: 15px; color: #fff; margin-bottom: 6px;">2. The Unknown Spill Age Dilemma</h3>
+            <p style="font-size: 13px; color: var(--text-muted); line-height: 1.6;">
+              <strong>The Problem:</strong> A satellite image only gives the time of observation (t_obs). It does not timestamp when the valve was opened. Was the oil dumped 2 hours ago or 10 hours ago?<br>
+              <strong>Nautrace Mitigation:</strong> Instead of guessing a single age, we apply an empirical release-time prior window (e.g. 2 to 6 hours prior to acquisition) and sample it stochastically across the ensemble.
+            </p>
+          </div>
+
+          <div style="background: var(--bg-elevated); border-radius: 8px; padding: 18px; border-left: 4px solid var(--purple);">
+            <h3 style="font-size: 15px; color: #fff; margin-bottom: 6px;">3. Coarse Ocean Current Resolution (1/12°)</h3>
+            <p style="font-size: 13px; color: var(--text-muted); line-height: 1.6;">
+              <strong>The Problem:</strong> Global ocean circulation models (CMEMS SMOC) have a 1/12° grid resolution (~9 km). Near ports and coastlines, bathymetry, rip tides, and harbor currents occur at sub-kilometer scales.<br>
+              <strong>Nautrace Mitigation:</strong> We combine general circulation with Stokes wave drift and add horizontal Brownian dispersion (Kh = 10 m²/s) to account for unresolved sub-grid turbulence.
+            </p>
+          </div>
+
+          <div style="background: var(--bg-elevated); border-radius: 8px; padding: 18px; border-left: 4px solid var(--red);">
+            <h3 style="font-size: 15px; color: #fff; margin-bottom: 6px;">4. Intentional AIS Blackouts & "Dark Vessels"</h3>
+            <p style="font-size: 13px; color: var(--text-muted); line-height: 1.6;">
+              <strong>The Problem:</strong> Ships dumping oily bilge water often switch off their AIS transponder 15 minutes prior to discharge.<br>
+              <strong>Nautrace Mitigation:</strong> By maintaining an explicit <code>UNKNOWN_NON_AIS</code> hypothesis in our softmax competition, the system refuses to convict innocent vessels simply because their transponders were on, directly adhering to <strong>IMO Resolution A.1106(29)</strong>.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 6: Pitch Playbook -->
+    <div id="tab-pitch" class="tab-content">
+      <div class="card">
+        <div class="card-header">
+          <span class="card-badge emerald">Winning Strategy</span>
+          <h2 class="card-title">The 5-Minute SIH Jury Demonstration Script</h2>
+        </div>
+        <p class="card-desc">
+          How to present this interface to the NTRO evaluation panel to demonstrate maximum technical depth and research maturity.
+        </p>
+
+        <div class="pitch-timeline">
+          <div class="pitch-step">
+            <div class="pitch-time">Minute 01:00</div>
+            <div>
+              <div class="pitch-title">Invalidate the Naive Approach & Establish the Threat</div>
+              <div class="pitch-script">
+                "Respected Jury: Most solutions detect an oil polygon on satellite imagery and pick the nearest vessel on AIS. In the real ocean, that is scientifically invalid because wind and ocean currents move oil kilometers away over hours. CleanSeaNet and KSAT already prove that the nearest ship is almost never the culprit. Our innovation is an auditable, uncertainty-aware forensic pipeline."
+              </div>
+            </div>
+          </div>
+
+          <div class="pitch-step">
+            <div class="pitch-time">Minute 02:00</div>
+            <div>
+              <div class="pitch-title">Show Physics Hindcasting & The Origin Envelopes</div>
+              <div class="pitch-script">
+                "Notice the map: When the satellite flew over at 04:30 UTC, the oil slick was here. Instead of a single straight line, we numerically integrate 500 particles backward in time using 4th-Order Runge-Kutta with Copernicus surface currents and Stokes drift. This produces empirical 50% and 90% Mahalanobis origin ellipses."
+              </div>
+            </div>
+          </div>
+
+          <div class="pitch-step">
+            <div class="pitch-time">Minute 03:00</div>
+            <div>
+              <div class="pitch-title">Scrub the Timeline & Reveal the Real Trajectory</div>
+              <div class="pitch-script">
+                "As we scrub the timeline back to 02:50 UTC, watch the vessels move along their reconstructed AIS paths. Notice how Container Vessel 'Pacific Voyager' was nearby at observation, but Tanker 'MT Poseidon Leader' passed right through the 50% origin core 2 hours earlier."
+              </div>
+            </div>
+          </div>
+
+          <div class="pitch-step">
+            <div class="pitch-time">Minute 04:00</div>
+            <div>
+              <div class="pitch-title">Explainability & The Unknown-Source Moat (IMO Compliance)</div>
+              <div class="pitch-script">
+                "We click [Explain Score]. The jury sees a 7-factor breakdown: spatial, temporal, heading, and envelope overlap. Most importantly, look at the third candidate: 'Unknown / Non-AIS Hypothesis' (0.18). In compliance with IMO Resolution A.1106, if a dark vessel had its transponder switched off, our model attributes to Unknown rather than falsely accusing an innocent merchant ship."
+              </div>
+            </div>
+          </div>
+
+          <div class="pitch-step">
+            <div class="pitch-time">Minute 05:00</div>
+            <div>
+              <div class="pitch-title">Convex AI Evidence Brief & Cryptographic Provenance</div>
+              <div class="pitch-script">
+                "Finally, we click [Generate AI Evidence Brief]. Our Convex cloud action synthesizes a court-ready intelligence dossier. Notice the wording: it never says 'Ship X caused the spill'; it states investigative compatibility under stated assumptions, stamped with SHA-256 hashes of the SAR product ID and algorithm weights for legal admissibility."
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    function openTab(tabId) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+      event.currentTarget.classList.add('active');
+    }
+
+    function updateSim() {
+      const dist = parseFloat(document.getElementById('dist-slider').value);
+      const time = parseFloat(document.getElementById('time-slider').value);
+      const heading = parseFloat(document.getElementById('heading-slider').value);
+
+      document.getElementById('dist-val').innerText = dist.toFixed(1) + ' km';
+      document.getElementById('time-val').innerText = time.toFixed(0) + ' min';
+      document.getElementById('heading-val').innerText = heading.toFixed(0) + '° (' + (heading < 30 ? 'Aligned' : heading < 90 ? 'Angled' : 'Perpendicular') + ')';
+
+      // Mathematical simulation
+      const sigma_x = 4.0;
+      const sigma_t = 30.0;
+      const L_s = Math.exp(-(dist * dist) / (2 * sigma_x * sigma_x));
+      const L_t = Math.exp(-(time * time) / (2 * sigma_t * sigma_t));
+      const L_h = (1 + Math.cos((heading * Math.PI) / 180)) / 2;
+
+      const z_v = 1.8 * Math.log(Math.max(L_s, 0.001)) + 1.2 * Math.log(Math.max(L_t, 0.001)) + 0.8 * L_h + (dist < 3 ? 1.5 : 0);
+      const z_unk = -2.5;
+
+      const p_v = Math.exp(z_v) / (Math.exp(z_v) + Math.exp(z_unk));
+      const p_unk = 1 - p_v;
+
+      document.getElementById('calc-score').innerText = p_v.toFixed(2);
+      document.getElementById('calc-unk').innerText = p_unk.toFixed(2);
+
+      const verdictEl = document.getElementById('calc-verdict');
+      if (p_v > 0.65) {
+        verdictEl.innerText = "High Investigative Fit (Likely Source)";
+        verdictEl.style.color = "var(--emerald)";
+      } else if (p_v > 0.35) {
+        verdictEl.innerText = "Moderate Proximity / Ambiguous Timeline";
+        verdictEl.style.color = "var(--amber)";
+      } else {
+        verdictEl.innerText = "Ruled Out (Attributed to UNKNOWN_NON_AIS)";
+        verdictEl.style.color = "var(--purple)";
+      }
+    }
+  </script>
+</body>
+</html>
