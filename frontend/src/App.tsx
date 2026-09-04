@@ -8,6 +8,7 @@ import { TimelineScrubber } from "./components/TimelineScrubber";
 import { SuspectsPanel } from "./components/SuspectsPanel";
 import { ExplainabilityModal } from "./components/ExplainabilityModal";
 import { AIForensicReportModal } from "./components/AIForensicReportModal";
+import { NewCaseModal } from "./components/NewCaseModal";
 import { NautraceConvexProvider } from "./convex/convexClient";
 import { HomePage } from "./pages/HomePage";
 import { AboutPage } from "./pages/AboutPage";
@@ -32,7 +33,21 @@ export const AppContent: React.FC = () => {
       window.history.replaceState(null, '', url);
     }
   };
+    const [customCases, setCustomCases] = useState<IncidentCase[]>([]);
+  const [isNewCaseOpen, setIsNewCaseOpen] = useState<boolean>(false);
+  const allCases = [...customCases, ...CASES];
+
   const [currentCase, setCurrentCase] = useState<IncidentCase>(CASES[0]);
+
+  const handleCreateCustomCase = (newCase: IncidentCase) => {
+    setCustomCases((prev) => [newCase, ...prev]);
+    setCurrentCase(newCase);
+    if (newCase.tracks.length > 0) {
+      setSelectedVesselId(newCase.tracks[0].id);
+    }
+    setCurrentTimeStr(newCase.detectionTime);
+    handleRunAnalysis();
+  };
   const [currentTimeStr, setCurrentTimeStr] = useState<string>("2026-08-14T03:30:00Z");
   const [selectedVesselId, setSelectedVesselId] = useState<string | null>("vessel-a");
   const [explainedCandidate, setExplainedCandidate] = useState<CandidateScore | null>(null);
@@ -117,11 +132,12 @@ export const AppContent: React.FC = () => {
           currentView={activeView}
           onNavigate={setActiveView}
           currentCase={currentCase}
-          allCases={CASES}
+          allCases={allCases}
           onSelectCase={handleSelectCase}
           onOpenReport={() => setIsReportOpen(true)}
           isAnalyzing={isAnalyzing}
           onRunAnalysis={handleRunAnalysis}
+          onOpenNewCaseModal={() => setIsNewCaseOpen(true)}
         />
       )}
 
@@ -185,6 +201,13 @@ export const AppContent: React.FC = () => {
         <AIForensicReportModal
           incident={currentCase}
           onClose={() => setIsReportOpen(false)}
+        />
+      )}
+
+      {isNewCaseOpen && (
+        <NewCaseModal
+          onClose={() => setIsNewCaseOpen(false)}
+          onCreateCase={handleCreateCustomCase}
         />
       )}
     </div>

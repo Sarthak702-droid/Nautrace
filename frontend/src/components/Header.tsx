@@ -1,6 +1,6 @@
 import React from 'react';
 import type { IncidentCase } from '../types';
-import { Satellite, Waves, Radio, Cpu, FileText, ChevronDown, Activity, ArrowLeft, ShieldAlert, Radar } from 'lucide-react';
+import { Satellite, Waves, Radio, Cpu, FileText, ChevronDown, Activity, ArrowLeft, ShieldAlert, Radar, Plus } from 'lucide-react';
 import { useConvexConfig } from '../convex/convexClient';
 import { NautraceLogo } from './NautraceLogo';
 
@@ -15,6 +15,7 @@ interface HeaderProps {
   onOpenReport: () => void;
   isAnalyzing: boolean;
   onRunAnalysis: () => void;
+  onOpenNewCaseModal: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -25,6 +26,7 @@ export const Header: React.FC<HeaderProps> = ({
   onOpenReport,
   isAnalyzing,
   onRunAnalysis,
+  onOpenNewCaseModal,
 }) => {
   const { isConfigured } = useConvexConfig();
 
@@ -133,6 +135,15 @@ export const Header: React.FC<HeaderProps> = ({
 
       {/* Right Action Station */}
       <div className="header-right">
+        <button
+          className="cyber-btn-secondary"
+          onClick={onOpenNewCaseModal}
+          title="Manually Ingest New Case Parameters & SAR Observations"
+          style={{ gap: '5px', borderColor: 'rgba(0, 242, 254, 0.35)', background: 'rgba(0, 242, 254, 0.08)' }}
+        >
+          <Plus className="w-3.5 h-3.5 text-cyan-400" />
+          <span style={{ color: '#00f2fe', fontWeight: 700 }}>NEW INPUT</span>
+        </button>
         <button
           className={isAnalyzing ? 'cyber-btn-primary analyzing' : 'cyber-btn-primary'}
           onClick={onRunAnalysis}
