@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Option 6: Defense Command HUD - NAUTRACE</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #030712; color: #f8fafc; font-family: "Courier New", Courier, monospace, sans-serif; }
+    .hud-grid-frame { max-width: 1280px; margin: 30px auto; padding: 20px; border: 1px solid rgba(0, 242, 254, 0.3); border-radius: 14px; background: rgba(6, 16, 34, 0.85); box-shadow: 0 0 35px rgba(0, 242, 254, 0.1); }
+    .hud-topline { display: flex; justify-content: space-between; border-bottom: 1px solid rgba(0,242,254,0.2); padding-bottom: 14px; margin-bottom: 20px; font-size: 0.8rem; color: #00f2fe; }
+    
+    .hud-cockpit { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; height: 520px; }
+    .hud-radar-screen { position: relative; border-radius: 8px; overflow: hidden; border: 1px solid rgba(0,242,254,0.4); }
+    .hud-radar-screen video { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.65) contrast(1.3) hue-rotate(180deg); }
+    .radar-sweep { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle, rgba(0,242,254,0.1) 1px, transparent 1px); background-size: 24px 24px; pointer-events: none; }
+    .radar-crosshair { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 220px; height: 220px; border: 1px dashed rgba(0,242,254,0.4); border-radius: 50%; }
+
+    .hud-side-panel { background: rgba(2, 6, 17, 0.9); border: 1px solid rgba(0,242,254,0.2); border-radius: 8px; padding: 20px; display: flex; flex-direction: column; justify-content: space-between; }
+    .hud-h2 { font-size: 1.3rem; color: #00f2fe; margin-bottom: 12px; }
+    .hud-log { font-size: 0.76rem; color: #94a3b8; line-height: 1.6; }
+    .hud-cta { padding: 12px; background: #00f2fe; color: #020612; text-align: center; text-decoration: none; font-weight: 800; font-size: 0.85rem; border-radius: 6px; }
+
+    .nav-options-bar { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #0f172a; color: #fff; padding: 10px 24px; border-radius: 999px; box-shadow: 0 10px 30px rgba(0,0,0,0.6); display: flex; align-items: center; gap: 14px; z-index: 999; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.2); }
+    .nav-options-bar a { color: #38bdf8; text-decoration: none; font-weight: 700; }
+  </style>
+</head>
+<body>
+  <div class="hud-grid-frame">
+    <div class="hud-topline">
+      <div>SYS: NAUTRACE TACTICAL FORENSICS [NTRO PS-26143]</div>
+      <div>SAT: SENTINEL-1 C-BAND SAR • LAT: 18.92N LON: 72.83E</div>
+      <div>STATUS: OPERATIONAL</div>
+    </div>
+
+    <div class="hud-cockpit">
+      <div class="hud-radar-screen">
+        <video autoplay loop muted playsinline>
+          <source src="/assets/ocean_whale_bg.mp4" type="video/mp4" />
+        </video>
+        <div class="radar-sweep"></div>
+        <div class="radar-crosshair"></div>
+      </div>
+
+      <div class="hud-side-panel">
+        <div>
+          <h2 class="hud-h2">TARGET ATTRIBUTION MATRIX</h2>
+          <p class="hud-log">
+            [04:30 UTC] SLICK OBSERVED: 12.4 km²<br>
+            [04:30 UTC] CURRENT VECTORS: 0.38 m/s @ 245°<br>
+            [02:00 UTC] REWOUND ORIGIN: MT POSEIDON LEADER<br>
+            [02:00 UTC] LIKELIHOOD SCORE: 97.4%<br>
+            [02:00 UTC] INNOCENT VESSEL EXONERATED: MV OCEAN STAR<br>
+            [PROOF] SHA-256 HASH GENERATED
+          </p>
+        </div>
+        <a href="/" class="hud-cta">INITIALIZE WORKSPACE ↗</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="nav-options-bar">
+    <span>Showing <strong>Option 6 of 8</strong> (Defense Command HUD)</span>
+    <a href="/option5.html">← Option 5</a>
+    <a href="/options.html">All 8 Options</a>
+    <a href="/option7.html">Option 7 →</a>
+  </div>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Option 4: Apple Pro Dynamic Island - NAUTRACE</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #000000; color: #f8fafc; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; overflow-x: hidden; }
+    
+    /* Apple Style Dynamic Island */
+    .dynamic-island { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 100; display: flex; align-items: center; gap: 16px; background: rgba(20,20,22,0.85); backdrop-filter: blur(24px); border: 1px solid rgba(255,255,255,0.12); padding: 8px 18px; border-radius: 999px; box-shadow: 0 10px 30px rgba(0,0,0,0.8); transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); cursor: pointer; }
+    .dynamic-island:hover { padding: 10px 24px; border-color: rgba(0, 242, 254, 0.4); box-shadow: 0 10px 40px rgba(0, 242, 254, 0.2); }
+    .di-pulse { width: 8px; height: 8px; border-radius: 50%; background: #00f2fe; box-shadow: 0 0 10px #00f2fe; }
+    .di-text { font-size: 0.78rem; font-weight: 600; color: #e2e8f0; letter-spacing: 0.04em; }
+    .di-btn { padding: 5px 14px; background: #00f2fe; color: #000; font-size: 0.75rem; font-weight: 700; border-radius: 999px; text-decoration: none; }
+
+    /* Framed Apple Viewport */
+    .hero-apple-frame { max-width: 1200px; margin: 90px auto 40px; height: 620px; border-radius: 36px; overflow: hidden; position: relative; border: 1px solid rgba(255,255,255,0.12); box-shadow: 0 30px 70px rgba(0,0,0,0.9); }
+    .hero-apple-vid { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.7) contrast(1.15); }
+    .hero-apple-scrim { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(180deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.8) 100%); }
+    
+    .apple-copy { position: absolute; bottom: 50px; left: 50px; right: 50px; }
+    .apple-h1 { font-size: 3.8rem; font-weight: 800; letter-spacing: -0.03em; color: #fff; line-height: 1.1; margin-bottom: 14px; }
+    .apple-p { font-size: 1.1rem; color: #94a3b8; max-width: 750px; line-height: 1.6; margin-bottom: 24px; }
+    .apple-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; max-width: 700px; background: rgba(255,255,255,0.06); backdrop-filter: blur(16px); padding: 14px 20px; border-radius: 16px; border: 1px solid rgba(255,255,255,0.1); }
+    .as-num { font-size: 1.5rem; font-weight: 800; color: #00f2fe; }
+    .as-lbl { font-size: 0.72rem; color: #94a3b8; }
+
+    .nav-options-bar { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #0f172a; color: #fff; padding: 10px 24px; border-radius: 999px; box-shadow: 0 10px 30px rgba(0,0,0,0.6); display: flex; align-items: center; gap: 14px; z-index: 999; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.2); }
+    .nav-options-bar a { color: #38bdf8; text-decoration: none; font-weight: 700; }
+  </style>
+</head>
+<body>
+  <div class="dynamic-island">
+    <div class="di-pulse"></div>
+    <div class="di-text">SENTINEL-1 SAR • ARABIAN SEA CASE ACTIVE • 30 VESSELS</div>
+    <a href="/" class="di-btn">Console ↗</a>
+  </div>
+
+  <div class="hero-apple-frame">
+    <video autoplay loop muted playsinline class="hero-apple-vid">
+      <source src="/assets/ocean_whale_bg.mp4" type="video/mp4" />
+    </video>
+    <div class="hero-apple-scrim"></div>
+
+    <div class="apple-copy">
+      <h1 class="apple-h1">Autonomous Forensics. <br />Every drop accounted for.</h1>
+      <p class="apple-p">Reversing ocean currents using 4th-order Runge-Kutta numerical advection. Zero false accusations under IMO Resolution A.1106.</p>
+      <div class="apple-stats">
+        <div><div class="as-num">500+</div><div class="as-lbl">Particles Integrated</div></div>
+        <div><div class="as-num">1.42s</div><div class="as-lbl">Compute Latency</div></div>
+        <div><div class="as-num">100%</div><div class="as-lbl">Adversarial Accuracy</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="nav-options-bar">
+    <span>Showing <strong>Option 4 of 8</strong> (Apple Pro)</span>
+    <a href="/option3.html">← Option 3</a>
+    <a href="/options.html">All 8 Options</a>
+    <a href="/option5.html">Option 5 →</a>
+  </div>
+</body>
+</html>

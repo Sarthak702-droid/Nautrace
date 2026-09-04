@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Option 3: Awwwards 3D Scrollytelling - NAUTRACE</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #020612; color: #f8fafc; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; overflow-x: hidden; }
+    
+    /* Depth Gauge Rail on Right */
+    .depth-rail { position: fixed; right: 30px; top: 50%; transform: translateY(-50%); z-index: 100; display: flex; flex-direction: column; gap: 20px; align-items: flex-end; }
+    .depth-stop { display: flex; align-items: center; gap: 10px; cursor: pointer; color: #64748b; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; transition: color 0.2s; }
+    .depth-stop.active { color: #00f2fe; }
+    .depth-dot { width: 8px; height: 8px; border-radius: 50%; background: #64748b; transition: all 0.2s; }
+    .depth-stop.active .depth-dot { background: #00f2fe; box-shadow: 0 0 12px #00f2fe; transform: scale(1.4); }
+
+    /* Hero section */
+    .hero-stage { position: relative; height: 100vh; display: flex; flex-direction: column; justify-content: center; padding: 0 80px; overflow: hidden; }
+    .hero-video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; filter: brightness(0.6) contrast(1.2); }
+    .hero-vignette { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at 40% 50%, rgba(2,6,18,0.3) 0%, rgba(2,6,18,0.85) 70%, #020612 100%); }
+    
+    .hero-content { position: relative; z-index: 10; max-width: 900px; }
+    .orbit-kicker { display: inline-flex; align-items: center; gap: 8px; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.15em; color: #00f2fe; margin-bottom: 20px; }
+    .orbit-dot { width: 8px; height: 8px; border-radius: 50%; background: #00f2fe; box-shadow: 0 0 10px #00f2fe; }
+    .hero-3d-h1 { font-size: 4.8rem; font-weight: 800; line-height: 1.05; letter-spacing: -0.03em; color: #fff; margin-bottom: 24px; text-shadow: 0 4px 30px rgba(0,0,0,0.8); }
+    .accent-cyan { color: #00f2fe; text-shadow: 0 0 30px rgba(0, 242, 254, 0.6); }
+    .hero-deck { font-size: 1.2rem; line-height: 1.7; color: #cbd5e1; max-width: 720px; margin-bottom: 36px; }
+    
+    .btn-launch-glow { display: inline-flex; align-items: center; padding: 14px 34px; background: #00f2fe; color: #020612; font-size: 1rem; font-weight: 700; border-radius: 999px; border: none; cursor: pointer; text-decoration: none; box-shadow: 0 0 30px rgba(0, 242, 254, 0.5); transition: all 0.2s; }
+    .btn-launch-glow:hover { transform: scale(1.05); box-shadow: 0 0 50px rgba(0, 242, 254, 0.8); }
+
+    .nav-options-bar { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #0f172a; color: #fff; padding: 10px 24px; border-radius: 999px; box-shadow: 0 10px 30px rgba(0,0,0,0.6); display: flex; align-items: center; gap: 14px; z-index: 999; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.2); }
+    .nav-options-bar a { color: #38bdf8; text-decoration: none; font-weight: 700; }
+  </style>
+</head>
+<body>
+  <div class="depth-rail">
+    <div class="depth-stop active"><span>SPACE +693km</span><div class="depth-dot"></div></div>
+    <div class="depth-stop"><span>SURFACE 0m</span><div class="depth-dot"></div></div>
+    <div class="depth-stop"><span>THERMOCLINE -50m</span><div class="depth-dot"></div></div>
+    <div class="depth-stop"><span>WHALE MIGRATION -500m</span><div class="depth-dot"></div></div>
+    <div class="depth-stop"><span>ADMIRALTY COURT</span><div class="depth-dot"></div></div>
+  </div>
+
+  <section class="hero-stage">
+    <video autoplay loop muted playsinline class="hero-video">
+      <source src="/assets/ocean_whale_bg.mp4" type="video/mp4" />
+    </video>
+    <div class="hero-vignette"></div>
+
+    <div class="hero-content">
+      <div class="orbit-kicker"><div class="orbit-dot"></div><span>LOW EARTH ORBIT • SENTINEL-1 C-BAND SAR</span></div>
+      <h1 class="hero-3d-h1">The Depths of <span class="accent-cyan">Justice</span> in Our Oceans</h1>
+      <p class="hero-deck">
+        A physics-based evidentiary pipeline connecting low-earth orbit radar satellites, Copernicus ocean currents, and international admiralty jurisdiction to eliminate the Nearest-Ship Fallacy.
+      </p>
+      <a href="/" class="btn-launch-glow">Launch Forensic Console ↗</a>
+    </div>
+  </section>
+
+  <div class="nav-options-bar">
+    <span>Showing <strong>Option 3 of 8</strong> (Awwwards 3D)</span>
+    <a href="/option2.html">← Option 2</a>
+    <a href="/options.html">All 8 Options</a>
+    <a href="/option4.html">Option 4 →</a>
+  </div>
+</body>
+</html>

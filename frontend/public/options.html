@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NAUTRACE - Select Landing Page Concept (8 Options)</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    body { background: #030814; color: #f8fafc; min-height: 100vh; padding: 50px 30px 100px; }
+    .container { max-width: 1280px; margin: 0 auto; }
+    .header { text-align: center; margin-bottom: 50px; }
+    .badge { display: inline-block; padding: 6px 16px; background: rgba(0, 242, 254, 0.1); border: 1px solid rgba(0, 242, 254, 0.3); border-radius: 999px; font-size: 0.78rem; font-weight: 700; color: #00f2fe; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 14px; }
+    h1 { font-size: 2.8rem; font-weight: 800; color: #ffffff; margin-bottom: 12px; }
+    p.sub { font-size: 1.1rem; color: #94a3b8; max-width: 750px; margin: 0 auto; line-height: 1.6; }
+    
+    .grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin-top: 40px; }
+    .card { background: rgba(15, 23, 42, 0.65); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; overflow: hidden; transition: all 0.25s ease; display: flex; flex-direction: column; text-decoration: none; color: inherit; }
+    .card:hover { transform: translateY(-6px); border-color: #00f2fe; box-shadow: 0 16px 36px rgba(0, 242, 254, 0.15); }
+    
+    .card-preview { height: 160px; background: #0b1528; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+    .card-preview video, .card-preview img { width: 100%; height: 100%; object-fit: cover; }
+    .opt-tag { position: absolute; top: 10px; left: 10px; background: #00f2fe; color: #030814; font-size: 0.7rem; font-weight: 800; padding: 3px 8px; border-radius: 4px; }
+    
+    .card-body { padding: 20px; flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
+    .card-title { font-size: 1.1rem; font-weight: 700; color: #fff; margin-bottom: 6px; }
+    .card-desc { font-size: 0.84rem; color: #94a3b8; line-height: 1.5; margin-bottom: 16px; }
+    .card-btn { display: inline-flex; align-items: center; justify-content: center; width: 100%; padding: 10px; background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px; font-size: 0.82rem; font-weight: 700; color: #38bdf8; transition: all 0.2s; }
+    .card:hover .card-btn { background: #00f2fe; color: #030814; border-color: #00f2fe; }
+
+    @media (max-width: 1024px) {
+      .grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 640px) {
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="badge">DESIGN CONCEPT SHOWCASE</div>
+      <h1>Choose Your Favorite Landing Page</h1>
+      <p class="sub">
+        Explore all 8 distinctive visual concepts created for NAUTRACE. Click any card to open and test the full interactive page. Tell me your pick and we will build it into the primary React application!
+      </p>
+    </div>
+
+    <div class="grid">
+      <!-- Option 1 -->
+      <a href="/option1.html" class="card">
+        <div class="card-preview">
+          <video autoplay loop muted playsinline><source src="/assets/ocean_whale_bg.mp4" type="video/mp4" /></video>
+          <span class="opt-tag">OPTION 1</span>
+        </div>
+        <div class="card-body">
+          <div>
+            <div class="card-title">Ocean Sun (Screenshot 2)</div>
+            <div class="card-desc">Airy sky-blue gradient background, 32px curved whale video hero card, floating pill navbar &amp; search box.</div>
+          </div>
+          <div class="card-btn">Open Option 1 ↗</div>
+        </div>
+      </a>
+
+      <!-- Option 2 -->
+      <a href="/option2.html" class="card">
+        <div class="card-preview">
+          <video autoplay loop muted playsinline><source src="/assets/marine_bg.mp4" type="video/mp4" /></video>
+          <span class="opt-tag">OPTION 2</span>
+        </div>
+        <div class="card-body">
+          <div>
+            <div class="card-title">Ocean Dives (Screenshot 3)</div>
+            <div class="card-desc">Serif luxury editorial ('Playfair Display'), deep dark ocean waters, 2-column narrative &amp; circular play button.</div>
+          </div>
+          <div class="card-btn">Open Option 2 ↗</div>
+        </div>
+      </a>
+
+      <!-- Option 3 -->
+      <a href="/option3.html" class="card">
+        <div class="card-preview">
+          <video autoplay loop muted playsinline><source src="/assets/ocean_whale_bg.mp4" type="video/mp4" /></video>
+          <span class="opt-tag">OPTION 3</span>
+        </div>
+        <div class="card-body">
+          <div>
+            <div class="card-title">Awwwards 3D Scrollytelling</div>
+            <div class="card-desc">Interactive vertical Depth Gauge Rail on right edge (Space Orbit → Ocean Surface → Cetacean Sanctuary).</div>
+          </div>
+          <div class="card-btn">Open Option 3 ↗</div>
+        </div>
+      </a>
+
+      <!-- Option 4 -->
+      <a href="/option4.html" class="card">
+        <div class="card-preview">
+          <video autoplay loop muted playsinline><source src="/assets/ocean_whale_bg.mp4" type="video/mp4" /></video>
+          <span class="opt-tag">OPTION 4</span>
+        </div>
+        <div class="card-body">
+          <div>
+            <div class="card-title">Apple Pro Dynamic Island</div>
+            <div class="card-desc">Ultra-clean black minimalist theme with expanding top Dynamic Island capsule and high-density stats.</div>
+          </div>
+          <div class="card-btn">Open Option 4 ↗</div>
+        </div>
+      </a>
+
+      <!-- Option 5 -->
+      <a href="/option5.html" class="card">
+        <div class="card-preview">
+          <img src="/assets/evidence/Mauri.jpg" alt="National Geographic" />
+          <span class="opt-tag">OPTION 5</span>
+        </div>
+        <div class="card-body">
+          <div>
+            <div class="card-title">National Geographic Pelagic</div>
+            <div class="card-desc">Photojournalistic documentary layout with split hero, warm amber highlights, and real satellite evidence gallery.</div>
+          </div>
+          <div class="card-btn">Open Option 5 ↗</div>
+        </div>
+      </a>
+
+      <!-- Option 6 -->
+      <a href="/option6.html" class="card">
+        <div class="card-preview">
+          <video autoplay loop muted playsinline><source src="/assets/ocean_whale_bg.mp4" type="video/mp4" /></video>
+          <span class="opt-tag">OPTION 6</span>
+        </div>
+        <div class="card-body">
+          <div>
+            <div class="card-title">Defense Command HUD</div>
+            <div class="card-desc">Tactical Palantir/NTRO cyber-maritime command room with live vector radar screen, monospace log feeds &amp; crosshairs.</div>
+          </div>
+          <div class="card-btn">Open Option 6 ↗</div>
+        </div>
+      </a>
+
+      <!-- Option 7 -->
+      <a href="/option7.html" class="card">
+        <div class="card-preview">
+          <video autoplay loop muted playsinline><source src="/assets/ocean_whale_bg.mp4" type="video/mp4" /></video>
+          <span class="opt-tag">OPTION 7</span>
+        </div>
+        <div class="card-body">
+          <div>
+            <div class="card-title">Nicepage Clean Waves</div>
+            <div class="card-desc">Bright, fresh seafoam teal and mint palette with clean 1-2-3-4 step cards and framed video viewport.</div>
+          </div>
+          <div class="card-btn">Open Option 7 ↗</div>
+        </div>
+      </a>
+
+      <!-- Option 8 -->
+      <a href="/option8.html" class="card">
+        <div class="card-preview">
+          <video autoplay loop muted playsinline><source src="/assets/ocean_whale_bg.mp4" type="video/mp4" /></video>
+          <span class="opt-tag">OPTION 8</span>
+        </div>
+        <div class="card-body">
+          <div>
+            <div class="card-title">Spatial Horizon Split</div>
+            <div class="card-desc">50/50 vertical horizon split (sky ocean above, deep abyss below) with a floating frosted glass control console.</div>
+          </div>
+          <div class="card-btn">Open Option 8 ↗</div>
+        </div>
+      </a>
+    </div>
+  </div>
+</body>
+</html>

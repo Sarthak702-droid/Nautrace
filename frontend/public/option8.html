@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Option 8: Spatial Horizon Split (The Sea We Breathe Inspired) - NAUTRACE</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    body { background: #020614; color: #f8fafc; overflow-x: hidden; }
+    
+    /* Horizon Split Layout */
+    .horizon-top { height: 58vh; position: relative; overflow: hidden; background: #01040a; }
+    .crossfade-vid { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; filter: brightness(0.75) contrast(1.15); transition: opacity 1.8s ease-in-out; }
+    .crossfade-vid.active { opacity: 1; }
+    .horizon-top-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(180deg, rgba(2,6,20,0.3) 0%, rgba(2,6,20,0.1) 40%, rgba(2,6,20,0.85) 85%, #020614 100%); pointer-events: none; }
+
+    .live-lens { position: absolute; top: 24px; right: 36px; display: flex; align-items: center; gap: 8px; background: rgba(3, 10, 24, 0.65); backdrop-filter: blur(12px); border: 1px solid rgba(0, 242, 254, 0.25); padding: 6px 14px; border-radius: 999px; z-index: 10; }
+    .lens-dot { width: 7px; height: 7px; border-radius: 50%; background: #00f2fe; box-shadow: 0 0 10px #00f2fe; }
+    .lens-text { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; color: #e2e8f0; }
+
+    /* Spatial Horizon Capsule */
+    .spatial-console-capsule { position: absolute; top: 58vh; left: 50%; transform: translate(-50%, -50%); width: calc(100% - 64px); max-width: 1240px; background: rgba(3, 10, 24, 0.8); backdrop-filter: blur(28px); border: 1px solid rgba(0, 242, 254, 0.35); border-radius: 28px; padding: 34px 44px; box-shadow: 0 25px 60px rgba(0,0,0,0.85), 0 0 40px rgba(0,242,254,0.15); display: grid; grid-template-columns: auto 1fr auto; gap: 36px; align-items: center; z-index: 20; }
+    .sc-brand { font-size: 1.5rem; font-weight: 800; color: #fff; letter-spacing: 0.1em; }
+    .sc-meta { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.12em; color: #38bdf8; margin-bottom: 6px; }
+    .sc-title { font-size: 1.5rem; font-weight: 800; color: #fff; line-height: 1.25; margin-bottom: 8px; }
+    .sc-text { font-size: 0.92rem; color: #94a3b8; max-width: 620px; line-height: 1.6; }
+    .sc-btn { padding: 12px 28px; background: #00f2fe; color: #030814; font-weight: 700; border-radius: 999px; text-decoration: none; box-shadow: 0 0 24px rgba(0,242,254,0.4); white-space: nowrap; display: inline-flex; align-items: center; justify-content: center; }
+
+    .horizon-bottom { height: 42vh; display: flex; align-items: flex-end; padding-bottom: 50px; }
+    .telemetry-row { max-width: 1240px; width: 100%; margin: 0 auto; padding: 0 32px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+    .t-box { background: rgba(15, 23, 42, 0.45); backdrop-filter: blur(14px); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 14px; padding: 16px 20px; }
+    .t-num { font-size: 1.8rem; font-weight: 800; color: #00f2fe; margin-bottom: 2px; }
+    .t-lbl { font-size: 0.74rem; font-weight: 600; color: #94a3b8; }
+
+    /* The Sea We Breathe Editorial */
+    .narrative-sec { padding: 100px 32px 80px; max-width: 1200px; margin: 0 auto; }
+    .kicker { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.16em; color: #00f2fe; text-transform: uppercase; margin-bottom: 12px; }
+    .giant-h2 { font-size: 3.2rem; font-weight: 800; line-height: 1.15; color: #fff; margin-bottom: 18px; }
+    .lead-p { font-size: 1.15rem; line-height: 1.75; color: #94a3b8; max-width: 860px; margin-bottom: 50px; }
+    .editorial-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 36px; }
+    .e-card { background: rgba(15, 23, 42, 0.55); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 24px; padding: 40px; }
+    .e-card.accent { border-color: rgba(0, 242, 254, 0.35); box-shadow: 0 15px 40px rgba(0, 242, 254, 0.08); }
+    .e-card h3 { font-size: 1.4rem; font-weight: 800; color: #fff; margin-bottom: 16px; }
+    .e-card p { font-size: 0.98rem; line-height: 1.75; color: #cbd5e1; margin-bottom: 14px; }
+
+    /* Frontiers Cards */
+    .frontiers-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin-top: 50px; }
+    .f-card { background: rgba(15, 23, 42, 0.5); backdrop-filter: blur(18px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 22px; padding: 32px 24px; }
+    .f-idx { font-size: 1.6rem; font-weight: 800; color: rgba(255, 255, 255, 0.2); margin-bottom: 12px; }
+    .f-tech { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em; color: #38bdf8; margin-bottom: 6px; }
+    .f-card h3 { font-size: 1.15rem; font-weight: 700; color: #fff; margin-bottom: 10px; }
+    .f-card p { font-size: 0.88rem; line-height: 1.6; color: #94a3b8; }
+
+    .nav-options-bar { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #0f172a; color: #fff; padding: 10px 24px; border-radius: 999px; box-shadow: 0 10px 30px rgba(0,0,0,0.6); display: flex; align-items: center; gap: 14px; z-index: 999; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.2); }
+    .nav-options-bar a { color: #38bdf8; text-decoration: none; font-weight: 700; }
+  </style>
+</head>
+<body>
+  <div class="horizon-top">
+    <video autoplay loop muted playsinline class="crossfade-vid active" id="vid0">
+      <source src="/assets/ocean_whale_bg.mp4" type="video/mp4" />
+    </video>
+    <video autoplay loop muted playsinline class="crossfade-vid" id="vid1">
+      <source src="/assets/underwater_whales_bg.mp4" type="video/mp4" />
+    </video>
+    <video autoplay loop muted playsinline class="crossfade-vid" id="vid2">
+      <source src="/assets/marine_bg.mp4" type="video/mp4" />
+    </video>
+    <div class="horizon-top-overlay"></div>
+
+    <div class="live-lens">
+      <div class="lens-dot"></div>
+      <span class="lens-text" id="lensLabel">Pelagic Cetaceans in Open Ocean</span>
+    </div>
+  </div>
+
+  <div class="spatial-console-capsule">
+    <div class="sc-brand">NAUTRACE</div>
+    <div>
+      <div class="sc-meta">NTRO PS-26143 • NATIONAL MARITIME FORENSICS INTELLIGENCE</div>
+      <h2 class="sc-title">Every drop of oil leaves a physical trace in the currents.</h2>
+      <p class="sc-text">
+        When ships dump engine bilge to evade port cleaning fees, ocean circulation moves the slick 15 to 45 km. 
+        We rewind hydrodynamic time to identify the real perpetrator.
+      </p>
+    </div>
+    <a href="/" class="sc-btn">Launch Console ↗</a>
+  </div>
+
+  <div class="horizon-bottom">
+    <div class="telemetry-row">
+      <div class="t-box"><div class="t-num">500+</div><div class="t-lbl">Ensemble Particles</div></div>
+      <div class="t-box"><div class="t-num">&lt; 1.4s</div><div class="t-lbl">RK4 Advection Latency</div></div>
+      <div class="t-box"><div class="t-num">100.0%</div><div class="t-lbl">30-Vessel Adversarial Benchmark</div></div>
+      <div class="t-box"><div class="t-num">IMO A.1106</div><div class="t-lbl">Statutory Dark Vessel Attribution</div></div>
+    </div>
+  </div>
+
+  <section class="narrative-sec">
+    <div class="kicker">THE EVIDENTIARY CRISIS</div>
+    <h2 class="giant-h2">The Invisible Hit-and-Run on the High Seas</h2>
+    <p class="lead-p">
+      Over 80% of open-ocean petroleum pollution does not originate from catastrophic oil tanker accidents. 
+      It stems from routine, deliberate, and illegal bilge dumping conducted by commercial cargo vessels 
+      turning off their transponders in international waters to cut port disposal costs.
+    </p>
+
+    <div class="editorial-grid">
+      <div class="e-card">
+        <h3>The Observation-Time Dilemma</h3>
+        <p>When an orbital radar satellite acquires an image at 04:30 UTC, coastal winds and Copernicus surface currents have already moved the hydrocarbon mass 20 to 40 kilometers away from its release coordinates.</p>
+        <p>Standard surveillance software identifies whichever ship is closest to the slick at satellite capture time (t_obs). In international admiralty courts, this naive approach collapses immediately—falsely penalizing innocent passing vessels while the true polluter sails away unpunished.</p>
+      </div>
+      <div class="e-card accent">
+        <h3>The Physical Lagrangian Rewind</h3>
+        <p>NAUTRACE resolves this evidentiary crisis by executing backward-in-time numerical advection. By coupling hourly Copernicus Marine SMOC surface currents (uo, vo), Stokes wave drift, and tidal oscillations, we rewind time hour by hour to the exact release time.</p>
+        <p>500 stochastic particle trajectories reconstruct the exact discharge coordinates and time window, cross-matching historical AIS vessel tracks to establish court-admissible proof backed by SHA-256 cryptographic hashes.</p>
+      </div>
+    </div>
+
+    <div class="frontiers-grid">
+      <div class="f-card">
+        <div class="f-idx">01</div>
+        <div class="f-tech">SENTINEL-1 C-BAND SAR</div>
+        <h3>Radar Capillary Dampening</h3>
+        <p>Microwaves penetrate clouds and darkness at 5.4 GHz, detecting flattened capillary waves.</p>
+      </div>
+      <div class="f-card">
+        <div class="f-idx">02</div>
+        <div class="f-tech">COPERNICUS CMEMS SMOC</div>
+        <h3>Dynamic Current Ingestion</h3>
+        <p>Hourly 3D current vectors and Stokes wave drift across regional transit lanes.</p>
+      </div>
+      <div class="f-card">
+        <div class="f-idx">03</div>
+        <div class="f-tech">RUNGE-KUTTA 4TH ORDER</div>
+        <h3>Stochastic Backward Advection</h3>
+        <p>Rewinds 500 particle ensembles to reconstruct 50% and 90% Mahalanobis origin ellipses.</p>
+      </div>
+      <div class="f-card">
+        <div class="f-idx">04</div>
+        <div class="f-tech">IMO RES. A.1106 COMPLIANT</div>
+        <h3>Cryptographic Attribution</h3>
+        <p>Evaluates 7 kinematic factors and enforces dark vessel hypotheses with SHA-256 hashes.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="nav-options-bar">
+    <span>Showing <strong>Option 8 (Updated)</strong></span>
+    <a href="/options.html">← Back to All 8 Options</a>
+    <a href="/">Open Full React App ↗</a>
+  </div>
+
+  <script>
+    const videos = [
+      { id: 'vid0', label: 'Pelagic Cetaceans in Open Ocean' },
+      { id: 'vid1', label: 'Deep Tropical Whale Migration' },
+      { id: 'vid2', label: 'Ocean Surface Currents & Swells' }
+    ];
+    let currentIdx = 0;
+    setInterval(() => {
+      document.getElementById(videos[currentIdx].id).classList.remove('active');
+      currentIdx = (currentIdx + 1) % videos.length;
+      document.getElementById(videos[currentIdx].id).classList.add('active');
+      document.getElementById('lensLabel').textContent = videos[currentIdx].label;
+    }, 5500);
+  </script>
+</body>
+</html>

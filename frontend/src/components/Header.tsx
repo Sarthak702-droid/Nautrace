@@ -1,9 +1,14 @@
-import React from "react";
-import type { IncidentCase } from "../types";
-import { Shield, Satellite, Wind, Waves, Radio, Cpu, FileText, ChevronDown, BookOpen } from "lucide-react";
-import { useConvexConfig } from "../convex/convexClient";
+import React from 'react';
+import type { IncidentCase } from '../types';
+import { Satellite, Waves, Radio, Cpu, FileText, ChevronDown, Activity, ArrowLeft, ShieldAlert, Radar } from 'lucide-react';
+import { useConvexConfig } from '../convex/convexClient';
+import { NautraceLogo } from './NautraceLogo';
+
+export type ActiveView = 'home' | 'console' | 'about';
 
 interface HeaderProps {
+  currentView: ActiveView;
+  onNavigate: (view: ActiveView) => void;
   currentCase: IncidentCase;
   allCases: IncidentCase[];
   onSelectCase: (c: IncidentCase) => void;
@@ -13,6 +18,7 @@ interface HeaderProps {
 }
 
 export const Header: React.FC<HeaderProps> = ({
+  onNavigate,
   currentCase,
   allCases,
   onSelectCase,
@@ -23,119 +29,149 @@ export const Header: React.FC<HeaderProps> = ({
   const { isConfigured } = useConvexConfig();
 
   return (
-    <header className="header-container">
+    <header className="header-container cyber-header">
+      {/* Top micro scanline glow */}
+      <div className="cyber-header-scanline"></div>
+
       <div className="header-left">
-        <div className="logo-brand">
-          <div className="logo-icon-wrap">
-            <Shield className="w-5 h-5 text-cyan-400" />
-          </div>
-          <div>
-            <div className="logo-title">
-              NAUTRACE <span className="version-tag">v2.1 FORENSIC</span>
-            </div>
-            <div className="logo-subtitle">
-              Maritime Oil-Spill Attribution & Hindcasting Intelligence
-            </div>
+        {/* Return to Dashboard/Home */}
+        <button 
+          onClick={() => onNavigate('home')} 
+          className="cyber-nav-back-btn"
+          title="Return to Global Horizon"
+        >
+          <ArrowLeft className="w-3.5 h-3.5 text-cyan-400" />
+          <span>PORTAL</span>
+        </button>
+
+        {/* Brand Logo with Live Radar Indicator */}
+        <div 
+          onClick={() => onNavigate('home')} 
+          className="cyber-brand-wrap"
+          style={{ cursor: 'pointer' }}
+          title="NAUTRACE Marine Forensic Intelligence"
+        >
+          <NautraceLogo size="sm" variant="light" showSubtitle={false} />
+          <div className="radar-live-indicator" title="Active Surveillance Feed">
+            <span className="radar-beacon-dot"></span>
+            <span className="radar-beacon-ping"></span>
           </div>
         </div>
 
-        <div className="case-dropdown-wrap">
-          <span className="case-label">CASE:</span>
-          <select
-            className="case-select"
-            value={currentCase.id}
-            onChange={(e) => {
-              const found = allCases.find((c) => c.id === e.target.value);
-              if (found) onSelectCase(found);
-            }}
-          >
-            {allCases.map((c) => (
-              <option key={c.id} value={c.id}>
-                {c.id}: {c.title}
-              </option>
-            ))}
-          </select>
-          <ChevronDown className="w-4 h-4 select-arrow" />
+        {/* Tactical Case Selector */}
+        <div className="cyber-case-selector">
+          <div className="case-tag-indicator">
+            <ShieldAlert className="w-3 h-3 text-cyan-400" />
+            <span className="case-tag-label">TARGET CASE</span>
+          </div>
+          <div className="case-select-wrapper">
+            <select
+              className="cyber-case-select"
+              value={currentCase.id}
+              onChange={(e) => {
+                const found = allCases.find((c) => c.id === e.target.value);
+                if (found) onSelectCase(found);
+              }}
+            >
+              {allCases.map((c) => (
+                <option key={c.id} value={c.id}>
+                  {c.id.toUpperCase()}: {c.title} [{c.region}]
+                </option>
+              ))}
+            </select>
+            <ChevronDown className="w-3.5 h-3.5 cyber-select-arrow" />
+          </div>
         </div>
       </div>
 
+      {/* Center Telemetry HUD */}
       <div className="header-center">
-        <div className="telemetry-pill-group">
-          <div className="telemetry-pill active">
+        <div className="cyber-telemetry-hud">
+          <div className="cyber-telemetry-item active">
             <Satellite className="w-3.5 h-3.5 text-cyan-400" />
-            <span>Sentinel-1 SAR</span>
-            <span className="dot green"></span>
+            <div className="telemetry-meta">
+              <span className="telemetry-title">SENTINEL-1 SAR</span>
+              <span className="telemetry-sub">VV/VH ORTHO</span>
+            </div>
+            <span className="cyber-led green"></span>
           </div>
-          <div className="telemetry-pill active">
-            <Waves className="w-3.5 h-3.5 text-indigo-400" />
-            <span>CMEMS SMOC</span>
-            <span className="dot green"></span>
+
+          <div className="cyber-telemetry-divider"></div>
+
+          <div className="cyber-telemetry-item active">
+            <Waves className="w-3.5 h-3.5 text-sky-400" />
+            <div className="telemetry-meta">
+              <span className="telemetry-title">CMEMS SMOC</span>
+              <span className="telemetry-sub">3D OCEAN DRIFT</span>
+            </div>
+            <span className="cyber-led green"></span>
           </div>
-          <div className="telemetry-pill active">
-            <Wind className="w-3.5 h-3.5 text-sky-400" />
-            <span>ECMWF IFS</span>
-            <span className="dot green"></span>
-          </div>
-          <div className="telemetry-pill active">
+
+          <div className="cyber-telemetry-divider"></div>
+
+          <div className="cyber-telemetry-item active">
             <Radio className="w-3.5 h-3.5 text-amber-400" />
-            <span>AIS Stream</span>
-            <span className="dot green"></span>
+            <div className="telemetry-meta">
+              <span className="telemetry-title">AIS SATELLITE</span>
+              <span className="telemetry-sub">REAL-TIME FEED</span>
+            </div>
+            <span className="cyber-led green"></span>
           </div>
-          <div className={`telemetry-pill ${isConfigured ? 'active' : 'warn'}`}>
+
+          <div className="cyber-telemetry-divider"></div>
+
+          <div className={isConfigured ? 'cyber-telemetry-item active' : 'cyber-telemetry-item warn'}>
             <Cpu className="w-3.5 h-3.5 text-purple-400" />
-            <span>{isConfigured ? 'Convex Cloud' : 'Convex Local'}</span>
-            <span className={`dot ${isConfigured ? 'green' : 'amber'}`}></span>
+            <div className="telemetry-meta">
+              <span className="telemetry-title">CONVEX SYNC</span>
+              <span className="telemetry-sub">{isConfigured ? 'CLOUD SECURE' : 'LOCAL CACHE'}</span>
+            </div>
+            <span className={isConfigured ? 'cyber-led green' : 'cyber-led amber'}></span>
           </div>
         </div>
       </div>
 
+      {/* Right Action Station */}
       <div className="header-right">
         <button
-          className={`btn-primary ${isAnalyzing ? 'loading' : ''}`}
+          className={isAnalyzing ? 'cyber-btn-primary analyzing' : 'cyber-btn-primary'}
           onClick={onRunAnalysis}
           disabled={isAnalyzing}
+          title="Execute Backward Lagrangian Runge-Kutta 4 Simulation"
         >
+          <div className="btn-glow-layer"></div>
           {isAnalyzing ? (
             <>
-              <span className="spinner"></span>
-              <span>Running Ensemble RK4...</span>
+              <Radar className="w-4 h-4 animate-spin text-cyan-200" />
+              <span>COMPUTING RK4 DRIFT...</span>
             </>
           ) : (
             <>
-              <Cpu className="w-4 h-4" />
-              <span>Run Hindcast Simulation</span>
+              <Activity className="w-4 h-4 text-cyan-300" />
+              <span>RUN INVERSE ADVECTION</span>
             </>
           )}
         </button>
 
-        <a
-          href="/team-guide.html"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="btn-secondary"
-          title="Open Non-Technical Hindi Team Handbook & PDF"
-          style={{ textDecoration: 'none', borderColor: 'rgba(245, 158, 11, 0.4)' }}
+        <button 
+          className="cyber-btn-secondary" 
+          onClick={onOpenReport}
+          title="Generate Defense-Grade Legal Dossier"
         >
-          <BookOpen className="w-4 h-4 text-amber-400" />
-          <span>Team Handbook (Hindi)</span>
-        </a>
+          <FileText className="w-4 h-4 text-cyan-400" />
+          <span>LEGAL DOSSIER</span>
+        </button>
 
         <a
           href="/guide.html"
           target="_blank"
           rel="noopener noreferrer"
-          className="btn-secondary"
+          className="cyber-btn-secondary cyber-guide-link"
           title="Open Scientific Architecture & Truth Dossier"
-          style={{ textDecoration: 'none' }}
         >
-          <FileText className="w-4 h-4 text-cyan-400" />
-          <span>Tech Guide</span>
+          <FileText className="w-4 h-4 text-sky-400" />
+          <span>GUIDE</span>
         </a>
-
-        <button className="btn-secondary" onClick={onOpenReport}>
-          <FileText className="w-4 h-4 text-cyan-400" />
-          <span>Forensic Dossier</span>
-        </button>
       </div>
     </header>
   );

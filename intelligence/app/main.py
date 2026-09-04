@@ -6,7 +6,7 @@ from fastapi import FastAPI, HTTPException, Request
 from fastapi.responses import JSONResponse
 
 from app.config import load_algorithm_config
-from app.models import AnalysisRequest, AnalysisResponse, DetectionRequest, DetectionResponse
+from app.models import AnalysisRequest, AnalysisResponse, DetectionRequest, DetectionResponse, LiveCaseRequest
 from app.services.detection import DetectionService
 from app.services.analysis import ANALYSIS_VERSION, AnalysisService
 
@@ -16,6 +16,8 @@ logger = logging.getLogger("nautrace.intelligence")
 loaded_config = load_algorithm_config()
 service = AnalysisService(loaded_config)
 detection_service = DetectionService()
+from app.services.case_orchestrator import CaseOrchestrator
+case_orchestrator = CaseOrchestrator(service)
 
 app = FastAPI(
     title="NAUTRACE Intelligence Service",
@@ -68,3 +70,12 @@ def detect_spill(request: DetectionRequest) -> DetectionResponse:
 @app.post("/api/v1/detect", response_model=DetectionResponse)
 def public_detect_spill(request: DetectionRequest) -> DetectionResponse:
     return detection_service.detect(request)
+
+@app.post("/internal/v1/cases/live-analyze", response_model=AnalysisResponse)
+def live_analyze_case(request: LiveCaseRequest) -> AnalysisResponse:
+    return case_orchestrator.run_live_case(request)
+
+
+@app.post("/api/v1/cases/live-analyze", response_model=AnalysisResponse)
+def public_live_analyze_case(request: LiveCaseRequest) -> AnalysisResponse:
+    return case_orchestrator.run_live_case(request)

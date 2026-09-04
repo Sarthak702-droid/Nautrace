@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Option 1: Ocean Sun (Screenshot 2 Replica) - NAUTRACE</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    body { background: linear-gradient(160deg, #38bdf8 0%, #0284c7 45%, #0369a1 100%); min-height: 100vh; padding: 30px 40px 60px; color: #0f172a; }
+    .hero-outer { max-width: 1240px; margin: 0 auto; }
+    .hero-card { position: relative; width: 100%; height: 620px; border-radius: 36px; overflow: hidden; box-shadow: 0 25px 60px -15px rgba(2, 44, 84, 0.45); background: #0284c7; }
+    .hero-video { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.9) contrast(1.05); }
+    .hero-scrim { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(180deg, rgba(15, 23, 42, 0.3) 0%, rgba(15, 23, 42, 0.1) 40%, rgba(15, 23, 42, 0.55) 100%); }
+    
+    /* Top floating pill inside card */
+    .top-pill-bar { position: absolute; top: 24px; left: 32px; right: 32px; display: flex; align-items: center; justify-content: space-between; z-index: 10; }
+    .brand { font-size: 1.3rem; font-weight: 800; color: #ffffff; letter-spacing: 0.05em; text-shadow: 0 2px 4px rgba(0,0,0,0.3); }
+    .pill-nav { display: flex; align-items: center; gap: 8px; background: rgba(255, 255, 255, 0.2); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.35); border-radius: 999px; padding: 4px 6px; }
+    .pill-item { padding: 6px 18px; font-size: 0.82rem; font-weight: 500; color: #ffffff; background: transparent; border: none; border-radius: 999px; cursor: pointer; }
+    .pill-item.active { background: #ffffff; color: #0f172a; font-weight: 700; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
+    .cta-pill { padding: 8px 22px; background: #ffffff; color: #0f172a; font-size: 0.84rem; font-weight: 700; border-radius: 999px; border: none; cursor: pointer; text-decoration: none; box-shadow: 0 4px 14px rgba(0,0,0,0.15); }
+    
+    /* Hero Content */
+    .hero-content { position: absolute; top: 120px; left: 40px; right: 40px; bottom: 40px; display: flex; flex-direction: column; justify-content: space-between; z-index: 5; }
+    .hero-title { font-size: 3.6rem; line-height: 1.1; font-weight: 800; color: #ffffff; max-width: 800px; text-shadow: 0 3px 12px rgba(0,0,0,0.4); }
+    .floating-info-card { width: 300px; background: rgba(15, 23, 42, 0.45); backdrop-filter: blur(14px); border: 1px solid rgba(255,255,255,0.25); border-radius: 18px; padding: 18px 20px; color: #ffffff; }
+    .info-kicker { font-size: 0.72rem; font-weight: 700; color: #38bdf8; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 2px; }
+    .info-title { font-size: 0.95rem; font-weight: 700; margin-bottom: 8px; }
+    .info-avatars { display: flex; align-items: center; gap: 8px; font-size: 0.78rem; margin-bottom: 12px; }
+    .investigate-btn { padding: 6px 16px; background: #ffffff; color: #0f172a; font-size: 0.78rem; font-weight: 700; border-radius: 999px; border: none; cursor: pointer; }
+    .carousel-idx { position: absolute; bottom: 20px; right: 32px; color: #ffffff; font-size: 2.8rem; font-weight: 800; text-shadow: 0 2px 6px rgba(0,0,0,0.4); }
+    .carousel-idx span { font-size: 1.2rem; font-weight: 500; opacity: 0.8; }
+    
+    /* Search Pill */
+    .search-dock { margin-top: -36px; position: relative; z-index: 20; display: flex; flex-direction: column; align-items: center; }
+    .search-box { display: flex; align-items: center; background: #ffffff; border-radius: 999px; padding: 8px 12px 8px 32px; box-shadow: 0 20px 45px rgba(2, 44, 84, 0.18); width: 100%; max-width: 900px; }
+    .field { flex: 1; padding: 6px 16px; }
+    .f-lbl { font-size: 0.7rem; font-weight: 700; color: #64748b; text-transform: uppercase; margin-bottom: 2px; }
+    .f-val { font-size: 0.9rem; font-weight: 700; color: #0f172a; }
+    .f-div { width: 1px; height: 36px; background: #e2e8f0; }
+    .search-btn { width: 48px; height: 48px; border-radius: 50%; background: #0f172a; border: none; color: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; }
+    
+    /* Content sections below */
+    .white-sheet { background: #ffffff; border-radius: 32px; max-width: 1240px; margin: 40px auto 0; padding: 60px 48px; box-shadow: 0 20px 50px rgba(2, 44, 84, 0.1); }
+    .sec-kicker { font-size: 0.74rem; font-weight: 700; letter-spacing: 0.12em; color: #0284c7; text-transform: uppercase; margin-bottom: 8px; }
+    .sec-h2 { font-size: 2.2rem; font-weight: 800; color: #0f172a; margin-bottom: 30px; }
+    .cards-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 30px; }
+    .c3 { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 20px; padding: 30px; }
+    .c3 h3 { font-size: 1.2rem; font-weight: 700; color: #0f172a; margin-bottom: 10px; }
+    .c3 p { font-size: 0.9rem; line-height: 1.6; color: #64748b; }
+    
+    .nav-options-bar { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #0f172a; color: #fff; padding: 10px 24px; border-radius: 999px; box-shadow: 0 10px 30px rgba(0,0,0,0.4); display: flex; align-items: center; gap: 14px; z-index: 999; font-size: 0.85rem; }
+    .nav-options-bar a { color: #38bdf8; text-decoration: none; font-weight: 700; }
+  </style>
+</head>
+<body>
+  <div class="hero-outer">
+    <div class="hero-card">
+      <video autoplay loop muted playsinline class="hero-video">
+        <source src="/assets/ocean_whale_bg.mp4" type="video/mp4" />
+      </video>
+      <div class="hero-scrim"></div>
+
+      <div class="top-pill-bar">
+        <div class="brand">NAUTRACE</div>
+        <div class="pill-nav">
+          <button class="pill-item active">Home</button>
+          <button class="pill-item">What We Do</button>
+          <button class="pill-item">Marine Hazards</button>
+          <button class="pill-item">How It Works</button>
+          <button class="pill-item">Methodology</button>
+        </div>
+        <a href="/" class="cta-pill">Launch Console ↗</a>
+      </div>
+
+      <div class="hero-content">
+        <h1 class="hero-title">Protecting blue whales &amp; tracing illegal spills in the open ocean</h1>
+        <div class="floating-info-card">
+          <div class="info-kicker">ACTIVE SURVEILLANCE ZONE</div>
+          <div class="info-title">Arabian Sea • Mumbai Offshore Shelf</div>
+          <div class="info-avatars">🚢 🛰️ 🌊 30 vessels evaluated</div>
+          <button class="investigate-btn" onclick="window.location.href='/'">Investigate Case ↗</button>
+        </div>
+        <div class="carousel-idx">01 <span>/ 04</span></div>
+      </div>
+    </div>
+
+    <div class="search-dock">
+      <div class="search-box">
+        <div class="field"><div class="f-lbl">Maritime Region?</div><div class="f-val">Arabian Sea, Mumbai Shelf</div></div>
+        <div class="f-div"></div>
+        <div class="field"><div class="f-lbl">Time Window</div><div class="f-val">Aug 14, 2026 • 02:00–04:30 UTC</div></div>
+        <div class="f-div"></div>
+        <div class="field"><div class="f-lbl">Surveillance Targets</div><div class="f-val">Sentinel-1 SAR Slicks &amp; AIS</div></div>
+        <button class="search-btn" onclick="window.location.href='/'">🔍</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="white-sheet">
+    <div class="sec-kicker">WHAT WE ARE &amp; WHAT WE DO</div>
+    <h2 class="sec-h2">Autonomous Oceanic Forensics &amp; Spill Attribution</h2>
+    <p style="font-size: 1.1rem; line-height: 1.7; color: #475569; max-width: 900px; margin-bottom: 30px;">
+      Commercial vessels secretly dump toxic bilge waste under cover of darkness to avoid $50,000–$200,000 in port disposal fees. Ocean currents drift the mass 15–45 km before satellite detection. NAUTRACE rewinds time using numerical Lagrangian physics to catch the real culprit with court-admissible proof.
+    </p>
+    <div class="cards-3">
+      <div class="c3"><h3>01. Detect Slicks Day &amp; Night</h3><p>Sentinel-1 C-Band SAR radar detects surface capillary dampening through clouds and total darkness at 5.4 GHz.</p></div>
+      <div class="c3"><h3>02. Rewind Ocean Drift</h3><p>Ingests hourly Copernicus SMOC surface currents and Stokes wave drift into 500 Runge-Kutta 4th-order particle ensembles.</p></div>
+      <div class="c3"><h3>03. Prove Vessel Attribution</h3><p>Calculates 50% and 90% Mahalanobis origin covariance envelopes and scores AIS tracks with cryptographic SHA-256 provenance.</p></div>
+    </div>
+  </div>
+
+  <div class="nav-options-bar">
+    <span>Showing <strong>Option 1 of 8</strong> (Ocean Sun)</span>
+    <a href="/options.html">← Back to All 8 Options</a>
+    <a href="/option2.html">Next: Option 2 →</a>
+  </div>
+</body>
+</html>

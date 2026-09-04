@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Option 5: National Geographic Pelagic Documentary - NAUTRACE</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #070e17; color: #f8fafc; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    .doc-split-hero { display: grid; grid-template-columns: 1.1fr 1fr; min-height: 85vh; border-bottom: 1px solid rgba(255,255,255,0.1); }
+    .split-left-video { position: relative; overflow: hidden; }
+    .split-left-video video { width: 100%; height: 100%; object-fit: cover; }
+    .split-left-scrim { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(90deg, transparent 60%, #070e17 100%); }
+    
+    .split-right-copy { padding: 80px 60px; display: flex; flex-direction: column; justify-content: center; }
+    .doc-kicker { font-size: 0.76rem; font-weight: 800; letter-spacing: 0.2em; color: #f59e0b; text-transform: uppercase; margin-bottom: 16px; }
+    .doc-h1 { font-size: 3.4rem; font-weight: 800; line-height: 1.12; color: #fff; margin-bottom: 20px; }
+    .doc-lead { font-size: 1.15rem; line-height: 1.7; color: #94a3b8; margin-bottom: 30px; }
+    .doc-btn { align-self: flex-start; padding: 14px 32px; background: #f59e0b; color: #000; font-weight: 700; border-radius: 8px; text-decoration: none; }
+
+    .doc-gallery { max-width: 1240px; margin: 60px auto; padding: 0 40px; }
+    .doc-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 30px; }
+    .d-card { background: #0c1726; border-radius: 16px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08); }
+    .d-card img { width: 100%; height: 200px; object-fit: cover; }
+    .d-card-body { padding: 20px; }
+    .d-card h3 { font-size: 1.1rem; margin-bottom: 8px; }
+    .d-card p { font-size: 0.86rem; color: #94a3b8; line-height: 1.5; }
+
+    .nav-options-bar { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #0f172a; color: #fff; padding: 10px 24px; border-radius: 999px; box-shadow: 0 10px 30px rgba(0,0,0,0.6); display: flex; align-items: center; gap: 14px; z-index: 999; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.2); }
+    .nav-options-bar a { color: #38bdf8; text-decoration: none; font-weight: 700; }
+  </style>
+</head>
+<body>
+  <div class="doc-split-hero">
+    <div class="split-left-video">
+      <video autoplay loop muted playsinline>
+        <source src="/assets/ocean_whale_bg.mp4" type="video/mp4" />
+      </video>
+      <div class="split-left-scrim"></div>
+    </div>
+    <div class="split-right-copy">
+      <div class="doc-kicker">OCEANIC INVESTIGATION • NTRO PS-26143</div>
+      <h1 class="doc-h1">The Invisible Hit-and-Run on the High Seas</h1>
+      <p class="doc-lead">
+        When a commercial vessel purges oily engine bilge at night to save $100,000 in disposal fees, the slick drifts 40 kilometers before dawn. We use satellite radar and ocean circulation physics to unmask the true culprit.
+      </p>
+      <a href="/" class="doc-btn">Launch Live Investigation →</a>
+    </div>
+  </div>
+
+  <div class="doc-gallery">
+    <h2 style="font-size: 2rem; font-weight: 800;">Real Satellite Evidence Archive</h2>
+    <div class="doc-cards">
+      <div class="d-card"><img src="/assets/evidence/Mauri.jpg" /><div class="d-card-body"><h3>Mauritius MV Wakashio</h3><p>Heavy bunker fuel disaster flooding pristine coral lagoons and mangrove reserves.</p></div></div>
+      <div class="d-card"><img src="/assets/evidence/huntington_oli_2021276.jpg" /><div class="d-card-body"><h3>Huntington Beach Rupture</h3><p>Subsea pipeline fracture spreading across coastal wetlands and snowy plover habitats.</p></div></div>
+      <div class="d-card"><img src="/assets/evidence/sfbay_RAD_2007316.jpg" /><div class="d-card-body"><h3>SF Bay SAR Radar Slicks</h3><p>Direct physics benchmark: capillary wave dampening appearing pitch-black on C-band SAR.</p></div></div>
+    </div>
+  </div>
+
+  <div class="nav-options-bar">
+    <span>Showing <strong>Option 5 of 8</strong> (National Geographic)</span>
+    <a href="/option4.html">← Option 4</a>
+    <a href="/options.html">All 8 Options</a>
+    <a href="/option6.html">Option 6 →</a>
+  </div>
+</body>
+</html>

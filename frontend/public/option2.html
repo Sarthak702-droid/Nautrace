@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Option 2: Ocean Dives (Screenshot 3 Replica) - NAUTRACE</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;800&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #01040a; color: #f8fafc; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+    .hero-editorial { position: relative; min-height: 90vh; display: flex; flex-direction: column; justify-content: space-between; padding: 40px 60px; overflow: hidden; }
+    .hero-vid { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; filter: brightness(0.6) contrast(1.15); z-index: 1; }
+    .hero-scrim { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(180deg, rgba(1,4,10,0.3) 0%, rgba(1,4,10,0.2) 40%, #01040a 100%); z-index: 2; }
+    
+    /* Top bar */
+    .top-nav { position: relative; z-index: 10; display: flex; align-items: center; justify-content: space-between; }
+    .brand-serif { font-family: 'Cinzel', serif; font-size: 1.4rem; font-weight: 700; letter-spacing: 0.15em; color: #ffffff; }
+    .serif-links { display: flex; gap: 32px; }
+    .serif-links a { color: rgba(255,255,255,0.8); text-decoration: none; font-size: 0.88rem; letter-spacing: 0.05em; transition: color 0.2s; }
+    .serif-links a:hover { color: #38bdf8; }
+    .btn-serif-cta { padding: 8px 24px; border: 1px solid rgba(255,255,255,0.4); border-radius: 999px; color: #fff; background: rgba(255,255,255,0.05); text-decoration: none; font-size: 0.82rem; letter-spacing: 0.08em; backdrop-filter: blur(8px); }
+    
+    /* Hero Title */
+    .hero-body { position: relative; z-index: 10; max-width: 900px; margin-top: 100px; }
+    .kicker-sub { font-size: 0.76rem; font-weight: 700; letter-spacing: 0.2em; color: #38bdf8; text-transform: uppercase; margin-bottom: 14px; }
+    .title-serif { font-family: 'Playfair Display', serif; font-size: 4.6rem; font-weight: 400; line-height: 1.05; color: #ffffff; margin-bottom: 24px; }
+    .title-serif em { font-style: italic; font-weight: 400; }
+    .btn-serif-explore { display: inline-flex; align-items: center; padding: 12px 32px; border: 1px solid #ffffff; border-radius: 999px; color: #ffffff; text-decoration: none; font-size: 0.85rem; letter-spacing: 0.1em; text-transform: uppercase; transition: all 0.3s; }
+    .btn-serif-explore:hover { background: #ffffff; color: #01040a; }
+
+    /* Editorial Split Section */
+    .split-sec { max-width: 1200px; margin: 0 auto; padding: 90px 40px; }
+    .split-kicker { font-size: 0.74rem; letter-spacing: 0.2em; color: #94a3b8; text-transform: uppercase; margin-bottom: 8px; }
+    .split-title { font-family: 'Playfair Display', serif; font-size: 3rem; font-weight: 400; color: #ffffff; margin-bottom: 40px; }
+    .split-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; line-height: 1.8; color: #94a3b8; font-size: 1.05rem; }
+    
+    /* Video showcase with circular play button */
+    .showcase-box { margin-top: 60px; position: relative; height: 500px; border-radius: 28px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); }
+    .showcase-img { width: 100%; height: 100%; object-fit: cover; }
+    .play-circle { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 84px; height: 84px; border-radius: 50%; background: rgba(255,255,255,0.2); backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.5); display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.8rem; color: #fff; }
+
+    .nav-options-bar { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #0f172a; color: #fff; padding: 10px 24px; border-radius: 999px; box-shadow: 0 10px 30px rgba(0,0,0,0.6); display: flex; align-items: center; gap: 14px; z-index: 999; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.2); }
+    .nav-options-bar a { color: #38bdf8; text-decoration: none; font-weight: 700; }
+  </style>
+</head>
+<body>
+  <section class="hero-editorial">
+    <video autoplay loop muted playsinline class="hero-vid">
+      <source src="/assets/marine_bg.mp4" type="video/mp4" />
+    </video>
+    <div class="hero-scrim"></div>
+
+    <header class="top-nav">
+      <div class="brand-serif">NAUTRACE</div>
+      <nav class="serif-links">
+        <a href="#mission">The Mission</a>
+        <a href="#beneath">Beneath The Ocean</a>
+        <a href="#hazards">Marine Sanctuaries</a>
+        <a href="#law">Admiralty Proof</a>
+      </nav>
+      <a href="/" class="btn-serif-cta">Launch Console ↗</a>
+    </header>
+
+    <div class="hero-body">
+      <div class="kicker-sub">DEEP SEA FORENSICS &amp; SATELLITE RADAR</div>
+      <h1 class="title-serif">Explore the Ocean's <em>Invisible</em> Currents</h1>
+      <a href="/" class="btn-serif-explore">Access Forensic Workspace →</a>
+    </div>
+  </section>
+
+  <section class="split-sec" id="mission">
+    <div class="split-kicker">THE WONDERS</div>
+    <h2 class="split-title">Beneath the Ocean</h2>
+    <div class="split-grid">
+      <p>
+        When satellite radar captures an oil slick at 04:30 UTC, ocean currents and winds have already moved the hydrocarbon mass 20 to 40 kilometers from where it was secretly dumped. Conventional systems commit the fatal mistake of accusing whichever ship happens to be closest right now.
+      </p>
+      <p>
+        NAUTRACE solves this evidentiary crisis using physical Lagrangian backward hindcasting. By coupling hourly Copernicus ocean currents, Stokes wave drift, and tides, we rewind time hour by hour to pinpoint the true culprit ship with mathematical certainty.
+      </p>
+    </div>
+
+    <div class="showcase-box">
+      <img src="/assets/evidence/Mauri.jpg" alt="Mauritius Coral Reef Crisis" class="showcase-img" />
+      <div class="play-circle" onclick="window.location.href='/'">▶</div>
+    </div>
+  </section>
+
+  <div class="nav-options-bar">
+    <span>Showing <strong>Option 2 of 8</strong> (Ocean Dives)</span>
+    <a href="/option1.html">← Option 1</a>
+    <a href="/options.html">All 8 Options</a>
+    <a href="/option3.html">Option 3 →</a>
+  </div>
+</body>
+</html>

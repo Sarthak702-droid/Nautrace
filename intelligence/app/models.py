@@ -248,3 +248,21 @@ class DetectionResponse(BaseModel):
     slick_area_km2: float
     look_alike_risk: str
     model_info: dict[str, Any]
+
+
+class LiveCaseRequest(BaseModel):
+    incident_id: str = Field(min_length=1)
+    aoi_lat: float = Field(ge=-90.0, le=90.0)
+    aoi_lon: float = Field(ge=-180.0, le=180.0)
+    detection_time: datetime
+    image_base64: str | None = None
+    vessel_tracks: list[VesselTrack] = Field(min_length=1)
+    min_age_hours: float = Field(default=1.0, gt=0.0)
+    max_age_hours: float = Field(default=6.0, gt=0.0)
+    ensemble_size: int = Field(default=200, ge=10, le=1000)
+
+    @model_validator(mode="after")
+    def validate_live_req(self) -> "LiveCaseRequest":
+        if self.detection_time.tzinfo is None:
+            raise ValueError("detection_time must be timezone-aware")
+        return self

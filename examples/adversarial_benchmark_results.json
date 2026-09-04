@@ -1,0 +1,41 @@
+{
+  "timestamp": "2026-09-03T19:51:08.657547+00:00",
+  "total_vessels": 30,
+  "tests": [
+    {
+      "test": "Baseline 30-Vessel",
+      "expected": "VESSEL-17",
+      "actual": "VESSEL-17",
+      "pass": true
+    },
+    {
+      "test": "AIS Dropout Gap Penalty",
+      "expected": "Handled without crashing",
+      "actual": "VESSEL-08",
+      "pass": true
+    },
+    {
+      "test": "Distractor Vessel Temporal Trap",
+      "expected": "VESSEL-17",
+      "actual": "VESSEL-17",
+      "pass": true
+    },
+    {
+      "test": "Direction Trap",
+      "expected": "VESSEL-17",
+      "actual": "VESSEL-17",
+      "pass": true
+    },
+    {
+      "test": "IMO Unknown Hypothesis Attribution",
+      "expected": "UNKNOWN_NON_AIS",
+      "actual": "UNKNOWN_NON_AIS",
+      "pass": true
+    }
+  ],
+  "metrics": {
+    "rank_1_accuracy": 1.0,
+    "unknown_accuracy": 1.0,
+    "distractor_rejection": 1.0
+  }
+}
