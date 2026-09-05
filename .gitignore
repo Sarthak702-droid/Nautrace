@@ -36,3 +36,4 @@ update_server.py
 
 ml/data/
 ml/weights/
+gateway/server
