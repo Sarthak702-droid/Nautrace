@@ -49,6 +49,8 @@ class AnalysisService:
             forcing=forcing,
             ensemble_size=ensemble_size,
             rng=rng,
+            particle_path_count=min(request.particle_path_count, ensemble_size),
+            particle_path_samples=request.particle_path_samples,
         )
 
         trajectories: dict[str, AISTrajectory] = {}

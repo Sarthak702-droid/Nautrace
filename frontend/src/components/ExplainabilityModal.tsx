@@ -27,7 +27,13 @@ export const ExplainabilityModal: React.FC<ExplainabilityModalProps> = ({ candid
     { label: "Origin Envelope Overlap", val: sub.originOverlap, desc: "Fraction of vessel trajectory intersecting 50% & 90% envelopes" },
     { label: "AIS Continuity", val: sub.aisContinuity, desc: "Gap penalty & valid geodesic speed continuity" },
     { label: "Behaviour Anomaly Signal", val: sub.behaviourAnomaly, desc: "Speed drop / course change detection near release window" },
-    { label: "Ensemble Rank Stability", val: sub.ensembleStability, desc: "Percent of 500 stochastic RK4 realizations where vessel remained top candidate" },
+    {
+      label: "Ensemble Rank Stability",
+      val: sub.ensembleStability,
+      desc: candidate.ensembleSize
+        ? `Percent of ${candidate.ensembleSize} stochastic RK4 realizations where vessel remained top candidate`
+        : "Percent of stochastic RK4 realizations where vessel remained top candidate",
+    },
   ];
 
   return (
@@ -59,11 +65,19 @@ export const ExplainabilityModal: React.FC<ExplainabilityModalProps> = ({ candid
               </div>
               <div className="metric-row">
                 <span>Closest Geodesic Distance:</span>
-                <strong>{candidate.closestApproachKm} km</strong>
+                <strong>
+                  {candidate.closestApproachKm === undefined
+                    ? 'Not reconstructible'
+                    : `${candidate.closestApproachKm} km`}
+                </strong>
               </div>
               <div className="metric-row">
                 <span>Release Time Discrepancy:</span>
-                <strong>{candidate.temporalOffsetMin} min</strong>
+                <strong>
+                  {candidate.temporalOffsetMin === undefined
+                    ? 'Not reported'
+                    : `${candidate.temporalOffsetMin} min`}
+                </strong>
               </div>
             </div>
           </div>

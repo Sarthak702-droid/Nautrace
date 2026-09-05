@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { CASES } from "./data/cases";
 import type { IncidentCase, CandidateScore } from "./types";
+import { AnalysisError, runAnalysis } from "./api/nautrace";
 import { Header, type ActiveView } from "./components/Header";
 import { CaseDataPanel } from "./components/CaseDataPanel";
 import { ForensicMap } from "./components/ForensicMap";
@@ -33,26 +34,17 @@ export const AppContent: React.FC = () => {
       window.history.replaceState(null, '', url);
     }
   };
-    const [customCases, setCustomCases] = useState<IncidentCase[]>([]);
+  const [customCases, setCustomCases] = useState<IncidentCase[]>([]);
   const [isNewCaseOpen, setIsNewCaseOpen] = useState<boolean>(false);
   const allCases = [...customCases, ...CASES];
 
   const [currentCase, setCurrentCase] = useState<IncidentCase>(CASES[0]);
-
-  const handleCreateCustomCase = (newCase: IncidentCase) => {
-    setCustomCases((prev) => [newCase, ...prev]);
-    setCurrentCase(newCase);
-    if (newCase.tracks.length > 0) {
-      setSelectedVesselId(newCase.tracks[0].id);
-    }
-    setCurrentTimeStr(newCase.detectionTime);
-    handleRunAnalysis();
-  };
   const [currentTimeStr, setCurrentTimeStr] = useState<string>("2026-08-14T03:30:00Z");
   const [selectedVesselId, setSelectedVesselId] = useState<string | null>("vessel-a");
   const [explainedCandidate, setExplainedCandidate] = useState<CandidateScore | null>(null);
   const [isReportOpen, setIsReportOpen] = useState<boolean>(false);
   const [isAnalyzing, setIsAnalyzing] = useState<boolean>(false);
+  const [analysisError, setAnalysisError] = useState<string | null>(null);
 
   const [layerVisibility, setLayerVisibility] = useState({
     sar: true,
@@ -67,53 +59,54 @@ export const AppContent: React.FC = () => {
     setLayerVisibility((prev) => ({ ...prev, [layer]: !prev[layer] }));
   };
 
-  const handleRunAnalysis = () => {
+  // A single in-flight analysis at a time; starting a new one supersedes the previous.
+  const analysisAbortRef = useRef<AbortController | null>(null);
+
+  useEffect(() => () => analysisAbortRef.current?.abort(), []);
+
+  const runAnalysisFor = useCallback(async (target: IncidentCase) => {
+    analysisAbortRef.current?.abort();
+    const controller = new AbortController();
+    analysisAbortRef.current = controller;
+
     setIsAnalyzing(true);
-    
-    // Simulate real Runge-Kutta 4 backward Lagrangian cloud generation
-    setTimeout(() => {
-      // Create 45 stochastic particles backward-advected from slick boundary to origin
-      const originCenter = currentCase.origin50.center;
-      const slickCenter = currentCase.slickPolygon[0] || { lat: 18.28, lon: 71.95 };
-      
-      const newParticles = Array.from({ length: 45 }, (_, idx) => {
-        const jitterAngle = (idx / 45) * Math.PI * 2;
-        const radius = 0.015 + Math.random() * 0.025;
-        const startLat = slickCenter.lat + Math.sin(jitterAngle) * radius;
-        const startLon = slickCenter.lon + Math.cos(jitterAngle) * radius;
-
-        // Backward 4-step RK4 trajectory
-        const steps = 4;
-        const trajectory = Array.from({ length: steps }, (__, stepIdx) => {
-          const frac = stepIdx / (steps - 1);
-          // Non-linear advection curvature with turbulent diffusion
-          const turbLat = (Math.random() - 0.5) * 0.008;
-          const turbLon = (Math.random() - 0.5) * 0.008;
-          return {
-            t: new Date(new Date(currentCase.detectionTime).getTime() - (steps - 1 - stepIdx) * 3600000).toISOString(),
-            lat: Number((startLat + frac * (originCenter.lat - startLat) + turbLat).toFixed(4)),
-            lon: Number((startLon + frac * (originCenter.lon - startLon) + turbLon).toFixed(4)),
-          };
-        });
-
-        return {
-          id: idx + 1,
-          trajectory,
-        };
-      });
-
-      setCurrentCase((prev) => ({
-        ...prev,
-        particles: newParticles,
-      }));
-
-      // Ensure particles layer is active
+    setAnalysisError(null);
+    try {
+      const analysed = await runAnalysis(target, controller.signal);
+      setCurrentCase(analysed);
       setLayerVisibility((prev) => ({ ...prev, hindcastParticles: true }));
-      setIsAnalyzing(false);
-    }, 1200);
+    } catch (err) {
+      if (err instanceof DOMException && err.name === "AbortError") return;
+      setAnalysisError(
+        err instanceof AnalysisError || err instanceof Error
+          ? err.message
+          : "Analysis failed for an unknown reason.",
+      );
+    } finally {
+      if (analysisAbortRef.current === controller) {
+        analysisAbortRef.current = null;
+        setIsAnalyzing(false);
+      }
+    }
+  }, []);
+
+  const handleRunAnalysis = useCallback(() => {
+    void runAnalysisFor(currentCase);
+  }, [currentCase, runAnalysisFor]);
+
+  const handleCreateCustomCase = (newCase: IncidentCase) => {
+    setCustomCases((prev) => [newCase, ...prev]);
+    setCurrentCase(newCase);
+    if (newCase.tracks.length > 0) {
+      setSelectedVesselId(newCase.tracks[0].id);
+    }
+    setCurrentTimeStr(newCase.detectionTime);
+    void runAnalysisFor(newCase);
   };
 
   const handleSelectCase = (c: IncidentCase) => {
+    analysisAbortRef.current?.abort();
+    setAnalysisError(null);
     setCurrentCase(c);
     if (c.tracks.length > 0) {
       setSelectedVesselId(c.tracks[0].id);
@@ -153,6 +146,20 @@ export const AppContent: React.FC = () => {
           onBackToHome={() => setActiveView('home')}
           onLaunchConsole={() => setActiveView('console')}
         />
+      )}
+
+      {activeView === 'console' && analysisError && (
+        <div className="analysis-error-banner" role="alert">
+          <span className="analysis-error-label">ANALYSIS FAILED</span>
+          <span className="analysis-error-text">{analysisError}</span>
+          <button
+            className="analysis-error-dismiss"
+            onClick={() => setAnalysisError(null)}
+            aria-label="Dismiss analysis error"
+          >
+            ×
+          </button>
+        </div>
       )}
 
       {activeView === 'console' && (

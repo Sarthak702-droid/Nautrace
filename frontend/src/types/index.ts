@@ -28,11 +28,17 @@ export interface CandidateScore {
   score: number;
   p05: number;
   p95: number;
-  closestApproachKm: number;
-  temporalOffsetMin: number;
+  /** Absent when the engine could not reconstruct a position for any ensemble member. */
+  closestApproachKm?: number;
+  /** Absent for backend-computed candidates; the engine reports gaps, not a signed offset. */
+  temporalOffsetMin?: number;
   trajectoryCompatibility: string;
   aisContinuity: string;
   isUnknownSource?: boolean;
+  /** Ensemble members actually integrated, used to describe rank stability honestly. */
+  ensembleSize?: number;
+  /** Human-readable evidence lines produced by the attribution engine. */
+  explanation?: string[];
   subscores?: {
     spatial: number;
     temporal: number;
@@ -54,6 +60,24 @@ export interface EllipseParams {
 export interface HindcastParticle {
   id: number;
   trajectory: { t: string; lat: number; lon: number }[];
+}
+
+export interface AnalysisDecision {
+  outcome: 'RANKED_CANDIDATES' | 'UNKNOWN_NON_AIS';
+  message: string;
+  disclaimer: string;
+  topCandidateVesselId: string | null;
+}
+
+export interface HindcastMeta {
+  engine: string;
+  integrationMethod: string;
+  ensembleSize: number;
+  failedMembers: number;
+  spatialBandwidthKm: number;
+  releaseP05: string;
+  releaseMedian: string;
+  releaseP95: string;
 }
 
 export interface IncidentCase {
@@ -82,4 +106,8 @@ export interface IncidentCase {
     oceanForcing: string;
     windForcing: string;
   };
+  /** Populated once the case has been analysed by the intelligence service. */
+  decision?: AnalysisDecision;
+  hindcastMeta?: HindcastMeta;
+  warnings?: string[];
 }

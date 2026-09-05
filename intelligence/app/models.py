@@ -124,6 +124,18 @@ class AnalysisRequest(BaseModel):
     ais_tracks: list[VesselTrack]
     ensemble_size: int | None = Field(default=None, ge=32, le=4096)
     random_seed: int | None = Field(default=None, ge=0, le=(2**63 - 1))
+    particle_path_count: int = Field(
+        default=0,
+        ge=0,
+        le=256,
+        description="Number of ensemble member trajectories to return for visualization.",
+    )
+    particle_path_samples: int = Field(
+        default=12,
+        ge=2,
+        le=128,
+        description="Waypoints retained per returned trajectory after downsampling.",
+    )
 
 
 class PolygonEnvelope(BaseModel):
@@ -140,6 +152,17 @@ class ReleaseTimeSummary(BaseModel):
     p95: datetime
 
 
+class ParticleSample(BaseModel):
+    timestamp: datetime
+    lat: float
+    lon: float
+
+
+class ParticlePath(BaseModel):
+    member_index: int
+    samples: list[ParticleSample]
+
+
 class HindcastSummary(BaseModel):
     engine: str
     integration_method: str
@@ -150,6 +173,13 @@ class HindcastSummary(BaseModel):
     release_time: ReleaseTimeSummary
     spatial_bandwidth_km: float
     failed_members: int
+    particle_paths: list[ParticlePath] = Field(
+        default_factory=list,
+        description=(
+            "Backward RK4 trajectories for a subset of ensemble members, ordered "
+            "detection-time first. Empty unless the caller requests paths."
+        ),
+    )
 
 
 class AISQualitySummary(BaseModel):
@@ -256,13 +286,34 @@ class LiveCaseRequest(BaseModel):
     aoi_lon: float = Field(ge=-180.0, le=180.0)
     detection_time: datetime
     image_base64: str | None = None
+
+    # A caller that already holds a delineated slick (an analyst-drawn polygon, or the
+    # output of a previous /detect call) supplies it here. Only when it is absent does
+    # the orchestrator invoke the SAR detector to derive geometry.
+    spill_polygon: list[GeoPoint] | None = Field(default=None, min_length=3)
+    oil_probability: float | None = Field(default=None, ge=0.0, le=1.0)
+    boundary_sigma_m: float | None = Field(default=None, gt=0.0)
+    source_product_id: str | None = Field(default=None, min_length=1)
+
+    # Met-ocean forcing. Supplied values override the adapter defaults; directions are
+    # meteorological convention, i.e. the direction the flow/wind is coming FROM.
+    wind_speed_mps: float | None = Field(default=None, ge=0.0, le=80.0)
+    wind_dir_deg: float | None = Field(default=None, ge=0.0, lt=360.0)
+    current_speed_mps: float | None = Field(default=None, ge=0.0, le=10.0)
+    current_dir_deg: float | None = Field(default=None, ge=0.0, lt=360.0)
+
     vessel_tracks: list[VesselTrack] = Field(min_length=1)
     min_age_hours: float = Field(default=1.0, gt=0.0)
     max_age_hours: float = Field(default=6.0, gt=0.0)
-    ensemble_size: int = Field(default=200, ge=10, le=1000)
+    ensemble_size: int = Field(default=200, ge=32, le=1000)
+    random_seed: int | None = Field(default=None, ge=0, le=(2**63 - 1))
+    particle_path_count: int = Field(default=0, ge=0, le=256)
+    particle_path_samples: int = Field(default=12, ge=2, le=128)
 
     @model_validator(mode="after")
     def validate_live_req(self) -> "LiveCaseRequest":
         if self.detection_time.tzinfo is None:
             raise ValueError("detection_time must be timezone-aware")
+        if self.max_age_hours <= self.min_age_hours:
+            raise ValueError("max_age_hours must be greater than min_age_hours")
         return self

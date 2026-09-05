@@ -38,7 +38,8 @@ func (s *Server) Handler() http.Handler {
 	mux := http.NewServeMux()
 	mux.HandleFunc("GET /healthz", s.healthz)
 	mux.HandleFunc("GET /readyz", s.readyz)
-	mux.HandleFunc("POST /api/v1/analyze", s.analyze)
+	mux.HandleFunc("POST /api/v1/analyze", s.proxyAnalysis(s.intel.Analyze))
+	mux.HandleFunc("POST /api/v1/cases/live-analyze", s.proxyAnalysis(s.intel.LiveAnalyze))
 	mux.HandleFunc("POST /api/v1/incidents", s.createIncident)
 	mux.HandleFunc("GET /api/v1/incidents", s.listIncidents)
 	mux.HandleFunc("GET /api/v1/incidents/{id}", s.getIncident)
@@ -97,70 +98,78 @@ func (s *Server) release() {
 	<-s.semaphore
 }
 
-func (s *Server) analyze(w http.ResponseWriter, r *http.Request) {
-	if !s.acquire() {
-		w.Header().Set("Retry-After", "2")
-		writeJSON(w, http.StatusServiceUnavailable, map[string]any{
-			"error":   "analysis_capacity_exhausted",
-			"message": "all analysis workers are busy; retry the same request",
-		})
-		return
-	}
-	defer s.release()
+type forwarder func(ctx context.Context, requestID string, payload []byte) ([]byte, int, error)
 
-	requestID := r.Header.Get("X-Request-ID")
-	payload, err := io.ReadAll(r.Body)
-	if err != nil {
-		var maxErr *http.MaxBytesError
-		if errors.As(err, &maxErr) {
-			writeJSON(w, http.StatusRequestEntityTooLarge, map[string]any{"error": "request_too_large"})
+// proxyAnalysis builds a handler that guards a scientific-compute call with the
+// bounded-concurrency semaphore, hashes the request for the evidence chain, and wraps
+// the upstream result in the gateway response envelope.
+func (s *Server) proxyAnalysis(forward forwarder) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		if !s.acquire() {
+			w.Header().Set("Retry-After", "2")
+			writeJSON(w, http.StatusServiceUnavailable, map[string]any{
+				"error":   "analysis_capacity_exhausted",
+				"message": "all analysis workers are busy; retry the same request",
+			})
 			return
 		}
-		writeJSON(w, http.StatusBadRequest, map[string]any{"error": "request_read_failed", "message": err.Error()})
-		return
-	}
-	if len(payload) == 0 {
-		writeJSON(w, http.StatusBadRequest, map[string]any{"error": "empty_request"})
-		return
-	}
-	if !json.Valid(payload) {
-		writeJSON(w, http.StatusBadRequest, map[string]any{"error": "invalid_json"})
-		return
-	}
+		defer s.release()
 
-	digest := sha256.Sum256(payload)
-	requestHash := hex.EncodeToString(digest[:])
-	started := time.Now()
-	body, status, err := s.intel.Analyze(r.Context(), requestID, payload)
-	if err != nil {
-		s.logger.Error("intelligence_request_failed", "error", err, "request_id", requestID)
-		writeJSON(w, http.StatusBadGateway, map[string]any{
+		requestID := r.Header.Get("X-Request-ID")
+		payload, err := io.ReadAll(r.Body)
+		if err != nil {
+			var maxErr *http.MaxBytesError
+			if errors.As(err, &maxErr) {
+				writeJSON(w, http.StatusRequestEntityTooLarge, map[string]any{"error": "request_too_large"})
+				return
+			}
+			writeJSON(w, http.StatusBadRequest, map[string]any{"error": "request_read_failed", "message": err.Error()})
+			return
+		}
+		if len(payload) == 0 {
+			writeJSON(w, http.StatusBadRequest, map[string]any{"error": "empty_request"})
+			return
+		}
+		if !json.Valid(payload) {
+			writeJSON(w, http.StatusBadRequest, map[string]any{"error": "invalid_json"})
+			return
+		}
+
+		digest := sha256.Sum256(payload)
+		requestHash := hex.EncodeToString(digest[:])
+		started := time.Now()
+		body, status, err := forward(r.Context(), requestID, payload)
+		if err != nil {
+			s.logger.Error("intelligence_request_failed", "error", err, "request_id", requestID)
+			writeJSON(w, http.StatusBadGateway, map[string]any{
+				"request_id":     requestID,
+				"request_sha256": requestHash,
+				"error":          "intelligence_unavailable",
+			})
+			return
+		}
+		if status < 200 || status >= 300 {
+			w.Header().Set("Content-Type", "application/json")
+			w.Header().Set("X-Request-SHA256", requestHash)
+			w.WriteHeader(status)
+			_, _ = w.Write(body)
+			return
+		}
+
+		// Embed the upstream bytes verbatim. Decoding into `any` would round the
+		// int64 provenance seed through float64 and break reproducibility.
+		if !json.Valid(body) {
+			writeJSON(w, http.StatusBadGateway, map[string]any{"error": "invalid_intelligence_response"})
+			return
+		}
+		w.Header().Set("X-Request-SHA256", requestHash)
+		writeJSON(w, http.StatusOK, map[string]any{
 			"request_id":     requestID,
 			"request_sha256": requestHash,
-			"error":          "intelligence_unavailable",
+			"elapsed_ms":     time.Since(started).Milliseconds(),
+			"analysis":       json.RawMessage(body),
 		})
-		return
 	}
-	if status < 200 || status >= 300 {
-		w.Header().Set("Content-Type", "application/json")
-		w.Header().Set("X-Request-SHA256", requestHash)
-		w.WriteHeader(status)
-		_, _ = w.Write(body)
-		return
-	}
-
-	var analysis any
-	if err := json.Unmarshal(body, &analysis); err != nil {
-		writeJSON(w, http.StatusBadGateway, map[string]any{"error": "invalid_intelligence_response"})
-		return
-	}
-	w.Header().Set("X-Request-SHA256", requestHash)
-	writeJSON(w, http.StatusOK, map[string]any{
-		"request_id":     requestID,
-		"request_sha256": requestHash,
-		"elapsed_ms":     time.Since(started).Milliseconds(),
-		"analysis":       analysis,
-	})
 }
 
 func writeJSON(w http.ResponseWriter, status int, payload any) {

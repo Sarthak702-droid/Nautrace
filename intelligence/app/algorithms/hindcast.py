@@ -19,10 +19,21 @@ from app.config import HindcastConfig
 from app.models import (
     GeoPoint,
     HindcastSummary,
+    ParticlePath,
+    ParticleSample,
     ReleaseTimePrior,
     ReleaseTimeSummary,
     SpillObservation,
 )
+
+
+def _downsample(samples: list[ParticleSample], limit: int) -> list[ParticleSample]:
+    """Thin a trajectory to at most `limit` waypoints, always keeping both endpoints."""
+    if len(samples) <= limit:
+        return samples
+    last = len(samples) - 1
+    indices = sorted({round(i * last / (limit - 1)) for i in range(limit)})
+    return [samples[i] for i in indices]
 
 
 @dataclass(frozen=True)
@@ -33,6 +44,7 @@ class HindcastMember:
     current_scale: float
     wind_scale: float
     windage: float
+    path: tuple[ParticleSample, ...] = ()
 
 
 @dataclass(frozen=True)
@@ -133,6 +145,8 @@ class EnsembleLagrangianHindcast:
         prior: ReleaseTimePrior,
         forcing: RegularGridMetoceanField,
         rng: np.random.Generator,
+        record_path: bool = False,
+        path_samples: int = 12,
     ) -> HindcastMember:
         age_hours = self._sample_release_age(prior, rng)
         target_seconds = age_hours * 3600.0
@@ -148,6 +162,9 @@ class EnsembleLagrangianHindcast:
 
         elapsed = 0.0
         current_time = spill.detection_time
+        path: list[ParticleSample] | None = None
+        if record_path:
+            path = [ParticleSample(timestamp=current_time, lat=point.lat, lon=point.lon)]
         configured_step = float(self.config.integration_step_seconds)
         while elapsed < target_seconds:
             step = min(configured_step, target_seconds - elapsed)
@@ -172,6 +189,8 @@ class EnsembleLagrangianHindcast:
 
             current_time = current_time - timedelta(seconds=step)
             elapsed += step
+            if path is not None:
+                path.append(ParticleSample(timestamp=current_time, lat=point.lat, lon=point.lon))
 
         return HindcastMember(
             origin=point,
@@ -180,6 +199,7 @@ class EnsembleLagrangianHindcast:
             current_scale=current_scale,
             wind_scale=wind_scale,
             windage=windage,
+            path=tuple(_downsample(path, path_samples)) if path is not None else (),
         )
 
     def run(
@@ -189,12 +209,23 @@ class EnsembleLagrangianHindcast:
         forcing: RegularGridMetoceanField,
         ensemble_size: int,
         rng: np.random.Generator,
+        particle_path_count: int = 0,
+        particle_path_samples: int = 12,
     ) -> HindcastComputation:
         members: list[HindcastMember] = []
         failed = 0
-        for _ in range(ensemble_size):
+        for index in range(ensemble_size):
             try:
-                members.append(self._integrate_member(spill, prior, forcing, rng))
+                members.append(
+                    self._integrate_member(
+                        spill,
+                        prior,
+                        forcing,
+                        rng,
+                        record_path=index < particle_path_count,
+                        path_samples=particle_path_samples,
+                    )
+                )
             except ForcingCoverageError:
                 failed += 1
 
@@ -231,6 +262,11 @@ class EnsembleLagrangianHindcast:
 
         center = polygon_centroid(env50.polygon[:-1])
         radial_scale_km = math.sqrt(env90.semi_major_km * env90.semi_minor_km)
+        particle_paths = [
+            ParticlePath(member_index=idx, samples=list(member.path))
+            for idx, member in enumerate(members)
+            if member.path
+        ]
         summary = HindcastSummary(
             engine=self.name,
             integration_method=self.integration_method,
@@ -245,5 +281,6 @@ class EnsembleLagrangianHindcast:
             ),
             spatial_bandwidth_km=radial_scale_km,
             failed_members=failed,
+            particle_paths=particle_paths,
         )
         return HindcastComputation(members=members, summary=summary)

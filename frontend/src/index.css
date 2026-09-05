@@ -352,6 +352,58 @@ body {
   background: #02050e;
 }
 
+/* Analysis failure notice. Overlaid rather than inserted into the flow so the
+   workspace layout height stays intact. */
+.analysis-error-banner {
+  position: fixed;
+  top: 72px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  max-width: min(880px, calc(100vw - 48px));
+  padding: 9px 12px;
+  border: 1px solid rgba(248, 113, 113, 0.45);
+  border-radius: 8px;
+  background: rgba(38, 10, 14, 0.95);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.analysis-error-label {
+  flex-shrink: 0;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #fca5a5;
+}
+
+.analysis-error-text {
+  font-size: 11px;
+  line-height: 1.45;
+  color: rgba(254, 226, 226, 0.92);
+}
+
+.analysis-error-dismiss {
+  flex-shrink: 0;
+  margin-left: auto;
+  padding: 0 4px;
+  border: none;
+  background: none;
+  font-size: 16px;
+  line-height: 1;
+  color: rgba(252, 165, 165, 0.8);
+  cursor: pointer;
+}
+
+.analysis-error-dismiss:hover {
+  color: #fecaca;
+}
+
 /* Cyber Side Panels */
 .cyber-side-panel {
   background: rgba(4, 9, 20, 0.94);

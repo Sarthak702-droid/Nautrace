@@ -68,7 +68,9 @@ func retriableStatus(status int) bool {
 	return status == http.StatusBadGateway || status == http.StatusServiceUnavailable || status == http.StatusGatewayTimeout
 }
 
-func (c *Client) Analyze(ctx context.Context, requestID string, payload []byte) ([]byte, int, error) {
+// Forward proxies a JSON payload to an intelligence-service path, applying the
+// configured retry policy to transient upstream failures.
+func (c *Client) Forward(ctx context.Context, path string, requestID string, payload []byte) ([]byte, int, error) {
 	attempts := c.retryCount + 1
 	var lastErr error
 	for attempt := 0; attempt < attempts; attempt++ {
@@ -82,7 +84,7 @@ func (c *Client) Analyze(ctx context.Context, requestID string, payload []byte) 
 			}
 		}
 
-		req, err := http.NewRequestWithContext(ctx, http.MethodPost, c.baseURL+"/internal/v1/analyze", bytes.NewReader(payload))
+		req, err := http.NewRequestWithContext(ctx, http.MethodPost, c.baseURL+path, bytes.NewReader(payload))
 		if err != nil {
 			return nil, 0, err
 		}
@@ -106,4 +108,12 @@ func (c *Client) Analyze(ctx context.Context, requestID string, payload []byte) 
 		return body, resp.StatusCode, nil
 	}
 	return nil, 0, lastErr
+}
+
+func (c *Client) Analyze(ctx context.Context, requestID string, payload []byte) ([]byte, int, error) {
+	return c.Forward(ctx, "/internal/v1/analyze", requestID, payload)
+}
+
+func (c *Client) LiveAnalyze(ctx context.Context, requestID string, payload []byte) ([]byte, int, error) {
+	return c.Forward(ctx, "/internal/v1/cases/live-analyze", requestID, payload)
 }

@@ -109,11 +109,15 @@ export const SuspectsPanel: React.FC<SuspectsPanelProps> = ({
                 <div className="candidate-stats-grid cyber-stats-grid">
                   <div className="stat-box">
                     <span className="stat-lbl">CLOSEST APPROACH</span>
-                    <span className="stat-val highlight-val">{c.closestApproachKm} km</span>
+                    <span className="stat-val highlight-val">
+                      {c.closestApproachKm === undefined ? '—' : `${c.closestApproachKm} km`}
+                    </span>
                   </div>
                   <div className="stat-box">
                     <span className="stat-lbl">TEMPORAL OFFSET</span>
-                    <span className="stat-val">{c.temporalOffsetMin} min</span>
+                    <span className="stat-val">
+                      {c.temporalOffsetMin === undefined ? '—' : `${c.temporalOffsetMin} min`}
+                    </span>
                   </div>
                   <div className="stat-box">
                     <span className="stat-lbl">DRIFT FIT</span>

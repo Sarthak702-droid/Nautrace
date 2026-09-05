@@ -374,7 +374,9 @@ export const ForensicMap: React.FC<ForensicMapProps> = ({
           // Speed and Threat Sub-label
           ctx.fillStyle = isHighThreat ? '#f87171' : 'rgba(148, 163, 184, 0.9)';
           ctx.font = '9px "JetBrains Mono", monospace';
-          const threatTag = isHighThreat ? ' [CRITICAL 94%]' : '';
+          const threatTag = isHighThreat && candidate
+            ? ` [CRITICAL ${(candidate.score * 100).toFixed(0)}%]`
+            : '';
           ctx.fillText(`${speedKn.toFixed(1)} kn @ ${heading.toFixed(0)}°${threatTag}`, prPos.x + 18, prPos.y + 11);
         });
       }

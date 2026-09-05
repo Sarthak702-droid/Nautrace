@@ -1,8 +1,10 @@
 from __future__ import annotations
 
 import logging
+import os
 
 from fastapi import FastAPI, HTTPException, Request
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
 from app.config import load_algorithm_config
@@ -26,6 +28,24 @@ app = FastAPI(
         "Research-grade backend engine for uncertainty-aware oil-spill hindcasting, "
         "AIS trajectory reconstruction, and explainable vessel attribution."
     ),
+)
+
+# The operational console is served from a different origin than this service, so the
+# browser needs explicit permission to call it. Origins are configurable because the
+# production deployment must not inherit the permissive local-development default.
+_allowed_origins = [
+    origin.strip()
+    for origin in os.getenv(
+        "NAUTRACE_ALLOWED_ORIGINS",
+        "http://localhost:3000,http://127.0.0.1:3000",
+    ).split(",")
+    if origin.strip()
+]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=_allowed_origins,
+    allow_methods=["GET", "POST", "OPTIONS"],
+    allow_headers=["Content-Type", "X-Request-ID"],
 )
 
 
