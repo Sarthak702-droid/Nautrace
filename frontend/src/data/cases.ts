@@ -397,7 +397,28 @@ export const CASES: IncidentCase[] = [
         }
       }
     ],
-    particles: []
+        particles: Array.from({ length: 36 }, (_, idx) => {
+      const angle = (idx / 36) * Math.PI * 2;
+      const r = 0.012 + Math.sin(idx * 3) * 0.005;
+      const startLat = 1.255 + Math.sin(angle) * r;
+      const startLon = 104.26 + Math.cos(angle) * r;
+      const originLat = 1.21;
+      const originLon = 104.14;
+      const steps = 6;
+      return {
+        id: idx + 1,
+        trajectory: Array.from({ length: steps }, (__, sIdx) => {
+          const frac = sIdx / (steps - 1);
+          const turbLat = Math.sin(idx + sIdx) * 0.003;
+          const turbLon = Math.cos(idx + sIdx) * 0.003;
+          return {
+            t: new Date(new Date("2026-08-20T11:45:00Z").getTime() - (steps - 1 - sIdx) * 1800000).toISOString(),
+            lat: Number((startLat + frac * (originLat - startLat) + turbLat).toFixed(4)),
+            lon: Number((startLon + frac * (originLon - startLon) + turbLon).toFixed(4)),
+          };
+        })
+      };
+    })
   },
   {
     id: "CASE-003-NORTHSEA",
@@ -478,7 +499,28 @@ export const CASES: IncidentCase[] = [
         }
       }
     ],
-    particles: []
+        particles: Array.from({ length: 36 }, (_, idx) => {
+      const angle = (idx / 36) * Math.PI * 2;
+      const r = 0.018 + Math.sin(idx * 3) * 0.007;
+      const startLat = 56.45 + Math.sin(angle) * r;
+      const startLon = 3.22 + Math.cos(angle) * r;
+      const originLat = 56.38;
+      const originLon = 3.05;
+      const steps = 6;
+      return {
+        id: idx + 1,
+        trajectory: Array.from({ length: steps }, (__, sIdx) => {
+          const frac = sIdx / (steps - 1);
+          const turbLat = Math.sin(idx + sIdx) * 0.004;
+          const turbLon = Math.cos(idx + sIdx) * 0.004;
+          return {
+            t: new Date(new Date("2026-08-25T08:30:00Z").getTime() - (steps - 1 - sIdx) * 2100000).toISOString(),
+            lat: Number((startLat + frac * (originLat - startLat) + turbLat).toFixed(4)),
+            lon: Number((startLon + frac * (originLon - startLon) + turbLon).toFixed(4)),
+          };
+        })
+      };
+    })
   },
   {
     id: "CASE-004-GOMEX",
@@ -559,6 +601,27 @@ export const CASES: IncidentCase[] = [
         }
       }
     ],
-    particles: []
+        particles: Array.from({ length: 36 }, (_, idx) => {
+      const angle = (idx / 36) * Math.PI * 2;
+      const r = 0.015 + Math.sin(idx * 3) * 0.006;
+      const startLat = 28.74 + Math.sin(angle) * r;
+      const startLon = -88.38 + Math.cos(angle) * r;
+      const originLat = 28.82;
+      const originLon = -88.25;
+      const steps = 6;
+      return {
+        id: idx + 1,
+        trajectory: Array.from({ length: steps }, (__, sIdx) => {
+          const frac = sIdx / (steps - 1);
+          const turbLat = Math.sin(idx + sIdx) * 0.003;
+          const turbLon = Math.cos(idx + sIdx) * 0.003;
+          return {
+            t: new Date(new Date("2026-08-30T14:15:00Z").getTime() - (steps - 1 - sIdx) * 2400000).toISOString(),
+            lat: Number((startLat + frac * (originLat - startLat) + turbLat).toFixed(4)),
+            lon: Number((startLon + frac * (originLon - startLon) + turbLon).toFixed(4)),
+          };
+        })
+      };
+    })
   }
 ];
