@@ -256,7 +256,7 @@ export const AppContent: React.FC = () => {
       )}
 
       {isNewCaseOpen && (
-        <NewCaseModal
+        <NewCaseModal isOpen={isNewCaseOpen}
           onClose={() => setIsNewCaseOpen(false)}
           onCreateCase={handleCreateCustomCase}
         />

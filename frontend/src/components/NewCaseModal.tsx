@@ -9,7 +9,7 @@ interface NewCaseModalProps {
 }
 
 export const NewCaseModal: React.FC<NewCaseModalProps> = ({
-  isOpen,
+  isOpen = true,
   onClose,
   onCreateCase,
 }) => {
@@ -29,7 +29,7 @@ export const NewCaseModal: React.FC<NewCaseModalProps> = ({
   const [vesselMmsi, setVesselMmsi] = useState('419003312');
   const [vesselType, setVesselType] = useState('Product Tanker (Single Hull)');
 
-  if (!isOpen) return null;
+  if (isOpen === false) return null;
 
   const handleApplyPreset = (presetName: 'mumbai' | 'hormuz' | 'redsea') => {
     if (presetName === 'mumbai') {
