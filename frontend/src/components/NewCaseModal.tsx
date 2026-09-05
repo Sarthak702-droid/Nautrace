@@ -84,36 +84,36 @@ export const NewCaseModal: React.FC<NewCaseModalProps> = ({ onClose, onCreateCas
       { lat: centerLat + 0.03, lon: centerLon - 0.05 }
     ];
 
-    // Compute inferred backward origin displacement from wind and current
+    // AIS sample tracks near the slick (inputs only — scores come from the backend).
     const radCurrent = (currentDir * Math.PI) / 180;
     const offsetScale = 0.08;
-    const originLat = centerLat - Math.cos(radCurrent) * offsetScale;
-    const originLon = centerLon - Math.sin(radCurrent) * offsetScale;
+    const approachLat = centerLat - Math.cos(radCurrent) * offsetScale;
+    const approachLon = centerLon - Math.sin(radCurrent) * offsetScale;
+    const detectMs = new Date(detectionTime).getTime();
+    const hoursBefore = (h: number) => new Date(detectMs - h * 3_600_000).toISOString();
 
-    // Build culprit vessel trajectory passing through origin
-    const culpritPoints = [
-      { timestamp: '2026-09-04T02:00:00Z', lat: originLat - 0.12, lon: originLon - 0.12, sog: 13.5, cog: 45, heading: 45 },
-      { timestamp: '2026-09-04T03:00:00Z', lat: originLat - 0.06, lon: originLon - 0.06, sog: 13.2, cog: 45, heading: 45 },
-      { timestamp: '2026-09-04T04:00:00Z', lat: originLat, lon: originLon, sog: 12.0, cog: 46, heading: 46 }, // Discharge Window CPA
-      { timestamp: '2026-09-04T05:00:00Z', lat: originLat + 0.07, lon: originLon + 0.07, sog: 13.4, cog: 45, heading: 45 },
-      { timestamp: '2026-09-04T05:30:00Z', lat: originLat + 0.11, lon: originLon + 0.11, sog: 13.8, cog: 45, heading: 45 }
+    const targetPoints = [
+      { timestamp: hoursBefore(3.5), lat: approachLat - 0.12, lon: approachLon - 0.12, sog: 13.5, cog: 45, heading: 45 },
+      { timestamp: hoursBefore(2.5), lat: approachLat - 0.06, lon: approachLon - 0.06, sog: 13.2, cog: 45, heading: 45 },
+      { timestamp: hoursBefore(1.5), lat: approachLat, lon: approachLon, sog: 12.0, cog: 46, heading: 46 },
+      { timestamp: hoursBefore(0.5), lat: approachLat + 0.07, lon: approachLon + 0.07, sog: 13.4, cog: 45, heading: 45 },
+      { timestamp: detectionTime, lat: approachLat + 0.11, lon: approachLon + 0.11, sog: 13.8, cog: 45, heading: 45 },
     ];
 
-    // Build innocent passing vessel trajectory far away
-    const innocentPoints = [
-      { timestamp: '2026-09-04T02:00:00Z', lat: centerLat + 0.15, lon: centerLon - 0.20, sog: 18.0, cog: 120, heading: 120 },
-      { timestamp: '2026-09-04T03:00:00Z', lat: centerLat + 0.10, lon: centerLon - 0.05, sog: 17.8, cog: 120, heading: 120 },
-      { timestamp: '2026-09-04T04:00:00Z', lat: centerLat + 0.05, lon: centerLon + 0.10, sog: 18.1, cog: 120, heading: 120 },
-      { timestamp: '2026-09-04T05:00:00Z', lat: centerLat, lon: centerLon + 0.25, sog: 18.2, cog: 120, heading: 120 },
-      { timestamp: '2026-09-04T05:30:00Z', lat: centerLat - 0.03, lon: centerLon + 0.32, sog: 18.0, cog: 120, heading: 120 }
+    const passingPoints = [
+      { timestamp: hoursBefore(3.5), lat: centerLat + 0.15, lon: centerLon - 0.2, sog: 18.0, cog: 120, heading: 120 },
+      { timestamp: hoursBefore(2.5), lat: centerLat + 0.1, lon: centerLon - 0.05, sog: 17.8, cog: 120, heading: 120 },
+      { timestamp: hoursBefore(1.5), lat: centerLat + 0.05, lon: centerLon + 0.1, sog: 18.1, cog: 120, heading: 120 },
+      { timestamp: hoursBefore(0.5), lat: centerLat, lon: centerLon + 0.25, sog: 18.2, cog: 120, heading: 120 },
+      { timestamp: detectionTime, lat: centerLat - 0.03, lon: centerLon + 0.32, sog: 18.0, cog: 120, heading: 120 },
     ];
 
     const newCase: IncidentCase = {
       id: caseId,
-      title: title,
-      region: region,
-      detectionTime: detectionTime,
-      slickPolygon: slickPolygon,
+      title,
+      region,
+      detectionTime,
+      slickPolygon,
       slickAreaKm2: Number(slickAreaKm2),
       oilProbability: Number(oilProbability),
       boundaryUncertaintyM: 40.0,
@@ -122,24 +122,24 @@ export const NewCaseModal: React.FC<NewCaseModalProps> = ({ onClose, onCreateCas
       currentSpeedMps: Number(currentSpeed),
       currentDirDeg: Number(currentDir),
       origin50: {
-        center: { lat: Number(originLat.toFixed(4)), lon: Number(originLon.toFixed(4)) },
-        semiMajorKm: 3.2,
-        semiMinorKm: 1.6,
-        rotationDeg: currentDir
+        center: { lat: centerLat, lon: centerLon },
+        semiMajorKm: 0,
+        semiMinorKm: 0,
+        rotationDeg: 0,
       },
       origin90: {
-        center: { lat: Number(originLat.toFixed(4)), lon: Number(originLon.toFixed(4)) },
-        semiMajorKm: 6.4,
-        semiMinorKm: 3.5,
-        rotationDeg: currentDir
+        center: { lat: centerLat, lon: centerLon },
+        semiMajorKm: 0,
+        semiMinorKm: 0,
+        rotationDeg: 0,
       },
       provenance: {
-        rawProductId: `MANUAL_S1_TEST_${caseId}`,
-        requestSha256: `sha256_${Date.now().toString(16)}`,
-        configSha256: '39ba708ee737ac01241f8dd6b895c1f89d1115e0c88fc487fee4039147c04b0c',
-        algorithmVersion: 'nautrace-hindcast-v2.1-rk4',
-        oceanForcing: 'Copernicus Marine SMOC Ingested',
-        windForcing: 'ECMWF High-Res 10m Ingested'
+        rawProductId: `MANUAL_S1_${caseId}`,
+        requestSha256: '',
+        configSha256: '',
+        algorithmVersion: 'pending-analysis',
+        oceanForcing: 'pending-analysis',
+        windForcing: 'pending-analysis',
       },
       tracks: [
         {
@@ -147,9 +147,9 @@ export const NewCaseModal: React.FC<NewCaseModalProps> = ({ onClose, onCreateCas
           name: vesselName,
           mmsi: vesselMmsi,
           type: vesselType,
-          flag: 'Marshall Islands',
+          flag: 'Unknown',
           color: '#ef4444',
-          points: culpritPoints
+          points: targetPoints,
         },
         {
           id: `passing-${caseId}`,
@@ -158,86 +158,11 @@ export const NewCaseModal: React.FC<NewCaseModalProps> = ({ onClose, onCreateCas
           type: 'Container Carrier',
           flag: 'Singapore',
           color: '#38bdf8',
-          points: innocentPoints
-        }
-      ],
-      candidates: [
-        {
-          id: `target-${caseId}`,
-          name: `${vesselName} (MMSI ${vesselMmsi})`,
-          type: vesselType,
-          score: 0.954,
-          p05: 0.89,
-          p95: 0.99,
-          closestApproachKm: 0.35,
-          temporalOffsetMin: -8.0,
-          trajectoryCompatibility: 'Direct Origin Intersect (98% Correlation)',
-          aisContinuity: 'Continuous AIS Stream',
-          subscores: {
-            spatial: 97,
-            temporal: 95,
-            heading: 94,
-            originOverlap: 98,
-            aisContinuity: 99,
-            behaviourAnomaly: 88,
-            ensembleStability: 96
-          }
+          points: passingPoints,
         },
-        {
-          id: `passing-${caseId}`,
-          name: 'MV Global Transporter (MMSI 538009981)',
-          type: 'Container Carrier',
-          score: 0.112,
-          p05: 0.03,
-          p95: 0.18,
-          closestApproachKm: 24.6,
-          temporalOffsetMin: 110.0,
-          trajectoryCompatibility: 'Exonerated (Beyond 90% Horizon)',
-          aisContinuity: 'Normal Stream',
-          subscores: {
-            spatial: 11,
-            temporal: 9,
-            heading: 14,
-            originOverlap: 5,
-            aisContinuity: 98,
-            behaviourAnomaly: 8,
-            ensembleStability: 12
-          }
-        },
-        {
-          id: 'unknown-source',
-          name: 'UNKNOWN / Non-AIS Alternative Source',
-          type: 'Unobserved Dark Vessel',
-          score: 0.046,
-          p05: 0.01,
-          p95: 0.09,
-          closestApproachKm: 0,
-          temporalOffsetMin: 0,
-          trajectoryCompatibility: 'Low Prior Residual',
-          aisContinuity: 'Exonerated by Confirmed Target Intersect',
-          isUnknownSource: true,
-          subscores: {
-            spatial: 10,
-            temporal: 8,
-            heading: 10,
-            originOverlap: 10,
-            aisContinuity: 85,
-            behaviourAnomaly: 5,
-            ensembleStability: 8
-          }
-        }
       ],
-      particles: [
-        {
-          id: 1,
-          trajectory: [
-            { t: '2026-09-04T05:30:00Z', lat: centerLat, lon: centerLon },
-            { t: '2026-09-04T04:30:00Z', lat: centerLat - 0.02, lon: centerLon - 0.02 },
-            { t: '2026-09-04T03:30:00Z', lat: centerLat - 0.05, lon: centerLon - 0.05 },
-            { t: '2026-09-04T02:30:00Z', lat: Number(originLat.toFixed(4)), lon: Number(originLon.toFixed(4)) }
-          ]
-        }
-      ]
+      candidates: [],
+      particles: [],
     };
 
     onCreateCase(newCase);
@@ -251,8 +176,10 @@ export const NewCaseModal: React.FC<NewCaseModalProps> = ({ onClose, onCreateCas
           <div className="flex items-center gap-2">
             <ShieldAlert className="w-5 h-5 text-cyan-400" />
             <div>
-              <div className="modal-title">Ingest Custom Incident Case (Manual Test)</div>
-              <div className="modal-subtitle">Configure custom SAR observations, metocean forcing, and suspect vessels</div>
+              <div className="modal-title">New incident input</div>
+              <div className="modal-subtitle">
+                Enter slick location, metocean, and AIS tracks — attribution runs on the backend
+              </div>
             </div>
           </div>
           <button className="modal-close-btn" onClick={onClose}>

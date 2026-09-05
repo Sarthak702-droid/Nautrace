@@ -242,6 +242,20 @@ html.landing-mode .nautrace-app-root {
 .header-center {
   display: flex;
   align-items: center;
+  justify-content: center;
+  flex: 1;
+  min-width: 0;
+  padding: 0 16px;
+}
+
+.console-flow-hint {
+  font-size: 12px;
+  color: rgba(148, 163, 184, 0.9);
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
 }
 
 .cyber-telemetry-hud {
@@ -353,6 +367,12 @@ html.landing-mode .nautrace-app-root {
   cursor: pointer;
   transition: all 0.2s ease;
   text-decoration: none;
+}
+
+.cyber-btn-secondary:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  pointer-events: none;
 }
 
 .cyber-btn-secondary:hover {
