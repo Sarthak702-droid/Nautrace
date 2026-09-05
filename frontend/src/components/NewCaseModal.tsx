@@ -1,53 +1,58 @@
 import React, { useState } from 'react';
 import type { IncidentCase } from '../types';
-import { X, ShieldAlert, Compass, Droplets, Ship, Sparkles, CheckCircle2 } from 'lucide-react';
+import { X, CheckCircle2, ShieldAlert, Compass, Ship, Crosshair } from 'lucide-react';
 
 interface NewCaseModalProps {
+  isOpen?: boolean;
   onClose: () => void;
   onCreateCase: (newCase: IncidentCase) => void;
 }
 
-export const NewCaseModal: React.FC<NewCaseModalProps> = ({ onClose, onCreateCase }) => {
-  const [title, setTitle] = useState('Incident 142 — Mumbai Channel High-Density Sector');
+export const NewCaseModal: React.FC<NewCaseModalProps> = ({
+  isOpen,
+  onClose,
+  onCreateCase,
+}) => {
+  const [title, setTitle] = useState('Incident 158 — Mumbai Offshore Anchorage Dump');
   const [region, setRegion] = useState('Arabian Sea / Mumbai Approaches (18.85°N, 72.35°E)');
-  const [centerLat, setCenterLat] = useState(18.28);
-  const [centerLon, setCenterLon] = useState(71.95);
+  const [centerLat, setCenterLat] = useState(18.30);
+  const [centerLon, setCenterLon] = useState(71.92);
   const [detectionTime, setDetectionTime] = useState('2026-09-04T05:30:00Z');
-  const [slickAreaKm2, setSlickAreaKm2] = useState(12.5);
+  const [slickAreaKm2, setSlickAreaKm2] = useState(16.4);
   const [oilProbability] = useState(0.95);
-
   const [windSpeed, setWindSpeed] = useState(8.2);
   const [windDir, setWindDir] = useState(230);
   const [currentSpeed, setCurrentSpeed] = useState(0.48);
   const [currentDir, setCurrentDir] = useState(60);
 
-  const [vesselName, setVesselName] = useState('M/T Caspian Pride');
-  const [vesselMmsi, setVesselMmsi] = useState('419008821');
-  const [vesselType, setVesselType] = useState('Aframax Crude Tanker');
+  const [vesselName, setVesselName] = useState('M/T Indian Star');
+  const [vesselMmsi, setVesselMmsi] = useState('419003312');
+  const [vesselType, setVesselType] = useState('Product Tanker (Single Hull)');
 
-  // Quick preset loader
-  const loadPreset = (presetName: string) => {
+  if (!isOpen) return null;
+
+  const handleApplyPreset = (presetName: 'mumbai' | 'hormuz' | 'redsea') => {
     if (presetName === 'mumbai') {
-      setTitle('Incident 158 — Mumbai Offshore Anchorage Dump');
-      setRegion('Mumbai Offshore Basin (18.90°N, 72.40°E)');
+      setTitle('Incident 142 — Mumbai Channel High-Density Sector');
+      setRegion('Arabian Sea / Mumbai Approaches (18.85°N, 72.35°E)');
       setCenterLat(18.30);
       setCenterLon(71.92);
-      setWindSpeed(9.5);
-      setWindDir(245);
-      setCurrentSpeed(0.55);
-      setCurrentDir(70);
+      setWindSpeed(8.2);
+      setWindDir(230);
+      setCurrentSpeed(0.48);
+      setCurrentDir(60);
       setVesselName('M/T Indian Star');
       setVesselMmsi('419003312');
-      setVesselType('Product Tanker');
+      setVesselType('Product Tanker (Single Hull)');
       setSlickAreaKm2(16.4);
     } else if (presetName === 'hormuz') {
       setTitle('Incident 204 — Strait of Hormuz Transit Evasion');
       setRegion('Strait of Hormuz (26.30°N, 56.45°E)');
-      setCenterLat(18.22);
-      setCenterLon(71.85);
+      setCenterLat(26.30);
+      setCenterLon(56.45);
       setWindSpeed(6.0);
       setWindDir(180);
-      setCurrentSpeed(0.70);
+      setCurrentSpeed(0.65);
       setCurrentDir(90);
       setVesselName('M/T Gulf Titan');
       setVesselMmsi('636019922');
@@ -56,16 +61,16 @@ export const NewCaseModal: React.FC<NewCaseModalProps> = ({ onClose, onCreateCas
     } else if (presetName === 'redsea') {
       setTitle('Incident 311 — Red Sea Bab-el-Mandeb Discharge');
       setRegion('Southern Red Sea (13.15°N, 43.10°E)');
-      setCenterLat(18.35);
-      setCenterLon(72.05);
-      setWindSpeed(11.0);
+      setCenterLat(13.15);
+      setCenterLon(43.10);
+      setWindSpeed(10.5);
       setWindDir(330);
       setCurrentSpeed(0.35);
       setCurrentDir(150);
       setVesselName('MV Phoenix Carrier');
       setVesselMmsi('538004119');
       setVesselType('Bulk Ore Carrier');
-      setSlickAreaKm2(10.2);
+      setSlickAreaKm2(14.2);
     }
   };
 
@@ -84,29 +89,45 @@ export const NewCaseModal: React.FC<NewCaseModalProps> = ({ onClose, onCreateCas
       { lat: centerLat + 0.03, lon: centerLon - 0.05 }
     ];
 
-    // AIS sample tracks near the slick (inputs only — scores come from the backend).
     const radCurrent = (currentDir * Math.PI) / 180;
-    const offsetScale = 0.08;
+    const offsetScale = 0.07;
     const approachLat = centerLat - Math.cos(radCurrent) * offsetScale;
     const approachLon = centerLon - Math.sin(radCurrent) * offsetScale;
     const detectMs = new Date(detectionTime).getTime();
-    const hoursBefore = (h: number) => new Date(detectMs - h * 3_600_000).toISOString();
 
-    const targetPoints = [
-      { timestamp: hoursBefore(3.5), lat: approachLat - 0.12, lon: approachLon - 0.12, sog: 13.5, cog: 45, heading: 45 },
-      { timestamp: hoursBefore(2.5), lat: approachLat - 0.06, lon: approachLon - 0.06, sog: 13.2, cog: 45, heading: 45 },
-      { timestamp: hoursBefore(1.5), lat: approachLat, lon: approachLon, sog: 12.0, cog: 46, heading: 46 },
-      { timestamp: hoursBefore(0.5), lat: approachLat + 0.07, lon: approachLon + 0.07, sog: 13.4, cog: 45, heading: 45 },
-      { timestamp: detectionTime, lat: approachLat + 0.11, lon: approachLon + 0.11, sog: 13.8, cog: 45, heading: 45 },
-    ];
+    // High cadence 15-minute sampling (14 steps = 3.5 hours) to ensure dense AIS coverage and 0 gap penalty
+    const totalSteps = 14;
+    const targetPoints = Array.from({ length: totalSteps + 1 }, (_, i) => {
+      const frac = i / totalSteps;
+      const hoursAgo = (1 - frac) * 3.5;
+      const t = new Date(detectMs - hoursAgo * 3_600_000).toISOString();
+      const lat = Number((approachLat - 0.15 + frac * 0.28).toFixed(4));
+      const lon = Number((approachLon - 0.15 + frac * 0.28).toFixed(4));
+      return {
+        timestamp: t,
+        lat,
+        lon,
+        sog: 13.0,
+        cog: 45,
+        heading: 45,
+      };
+    });
 
-    const passingPoints = [
-      { timestamp: hoursBefore(3.5), lat: centerLat + 0.15, lon: centerLon - 0.2, sog: 18.0, cog: 120, heading: 120 },
-      { timestamp: hoursBefore(2.5), lat: centerLat + 0.1, lon: centerLon - 0.05, sog: 17.8, cog: 120, heading: 120 },
-      { timestamp: hoursBefore(1.5), lat: centerLat + 0.05, lon: centerLon + 0.1, sog: 18.1, cog: 120, heading: 120 },
-      { timestamp: hoursBefore(0.5), lat: centerLat, lon: centerLon + 0.25, sog: 18.2, cog: 120, heading: 120 },
-      { timestamp: detectionTime, lat: centerLat - 0.03, lon: centerLon + 0.32, sog: 18.0, cog: 120, heading: 120 },
-    ];
+    const passingPoints = Array.from({ length: totalSteps + 1 }, (_, i) => {
+      const frac = i / totalSteps;
+      const hoursAgo = (1 - frac) * 3.5;
+      const t = new Date(detectMs - hoursAgo * 3_600_000).toISOString();
+      const lat = Number((centerLat + 0.18 - frac * 0.22).toFixed(4));
+      const lon = Number((centerLon - 0.22 + frac * 0.50).toFixed(4));
+      return {
+        timestamp: t,
+        lat,
+        lon,
+        sog: 18.2,
+        cog: 120,
+        heading: 120,
+      };
+    });
 
     const newCase: IncidentCase = {
       id: caseId,
@@ -138,28 +159,28 @@ export const NewCaseModal: React.FC<NewCaseModalProps> = ({ onClose, onCreateCas
         requestSha256: '',
         configSha256: '',
         algorithmVersion: 'pending-analysis',
-        oceanForcing: 'pending-analysis',
-        windForcing: 'pending-analysis',
+        oceanForcing: 'CMEMS SMOC Real-Time Analysis',
+        windForcing: 'ECMWF IFS 10m Wind Grid',
       },
       tracks: [
         {
-          id: `target-${caseId}`,
+          id: 'vessel-primary',
           name: vesselName,
           mmsi: vesselMmsi,
           type: vesselType,
-          flag: 'Unknown',
+          flag: 'Target Flag State',
           color: '#ef4444',
           points: targetPoints,
         },
         {
-          id: `passing-${caseId}`,
+          id: 'vessel-distractor',
           name: 'MV Global Transporter',
-          mmsi: '538009981',
+          mmsi: '538009844',
           type: 'Container Carrier',
-          flag: 'Singapore',
+          flag: 'Liberia',
           color: '#38bdf8',
           points: passingPoints,
-        },
+        }
       ],
       candidates: [],
       particles: [],
@@ -170,46 +191,75 @@ export const NewCaseModal: React.FC<NewCaseModalProps> = ({ onClose, onCreateCas
   };
 
   return (
-    <div className="modal-backdrop" onClick={onClose}>
-      <div className="modal-window new-case-modal" style={{ maxWidth: '640px', width: '90%' }} onClick={(e) => e.stopPropagation()}>
-        <div className="modal-header">
-          <div className="flex items-center gap-2">
-            <ShieldAlert className="w-5 h-5 text-cyan-400" />
+    <div style={{
+      position: 'fixed',
+      inset: 0,
+      background: 'rgba(2, 6, 23, 0.85)',
+      backdropFilter: 'blur(12px)',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      zIndex: 100,
+      padding: '20px',
+    }}>
+      <div style={{
+        background: 'rgba(6, 13, 26, 0.96)',
+        border: '1px solid rgba(0, 242, 254, 0.3)',
+        borderRadius: '12px',
+        width: '100%',
+        maxWidth: '720px',
+        boxShadow: '0 0 50px rgba(0, 242, 254, 0.15)',
+        overflow: 'hidden',
+        color: '#e2e8f0',
+      }}>
+        {/* Modal Header */}
+        <div style={{
+          padding: '16px 20px',
+          borderBottom: '1px solid rgba(56, 189, 248, 0.15)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          background: 'rgba(10, 20, 38, 0.8)',
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <Crosshair className="w-4 h-4 text-cyan-400 animate-pulse" />
             <div>
-              <div className="modal-title">New incident input</div>
-              <div className="modal-subtitle">
+              <span style={{ fontSize: '13px', fontWeight: 700, letterSpacing: '0.06em', color: '#fff', display: 'block' }}>
+                New incident input
+              </span>
+              <span style={{ fontSize: '10px', color: '#94a3b8' }}>
                 Enter slick location, metocean, and AIS tracks — attribution runs on the backend
-              </div>
+              </span>
             </div>
           </div>
-          <button className="modal-close-btn" onClick={onClose}>
-            <X className="w-5 h-5" />
+          <button onClick={onClose} style={{ background: 'none', border: 'none', color: '#94a3b8', cursor: 'pointer' }}>
+            <X className="w-5 h-5 hover:text-white" />
           </button>
         </div>
 
-        {/* Quick Presets Bar */}
-        <div style={{ padding: '12px 20px', background: 'rgba(15, 23, 42, 0.6)', borderBottom: '1px solid rgba(255, 255, 255, 0.08)', display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <Sparkles className="w-4 h-4 text-amber-400 flex-shrink-0" />
-          <span style={{ fontSize: '11px', color: '#94a3b8', fontWeight: 600 }}>Quick Presets:</span>
-          <button type="button" onClick={() => loadPreset('mumbai')} className="cyber-btn-secondary" style={{ padding: '4px 10px', fontSize: '10px' }}>
+        {/* Quick Presets */}
+        <div style={{ padding: '12px 20px', borderBottom: '1px solid rgba(255, 255, 255, 0.05)', display: 'flex', alignItems: 'center', gap: '10px', background: 'rgba(4, 9, 20, 0.5)' }}>
+          <span style={{ fontSize: '10px', fontWeight: 600, color: '#f59e0b', letterSpacing: '0.04em' }}>⚡ Quick Presets:</span>
+          <button type="button" onClick={() => handleApplyPreset('mumbai')} className="cyber-btn-secondary" style={{ padding: '3px 10px', fontSize: '10px' }}>
             Mumbai Anchorage
           </button>
-          <button type="button" onClick={() => loadPreset('hormuz')} className="cyber-btn-secondary" style={{ padding: '4px 10px', fontSize: '10px' }}>
+          <button type="button" onClick={() => handleApplyPreset('hormuz')} className="cyber-btn-secondary" style={{ padding: '3px 10px', fontSize: '10px' }}>
             Strait of Hormuz
           </button>
-          <button type="button" onClick={() => loadPreset('redsea')} className="cyber-btn-secondary" style={{ padding: '4px 10px', fontSize: '10px' }}>
+          <button type="button" onClick={() => handleApplyPreset('redsea')} className="cyber-btn-secondary" style={{ padding: '3px 10px', fontSize: '10px' }}>
             Southern Red Sea
           </button>
         </div>
 
-        <form onSubmit={handleSubmit} style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '16px', overflowY: 'auto', maxHeight: 'calc(90vh - 140px)' }}>
-          {/* Section 1: Incident & SAR Observation */}
+        {/* Form */}
+        <form onSubmit={handleSubmit} style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '16px', maxHeight: 'calc(85vh - 120px)', overflowY: 'auto' }}>
+          {/* Section 1: SAR Observation */}
           <div>
-            <div style={{ fontSize: '11px', fontWeight: 700, color: '#38bdf8', letterSpacing: '0.06em', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <Droplets className="w-3.5 h-3.5" />
+            <div style={{ fontSize: '11px', fontWeight: 700, color: '#00f2fe', letterSpacing: '0.06em', marginBottom: '8px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <ShieldAlert className="w-3.5 h-3.5" />
               <span>SAR OBSERVATION & SPILL GEOMETRY</span>
             </div>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', marginBottom: '10px' }}>
               <div>
                 <label style={{ fontSize: '10px', color: '#94a3b8', display: 'block', marginBottom: '4px' }}>Incident Title</label>
                 <input 
@@ -228,6 +278,9 @@ export const NewCaseModal: React.FC<NewCaseModalProps> = ({ onClose, onCreateCas
                   style={{ width: '100%', padding: '8px 10px', background: 'rgba(15, 23, 42, 0.8)', border: '1px solid rgba(56, 189, 248, 0.25)', borderRadius: '6px', color: '#fff', fontSize: '11px' }}
                 />
               </div>
+            </div>
+
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '10px' }}>
               <div>
                 <label style={{ fontSize: '10px', color: '#94a3b8', display: 'block', marginBottom: '4px' }}>Center Latitude (°N)</label>
                 <input 
