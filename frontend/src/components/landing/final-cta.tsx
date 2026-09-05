@@ -1,64 +1,7 @@
-import {
-  Activity,
-  ArrowDownRight,
-  ArrowUpRight,
-  Clock3,
-  Radar,
-  Route,
-  Ship,
-  Waves,
-} from "lucide-react";
+import { motion } from "motion/react";
 import LaunchButton from "./launch-button";
 
-type MetricIconType = "radar" | "ship" | "route" | "waves";
-
-interface MetricItem {
-  id: string;
-  label: string;
-  value: string;
-  changePercent: number;
-  icon: MetricIconType;
-}
-
-interface ActivityItem {
-  id: string;
-  title: string;
-  timestamp: string;
-}
-
-const metricIconMap: Record<MetricIconType, React.ElementType> = {
-  radar: Radar,
-  ship: Ship,
-  route: Route,
-  waves: Waves,
-};
-
-const metrics: MetricItem[] = [
-  { id: "m1", label: "Particles", value: "192", changePercent: 12, icon: "waves" },
-  { id: "m2", label: "Envelopes", value: "50/90", changePercent: 8, icon: "radar" },
-  { id: "m3", label: "AIS tracks", value: "Live", changePercent: 4, icon: "ship" },
-  { id: "m4", label: "Unknown", value: "Safe", changePercent: 0, icon: "route" },
-];
-
-const activities: ActivityItem[] = [
-  {
-    id: "a1",
-    title: "Hindcast ensemble complete",
-    timestamp: "CASE-001 · just now",
-  },
-  {
-    id: "a2",
-    title: "Vessel ranking published",
-    timestamp: "3 candidates · scored",
-  },
-  {
-    id: "a3",
-    title: "Evidence hash sealed",
-    timestamp: "request · config locked",
-  },
-];
-
-/** Compact centered CTA — text + phone close together */
+/** Adapted from Watermelon cta-1 — horizontal CTA with glow */
 export default function FinalCta({
   onLaunchConsole,
 }: {
@@ -67,119 +10,60 @@ export default function FinalCta({
   return (
     <section className="landing-section w-full">
       <div className="landing-shell">
-        <div className="group relative isolate mx-auto flex w-full max-w-4xl items-center overflow-hidden rounded-3xl border border-white/12 bg-primary/5 px-6 py-12 sm:px-10 md:px-12 md:py-14">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.3 }}
+          transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
+          className="relative isolate mx-auto flex w-full max-w-5xl flex-col items-center justify-between gap-8 overflow-hidden rounded-2xl border border-primary/20 bg-primary/10 p-8 shadow-sm md:flex-row md:gap-12 md:px-12 md:py-16"
+        >
           <div
             aria-hidden
-            className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(125,211,224,0.14),transparent_65%)]"
-          />
-
-          <div className="relative z-10 grid w-full items-center gap-10 md:grid-cols-[1.1fr_0.9fr] md:gap-8 lg:gap-10">
-            <div className="flex flex-col items-start gap-5 text-left">
-              <p className="section-kicker !mb-0">Ready to investigate</p>
-              <h2 className="section-title !mb-0 text-3xl tracking-tight sm:text-4xl">
-                Open the{" "}
-                <span className="bg-gradient-to-r from-cyan-300 to-teal-300 bg-clip-text text-transparent">
-                  console
-                </span>
-              </h2>
-              <p className="section-body max-w-sm !text-[1rem]">
-                Run hindcast attribution, inspect vessel rankings, and keep an
-                honest Unknown when the ocean evidence is not enough.
-              </p>
-              <LaunchButton label="Launch Console" onClick={onLaunchConsole} />
-            </div>
-
-            <div className="flex justify-center md:justify-end">
-              <div className="relative w-full max-w-[280px]">
-                <div className="relative overflow-hidden rounded-[2rem] border-[7px] border-[#03080c] bg-[#061018] shadow-2xl shadow-cyan-950/40">
-                  <div className="absolute top-2 left-1/2 z-20 h-5 w-20 -translate-x-1/2 rounded-full bg-black" />
-
-                  <div className="relative h-[400px] overflow-hidden px-3.5 pt-10 pb-6">
-                    <div className="space-y-4">
-                      <div className="mb-1 flex items-center gap-2 text-primary">
-                        <Activity className="h-3.5 w-3.5" />
-                        <span className="font-mono text-[10px] tracking-wider uppercase">
-                          Live case feed
-                        </span>
-                      </div>
-
-                      <div className="grid grid-cols-2 gap-2.5">
-                        {metrics.map((metric) => {
-                          const Icon = metricIconMap[metric.icon];
-                          const isPositive = metric.changePercent >= 0;
-
-                          return (
-                            <div
-                              key={metric.id}
-                              className="rounded-xl border border-white/10 bg-white/[0.04] p-3"
-                            >
-                              <div className="mb-2 flex items-center gap-1.5">
-                                <div className="flex h-7 w-7 items-center justify-center rounded-full bg-primary/10 text-primary">
-                                  <Icon className="h-3 w-3" />
-                                </div>
-                                <span className="text-[10px] font-medium text-white/50">
-                                  {metric.label}
-                                </span>
-                              </div>
-                              <div className="mb-1 font-[family-name:var(--font-heading)] text-lg font-bold text-white">
-                                {metric.value}
-                              </div>
-                              <div
-                                className={`flex items-center gap-1 text-[10px] font-semibold ${
-                                  isPositive ? "text-primary" : "text-white/40"
-                                }`}
-                              >
-                                {isPositive ? (
-                                  <ArrowUpRight className="h-2.5 w-2.5" />
-                                ) : (
-                                  <ArrowDownRight className="h-2.5 w-2.5" />
-                                )}
-                                <span>{Math.abs(metric.changePercent)}%</span>
-                              </div>
-                            </div>
-                          );
-                        })}
-                      </div>
-
-                      <div>
-                        <div className="mb-2.5 flex items-center justify-between">
-                          <h3 className="text-xs font-semibold text-white">
-                            Recent activity
-                          </h3>
-                          <span className="text-[10px] font-medium text-white/40">
-                            Live
-                          </span>
-                        </div>
-                        <div className="space-y-2">
-                          {activities.map((activity) => (
-                            <div
-                              key={activity.id}
-                              className="flex items-center gap-2.5 rounded-lg border border-white/10 bg-[#061018]/80 p-2.5"
-                            >
-                              <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-white/5">
-                                <Clock3 className="h-3.5 w-3.5 text-primary" />
-                              </div>
-                              <div className="min-w-0 text-left">
-                                <p className="truncate text-xs font-medium text-white">
-                                  {activity.title}
-                                </p>
-                                <p className="text-[10px] text-white/45">
-                                  {activity.timestamp}
-                                </p>
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="absolute bottom-2 left-1/2 z-20 h-1 w-20 -translate-x-1/2 rounded-full bg-white/20" />
-                </div>
-              </div>
-            </div>
+            className="pointer-events-none absolute top-1/2 left-[max(-7rem,calc(50%-52rem))] -z-10 -translate-y-1/2 blur-2xl"
+          >
+            <div
+              className="aspect-[577/310] w-[36rem] bg-gradient-to-r from-primary to-primary/60 opacity-30"
+              style={{
+                clipPath:
+                  "polygon(74.8% 41.9%, 97.2% 73.2%, 100% 34.9%, 92.5% 0.4%, 87.5% 0%, 75% 28.6%, 58.5% 54.6%, 50.1% 56.8%, 46.9% 44%, 48.3% 17.4%, 24.7% 53.9%, 0% 27.9%, 11.9% 74.2%, 24.9% 54.1%, 68.6% 100%, 74.8% 41.9%)",
+              }}
+            />
           </div>
-        </div>
+          <div
+            aria-hidden
+            className="pointer-events-none absolute top-1/2 left-[max(45rem,calc(50%+8rem))] -z-10 -translate-y-1/2 blur-2xl"
+          >
+            <div
+              className="aspect-[577/310] w-[36rem] bg-gradient-to-r from-primary to-primary/60 opacity-30"
+              style={{
+                clipPath:
+                  "polygon(74.8% 41.9%, 97.2% 73.2%, 100% 34.9%, 92.5% 0.4%, 87.5% 0%, 75% 28.6%, 58.5% 54.6%, 50.1% 56.8%, 46.9% 44%, 48.3% 17.4%, 24.7% 53.9%, 0% 27.9%, 11.9% 74.2%, 24.9% 54.1%, 68.6% 100%, 74.8% 41.9%)",
+              }}
+            />
+          </div>
+
+          <div className="flex max-w-xl flex-col items-center gap-3 text-center md:items-start md:text-left">
+            <p className="m-0 font-mono text-[0.72rem] font-semibold tracking-[0.2em] text-primary uppercase">
+              Ready to investigate
+            </p>
+            <h2 className="m-0 font-[family-name:var(--font-heading)] text-2xl font-semibold tracking-tight text-white md:text-4xl">
+              Open the operational console
+            </h2>
+            <p className="m-0 max-w-lg text-base leading-relaxed text-white/60 md:text-lg">
+              Run hindcast attribution, inspect vessel rankings, and keep an
+              honest Unknown when the ocean evidence is not enough.
+            </p>
+          </div>
+
+          <div className="mt-2 flex w-full max-w-xs shrink-0 justify-center md:mt-0 md:w-auto">
+            <LaunchButton
+              label="Launch Console"
+              onClick={onLaunchConsole}
+              className="h-12 w-full justify-center px-8 text-base md:w-auto"
+              icon
+            />
+          </div>
+        </motion.div>
       </div>
     </section>
   );
