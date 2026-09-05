@@ -56,6 +56,26 @@ body {
   background: radial-gradient(circle at 50% 0%, #0d1a33 0%, var(--bg-darkest) 75%);
 }
 
+/* Landing must escape the console viewport lock */
+html.landing-mode,
+html.landing-mode body,
+body.landing-mode {
+  overflow: auto !important;
+  height: auto !important;
+  min-height: 100% !important;
+  width: 100% !important;
+}
+
+.nautrace-app-root--landing,
+html.landing-mode .nautrace-app-root {
+  display: block !important;
+  height: auto !important;
+  min-height: 100vh !important;
+  width: 100% !important;
+  overflow: visible !important;
+  background: transparent !important;
+}
+
 /* ==========================================================================
    CYBER-SECURITY DETECTION PRODUCT THEME — OPERATIONAL CONSOLE
    Inspired by Dribbble Shot 27191698 & Ocean Spatial Glass Architecture

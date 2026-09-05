@@ -1,0 +1,350 @@
+@import "tailwindcss";
+
+/*
+  Nautrace landing — roomy spacing + clear type hierarchy.
+*/
+@theme {
+  --font-sans: "Plus Jakarta Sans", "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+  --font-heading: "Bricolage Grotesque", "Segoe UI", sans-serif;
+
+  --color-background: #061018;
+  --color-foreground: #e8f4f7;
+  --color-primary: #7dd3e0;
+  --color-muted: #0a1c28;
+  --color-muted-foreground: #9bb4bf;
+  --color-border: rgb(255 255 255 / 0.12);
+  --color-card: rgb(10 28 40 / 0.55);
+}
+
+html.landing-mode,
+html.landing-mode body,
+body.landing-mode {
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  height: auto !important;
+  min-height: 100% !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  background: #061018 !important;
+  font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif !important;
+  line-height: 1.6 !important;
+  letter-spacing: 0.01em;
+}
+
+html.landing-mode #root,
+html.landing-mode .nautrace-app-root,
+.nautrace-app-root--landing {
+  display: block !important;
+  height: auto !important;
+  min-height: 100vh !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 auto !important;
+  overflow: visible !important;
+  background: transparent !important;
+}
+
+.nautrace-landing .landing-shell {
+  display: block !important;
+  width: 100% !important;
+  max-width: 72rem !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  padding-left: 1.5rem !important;
+  padding-right: 1.5rem !important;
+  box-sizing: border-box;
+}
+
+@media (min-width: 640px) {
+  .nautrace-landing .landing-shell {
+    padding-left: 2.5rem !important;
+    padding-right: 2.5rem !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  .nautrace-landing .landing-shell {
+    max-width: 80rem !important;
+    padding-left: 3.5rem !important;
+    padding-right: 3.5rem !important;
+  }
+}
+
+.nautrace-landing .landing-center {
+  text-align: center !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+.nautrace-landing {
+  --background: #061018;
+  --foreground: #eef7fa;
+  --primary: #7dd3e0;
+  --muted: #0a1c28;
+  --muted-foreground: #a8c0cb;
+
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 auto !important;
+  position: relative;
+  isolation: isolate;
+  color: var(--foreground);
+  background:
+    radial-gradient(ellipse 90% 55% at 50% -8%, rgba(125, 211, 224, 0.14), transparent 58%),
+    radial-gradient(ellipse 50% 40% at 100% 30%, rgba(56, 140, 160, 0.08), transparent 50%),
+    radial-gradient(ellipse 40% 35% at 0% 70%, rgba(30, 90, 110, 0.1), transparent 45%),
+    #061018;
+  font-family: "Plus Jakarta Sans", "Segoe UI", sans-serif !important;
+  font-size: 16px;
+  line-height: 1.65;
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.nautrace-landing .font-mono,
+.nautrace-landing .section-kicker {
+  font-family: "IBM Plex Mono", ui-monospace, monospace !important;
+}
+
+.nautrace-landing .section-title,
+.nautrace-landing .font-heading,
+.nautrace-landing h1,
+.nautrace-landing h2,
+.nautrace-landing h3 {
+  font-family: "Bricolage Grotesque", "Segoe UI", sans-serif !important;
+}
+
+.nautrace-landing .text-primary {
+  color: var(--primary) !important;
+}
+
+.nautrace-landing .bg-primary {
+  background-color: var(--primary) !important;
+}
+
+.nautrace-landing .text-background {
+  color: #061018 !important;
+}
+
+.nautrace-landing .text-foreground {
+  color: var(--foreground) !important;
+}
+
+.nautrace-landing .bg-background {
+  background-color: var(--background) !important;
+}
+
+.nautrace-landing .text-muted,
+.nautrace-landing .text-muted-foreground {
+  color: var(--muted-foreground) !important;
+}
+
+.nautrace-landing .hover\:bg-primary\/90:hover {
+  background-color: color-mix(in oklab, var(--primary) 88%, white) !important;
+}
+
+/* ——— Global section breathing room ——— */
+.nautrace-landing .landing-section {
+  position: relative;
+  width: 100%;
+  padding-block: 5.5rem;
+}
+
+@media (min-width: 768px) {
+  .nautrace-landing .landing-section {
+    padding-block: 8rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .nautrace-landing .landing-section {
+    padding-block: 9.5rem;
+  }
+}
+
+.nautrace-landing .landing-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+@media (min-width: 768px) {
+  .nautrace-landing .landing-stack {
+    gap: 1.5rem;
+  }
+}
+
+.nautrace-landing .glass-panel {
+  background: rgba(10, 28, 40, 0.58);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  box-shadow:
+    0 24px 60px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.06);
+  transition:
+    border-color 0.35s ease,
+    transform 0.35s ease,
+    box-shadow 0.35s ease;
+}
+
+.nautrace-landing .glass-panel:hover {
+  border-color: rgba(125, 211, 224, 0.35);
+  box-shadow:
+    0 28px 70px rgba(0, 0, 0, 0.45),
+    0 0 0 1px rgba(125, 211, 224, 0.08),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+}
+
+.nautrace-landing .glass-chip {
+  background: rgba(125, 211, 224, 0.12);
+  border: 1px solid rgba(125, 211, 224, 0.32);
+  color: var(--primary);
+  backdrop-filter: blur(12px);
+}
+
+.nautrace-landing .section-kicker {
+  display: inline-block;
+  margin-bottom: 1rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--primary);
+}
+
+.nautrace-landing .section-title {
+  margin-bottom: 1.25rem;
+  font-weight: 650;
+  letter-spacing: -0.035em;
+  color: var(--foreground);
+  line-height: 1.12;
+}
+
+.nautrace-landing .section-body {
+  font-size: 1.0625rem;
+  line-height: 1.8;
+  letter-spacing: 0.01em;
+  color: var(--muted-foreground);
+}
+
+@media (min-width: 768px) {
+  .nautrace-landing .section-body {
+    font-size: 1.125rem;
+    line-height: 1.85;
+  }
+}
+
+.nautrace-landing p + p {
+  margin-top: 1.15rem;
+}
+
+.nautrace-landing .tech-hline {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.nautrace-landing .tech-vline {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.nautrace-landing .tech-cross {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+}
+
+.nautrace-landing .tech-cross::before,
+.nautrace-landing .tech-cross::after {
+  content: "";
+  position: absolute;
+  background: rgba(125, 211, 224, 0.45);
+}
+
+.nautrace-landing .tech-cross::before {
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1px;
+  transform: translateY(-50%);
+}
+
+.nautrace-landing .tech-cross::after {
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 1px;
+  transform: translateX(-50%);
+}
+
+.nautrace-landing .dot-grid {
+  background-image: radial-gradient(
+    circle at center,
+    rgba(255, 255, 255, 0.045) 1px,
+    transparent 1px
+  );
+  background-size: 22px 22px;
+}
+
+@keyframes nautrace-glow-pulse {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: translate(-50%, -60%) scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: translate(-50%, -60%) scale(1.06);
+  }
+}
+
+.nautrace-landing .hero-glow {
+  animation: nautrace-glow-pulse 6s ease-in-out infinite;
+}
+
+@keyframes nautrace-pulse-dot {
+  0%,
+  100% {
+    opacity: 0.55;
+    box-shadow: 0 0 0 0 rgba(125, 211, 224, 0.45);
+  }
+  50% {
+    opacity: 1;
+    box-shadow: 0 0 0 6px rgba(125, 211, 224, 0);
+  }
+}
+
+.nautrace-landing .live-dot {
+  animation: nautrace-pulse-dot 2.2s ease-out infinite;
+}
+
+.nautrace-landing .cta-primary {
+  position: relative;
+  overflow: hidden;
+  transition:
+    transform 0.2s ease,
+    filter 0.2s ease,
+    box-shadow 0.3s ease;
+  box-shadow: 0 0 0 0 rgba(125, 211, 224, 0.35);
+}
+
+.nautrace-landing .cta-primary:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.05);
+  box-shadow: 0 12px 40px rgba(125, 211, 224, 0.28);
+}
+
+.nautrace-landing .cta-primary:active {
+  transform: scale(0.97);
+}

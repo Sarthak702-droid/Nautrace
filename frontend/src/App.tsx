@@ -118,7 +118,13 @@ export const AppContent: React.FC = () => {
   };
 
   return (
-    <div className="nautrace-app-root">
+    <div
+      className={
+        activeView === "home"
+          ? "nautrace-app-root nautrace-app-root--landing"
+          : "nautrace-app-root"
+      }
+    >
       {/* Dark application header ONLY renders when in the Operational Console */}
       {activeView === 'console' && (
         <Header
